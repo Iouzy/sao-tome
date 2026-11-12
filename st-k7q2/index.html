@@ -450,7 +450,7 @@ details.acc>.in{padding:6px 16px 12px}
 var ME='',POL='',LOG='';
 (function(){
   var q={};try{location.hash.replace(/^#/,'').split('&').forEach(function(p){var kv=p.split('=');if(kv[1])q[kv[0]]=decodeURIComponent(kv[1])})}catch(e){}
-  try{if(q.t)localStorage.setItem('stp_t',q.t);if(q.a)localStorage.setItem('stp_a',q.a);if(q.l)localStorage.setItem('stp_l',q.l);if(q.n)localStorage.setItem('stp_n',q.n.slice(0,30))}catch(e){}
+  try{if(q.t)localStorage.setItem('stp_t',q.t);if(q.a)localStorage.setItem('stp_a',q.a);if(q.l)localStorage.setItem('stp_l',q.l);if(q.n)localStorage.setItem('stp_n',q.n.slice(0,30));if(q.op)localStorage.setItem('stp_op',q.op==='unitel'?'unitel':'cst')}catch(e){}
   try{LOG=q.l||localStorage.getItem('stp_l')||''}catch(e){LOG=q.l||''}
   LOG=LOG.replace(/[^0-9A-Za-z_-]/g,'');
   try{ME=q.t||localStorage.getItem('stp_t')||'';POL=q.a||localStorage.getItem('stp_a')||''}catch(e){ME=q.t||'';POL=q.a||''}
@@ -560,20 +560,21 @@ var S={
   msgTo:'Para mim'},
  internet:{t:'A internet do cartão parou',s:'Antes do fim do pacote',ic:'wifi',
   agora:['Desliguem e voltem a ligar o telemóvel. Depois liguem e desliguem o modo de avião',
-   'Vejam se os dados estão na linha da CST: <b>Definições → Dados móveis → Dados móveis</b>',
-   'Vejam quanto saldo de dados resta: marquem <b>*#123*2#</b> e carreguem em ligar. Se não funcionar, perguntem na loja',
-   '<b>Saldo a zero:</b> os dados acabaram, que é o mais comum. Comprem outro pacote numa loja ou quiosque da CST e vejam a secção <b>Poupar dados</b> em São Tomé → Cartão de internet',
-   '<b>Ainda há saldo e não funciona:</b> vão a uma loja da CST com o passaporte e o recibo e peçam para verem o cartão',
+   'Vejam se os dados estão na linha da {OP}: <b>Definições → Dados móveis → Dados móveis</b>',
+   'Vejam quanto saldo de dados resta: {SALDO}. Se não funcionar, perguntem na loja',
+   '<b>Saldo a zero:</b> os dados acabaram, que é o mais comum. Comprem outro pacote numa loja ou quiosque da {OP} e vejam a secção <b>Poupar dados</b> em São Tomé → Cartão de internet',
+   '<b>Ainda há saldo e não funciona:</b> vão a uma loja da {OP} com o passaporte e o recibo e peçam para verem o cartão',
    'Tirem uma captura de ecrã do saldo e guardem o recibo, para poderem reclamar',
    'Se a loja não resolver, peçam para fazer <b>reclamação por escrito</b> e fiquem com uma cópia',
    'Até resolver, usem wifi (casa, cafés, restaurantes) e avisem o Leonardo'],
   nao:['Ligar os dados do cartão português: o roaming fora da Europa é caríssimo','Comprar pacotes uns atrás dos outros sem perceber porque acabam','Deitar fora o recibo do cartão e do pacote'],
-  guarda:['Recibo do cartão e do pacote','Captura de ecrã do saldo','Número do cartão CST'],
-  seguro:'O seguro não cobre internet nem telemóvel sem dados. É um assunto entre vocês e a CST.',
-  real:'Em outubro de 2026 houve um protesto em São Tomé contra os serviços da CST, e o regulador (AGER) falou de queixas de clientes sobre pacotes de dados que acabam muito depressa. Um cliente contou que o pacote do mês ficou sem saldo na manhã seguinte.',
-  msg:'Boa tarde. Comprei no dia ___ um cartão CST com o pacote Netfone de ___ GB por 30 dias (recibo em anexo). No dia ___ a internet deixou de funcionar. Saldo indicado: ___. Peço que verifiquem e reponham o serviço. Número do cartão: ___. Obrigado.',
-  msgTo:'Para a CST, na loja ou por escrito'}
+  guarda:['Recibo do cartão e do pacote','Captura de ecrã do saldo','Número do cartão {OP}'],
+  seguro:'O seguro não cobre internet nem telemóvel sem dados. É um assunto entre vocês e a {OP}.',
+  real:'{REAL}',
+  msg:'Boa tarde. Comprei no dia ___ um cartão {OP} com o pacote {PACOTE} de ___ GB por 30 dias (recibo em anexo). No dia ___ a internet deixou de funcionar. Saldo indicado: ___. Peço que verifiquem e reponham o serviço. Número do cartão: ___. Obrigado.',
+  msgTo:'Para a {OP}, na loja ou por escrito'}
 };
+var SI_T=S.internet;
 
 /* ---------- navegação ---------- */
 var views=['inicio','viagem','problema','seguro','stp'];
@@ -789,7 +790,7 @@ var PP=[
      ['Ver se alguma vem estragada ou aberta e tirar foto <b>antes de sair</b>','Rodas partidas, rasgões, fecho aberto, cadeado partido. Se reclamarem depois de sair do aeroporto, é muito mais difícil provar.'],
      ['Se faltar alguma: <b>não saiam</b>. Balcão de bagagem com os talões e pedir o papel da reclamação (PIR)','O PIR é o papel da reclamação da mala e tem um número de processo. Sem ele, a TAAG e o seguro quase não aceitam a reclamação. O balcão fica na própria sala das malas. Carreguem em "Problema: A mala não apareceu" aqui em baixo para ver todos os passos.'],
      ['Guardar os talões e os cartões de embarque até voltarem a Lisboa','Se houver problemas com malas ou atrasos, mesmo depois da viagem, são estes papéis que provam tudo.'],
-     ['Comprar um <b>cartão de internet da CST</b> com o pacote <b>Netfone de 6 GB por 30 dias</b> (cerca de 300 dobras, 12€). Pode ser no dia seguinte, numa loja no centro','O cartão SIM é o chip pequeno do telemóvel. Com um cartão de São Tomé têm internet a preço local, em vez do roaming português, que lá é caríssimo. A <b>CST</b> é a operadora com melhor rede em todo o país. O quiosque do aeroporto às vezes não tem cartões: as lojas da CST no centro ficam perto de São Marçal. Levem o <b>passaporte</b>, peçam para pôr o cartão e ativar o pacote ali, e testem a internet antes de sair. Pode demorar até 3 horas a ativar. O <b>WhatsApp continua com o número de sempre</b>. Mandem o número novo ao Leonardo. O passo a passo completo está em <b>São Tomé → Saber antes → Cartão de internet</b>.'],
+     ['{SIMSTEP}','O cartão SIM é o chip pequeno do telemóvel. Com um cartão de São Tomé têm internet a preço local, em vez do roaming português, que lá é caríssimo. {SIMSTEPX} O quiosque do aeroporto às vezes não tem cartões: as lojas no centro ficam perto de São Marçal. Levem o <b>passaporte</b>, peçam para pôr o cartão e ativar o pacote ali, e testem a internet antes de sair. Pode demorar até 3 horas a ativar. O <b>WhatsApp continua com o número de sempre</b>. Mandem o número novo ao Leonardo. O passo a passo completo está em <b>São Tomé → Saber antes → Cartão de internet</b>.'],
      ['Se ninguém vos for buscar: táxi para São Marçal, <b>combinar o preço antes de entrar</b>','Os táxis esperam à saída do aeroporto. São Marçal fica do outro lado da cidade, a 10 a 15 minutos. Os táxis não têm taxímetro: perguntem o preço antes de pôr as malas no carro e só entrem quando estiverem de acordo. Pagam em dobras ou euros; tenham notas pequenas, porque muitas vezes não há troco. Mostrem ao motorista a morada no telemóvel.'],
      ['Avisar o Leonardo que chegaram','Carreguem no botão verde "Avisar o Leonardo" aqui em baixo.']],
   sc:[['mala','A mala não apareceu'],['estragada','Mala estragada']],
@@ -834,7 +835,7 @@ function renderPP(){
     var n=0;x.p.forEach(function(_,i){if(st[x.id+i])n++});
     var all=n===x.p.length,tag=all?'<span class="pill g">Feito</span>':(x.id===cur?'<span class="pill a">Agora · '+n+'/'+x.p.length+'</span>':'<span class="pill n">'+n+'/'+x.p.length+'</span>');
     h+='<details class="acc" data-pp="'+x.id+'"'+(ppOpen[x.id]?' open':'')+'><summary><span><b>'+x.t+'</b><span class="s">'+x.s+'</span></span>'+tag+'</summary><div class="in">'+
-      x.p.map(function(a,i){var k=x.id+i,on=!!st[k],io=!!ppInfo[k];
+      x.p.map(function(a,i){a=[T(a[0]),T(a[1])];var k=x.id+i,on=!!st[k],io=!!ppInfo[k];
         return '<div class="pp-step"><div class="check'+(on?' done':'')+'" role="checkbox" tabindex="0" aria-checked="'+on+'" data-pk="'+k+'"><span class="box"></span><span class="txt"><b>'+(i+1)+'.</b> '+a[0]+'</span></div>'+
           (a[1]?'<button class="pp-i'+(io?' on':'')+'" data-pi="'+k+'" aria-expanded="'+io+'">'+(io?'Fechar':'Explicar')+'</button><div class="pp-x"'+(io?'':' hidden')+'>'+a[1]+'</div>':'')+'</div>'}).join('')+
       (x.nota?'<p class="pp-note">'+x.nota+'</p>':'')+
@@ -1004,10 +1005,17 @@ stn.addEventListener('input',function(){eur.value=fmtN(parseFloat(stn.value)/R)}
 stn.value=fmtN(10*R);
 
 /* ---------- info ---------- */
-var INFO=[
- ['São Marçal','Onde vão ficar',['Arredores da cidade de São Tomé, a uns <b>2 km do centro</b>, para sudeste','Aeroporto do outro lado da cidade: 10 a 15 minutos de táxi','Hospital, multibancos e lojas da CST e Unitel ficam no centro, perto','Combinem o preço do táxi antes de entrar'],1],
- ['Dinheiro','Levem notas',['Moeda: <b>dobra</b>, mas euros em notas aceitam-se quase em todo o lado','Cartões só em hotéis e restaurantes maiores, às vezes com taxa','Poucos multibancos, quase só na capital, muitos só <b>Visa</b>','Dinheiro para a viagem toda, dividido por sítios diferentes']],
- ['Cartão de internet','CST, pacote de 6 GB por 30 dias · passo a passo',[
+
+/* ---------- operadora de cada telemóvel ---------- */
+var OP='cst';try{OP=localStorage.getItem('stp_op')==='unitel'?'unitel':'cst'}catch(e){}
+var OPS={
+ cst:{n:'CST',sub:'CST, pacote de 6 GB por 30 dias · passo a passo',saldo:'marquem <b>*#123*2#</b> e carreguem em ligar',pacote:'Netfone',
+  poupar:'<b>Poupar dados (importante):</b> há queixas recentes de pacotes da CST que acabam muito antes do fim. Façam isto logo no primeiro dia:',
+  fonte:'Preços do site da CST. Podem mudar, por isso confirmem na loja',
+  real:'Em outubro de 2026 houve um protesto em São Tomé contra os serviços da CST, e o regulador (AGER) falou de queixas de clientes sobre pacotes de dados que acabam muito depressa. Um cliente contou que o pacote do mês ficou sem saldo na manhã seguinte.',
+  step:'Comprar um <b>cartão de internet da CST</b> com o pacote <b>Netfone de 6 GB por 30 dias</b> (cerca de 300 dobras, 12€). Pode ser no dia seguinte, numa loja no centro',
+  stepx:'A <b>CST</b> é a operadora com melhor rede em todo o país.',
+  head:[
   '<b>Operadora: CST.</b> É a que tem melhor rede em todo o país, fora da cidade e nas roças. A Unitel às vezes é mais barata na cidade, mas tem menos cobertura',
   '<b>Plano: Netfone pré-pago de 6 GB por 30 dias, 300 dobras (cerca de 12€)</b>, um por pessoa. Chega para WhatsApp, mapas e algumas videochamadas. Se fizerem muitas videochamadas, o de <b>12 GB custa 450 dobras (cerca de 18€)</b>. O cartão custa cerca de 80 dobras (3€)',
   '<b>1.</b> Vão a uma <b>loja da CST no centro</b>, perto de São Marçal. O quiosque do aeroporto às vezes não tem cartões',
@@ -1017,25 +1025,63 @@ var INFO=[
   '<b>5.</b> Peçam ao funcionário para <b>pôr o cartão e ativar o pacote</b> ali. Antes de sair da loja, abram uma página na internet para ver se funciona. A ativação pode demorar até 3 horas',
   '<b>6.</b> No iPhone com dois cartões: <b>Definições → Dados móveis → Dados móveis</b>, escolham a linha CST. Na linha portuguesa deixem o <b>Roaming de dados desligado</b>',
   '<b>7.</b> O <b>WhatsApp continua com o número de sempre</b>, não mudem nada. Mandem o número novo ao Leonardo',
-  '<b>8.</b> Se os dados acabarem: carreguem saldo numa loja ou quiosque da CST e peçam para renovar o pacote',
-  '<b>Poupar dados (importante):</b> há queixas recentes de pacotes da CST que acabam muito antes do fim. Façam isto logo no primeiro dia:',
+  '<b>8.</b> Se os dados acabarem: carreguem saldo numa loja ou quiosque da CST e peçam para renovar o pacote'
+ ]},
+ unitel:{n:'Unitel',sub:'Unitel, pacote de 30 dias · passo a passo',saldo:'marquem <b>105#</b> e carreguem em ligar (código do site da Unitel)',pacote:'de internet',
+  poupar:'<b>Poupar dados:</b> façam isto logo no primeiro dia, para o pacote durar o mês:',
+  fonte:'Os preços da Unitel vêm de guias de viagem, não do site oficial, e podem estar desatualizados. Confirmem na loja',
+  real:'Não encontrei queixas recentes sobre a Unitel em São Tomé. As queixas de outubro de 2026 foram sobre a CST. A Unitel tem menos rede fora da cidade.',
+  step:'Comprar um <b>cartão de internet da Unitel</b> com o <b>pacote de 30 dias com mais GB</b> (cerca de 300 dobras, 12€, para 2 GB, ou mais em promoção). Pode ser no dia seguinte, numa loja no centro',
+  stepx:'A <b>Unitel</b> tem boa rede na cidade e em São Marçal, mas fraca fora da cidade.',
+  head:[
+  '<b>Operadora: Unitel.</b> Rede boa e muitas vezes mais rápida na cidade e em São Marçal. <b>Fora da cidade</b> (roças, cascatas, norte e sul) a rede é mais fraca ou não há. Aí o SOS e a localização ficam guardados e só são enviados quando voltar a haver rede. Nos passeios, andem com alguém que tenha cartão da CST',
+  '<b>Plano: o pacote de internet de 30 dias com mais GB</b> (a Unitel chama-lhes "BIG net"), um por pessoa. Referência de guias de viagem: <b>2 GB (6 GB em promoção) por cerca de 300 dobras (12€)</b>, ou <b>5 GB (15 GB em promoção) por cerca de 600 dobras (24€)</b>',
+  '<b>1.</b> Vão a uma <b>loja da Unitel no centro</b>, perto de São Marçal. O quiosque do aeroporto às vezes não tem cartões',
+  '<b>2.</b> Levem o <b>passaporte</b> (é obrigatório registar o cartão) e o telemóvel',
+  '<b>3.</b> Peçam: <i>"Um cartão Unitel pré-pago com o pacote de internet de 30 dias com mais GB"</i>. Perguntem quantos GB dá e se há promoção',
+  '<b>4.</b> Paguem em dobras. Perguntem antes se aceitam euros ou cartão',
+  '<b>5.</b> Peçam ao funcionário para <b>pôr o cartão e ativar o pacote</b> ali. Antes de sair da loja, abram uma página na internet para ver se funciona. A ativação pode demorar até 3 horas',
+  '<b>6.</b> No iPhone com dois cartões: <b>Definições → Dados móveis → Dados móveis</b>, escolham a linha Unitel. Na linha portuguesa deixem o <b>Roaming de dados desligado</b>',
+  '<b>7.</b> O <b>WhatsApp continua com o número de sempre</b>, não mudem nada. Mandem o número novo ao Leonardo',
+  '<b>8.</b> Se os dados acabarem: carreguem saldo numa loja ou quiosque da Unitel e ativem outro pacote. Os códigos são do tipo <b>*121*2000#</b> (2 GB) ou <b>*121*5000#</b> (5 GB). Confirmem na loja, porque podem ter mudado'
+ ]}
+};
+var SIM_TAIL=[
+  '{POUPAR}',
   '· iPhone: <b>Definições → Dados móveis → Opções de dados móveis → Modo de poucos dados</b>: ligado',
   '· <b>Definições → Fotos → Dados móveis</b>: desligado (senão as fotos vão para o iCloud pela rede)',
   '· <b>Definições → App Store → Transferências automáticas e Dados móveis</b>: desligado',
   '· WhatsApp: <b>Definições → Armazenamento e dados → Transferência automática de multimédia</b>: tudo em "Wi-Fi"',
   '· Videochamadas gastam muito, uma hora pode levar 0,5 a 1 GB. Façam-nas com wifi quando der',
-  '· Vejam o saldo de vez em quando: marquem <b>*#123*2#</b> e carreguem em ligar',
+  '· Vejam o saldo de vez em quando: {SALDO}',
   '· Se parar antes do fim: <b>Problema → A internet do cartão parou</b>',
   '· <b>Lista completa para o iPhone, para ir marcando: mais abaixo, em "Poupar dados no iPhone"</b>',
   '<b>Alternativa sem loja:</b> um eSIM comprado online antes de partir (por exemplo 4 GB por 30 dias, cerca de 20 dólares). Funciona logo ao aterrar, mas só em telemóveis com eSIM e é mais caro',
-  'Preços do site da CST. Podem mudar, por isso confirmem na loja',
-  'Tomadas iguais às de Portugal (220 V): <b>não precisam de adaptador</b>']],
+  '{FONTE}',
+  'Tomadas iguais às de Portugal (220 V): <b>não precisam de adaptador</b>'
+];
+function T(x){if(typeof x!=='string')return x;var o=OPS[OP];return x.replace(/\{SIMSTEP\}/g,o.step).replace(/\{SIMSTEPX\}/g,o.stepx).replace(/\{OP\}/g,o.n).replace(/\{SALDO\}/g,o.saldo).replace(/\{PACOTE\}/g,o.pacote).replace(/\{POUPAR\}/g,o.poupar).replace(/\{FONTE\}/g,o.fonte).replace(/\{REAL\}/g,o.real)}
+
+var INFO=[
+ ['São Marçal','Onde vão ficar',['Arredores da cidade de São Tomé, a uns <b>2 km do centro</b>, para sudeste','Aeroporto do outro lado da cidade: 10 a 15 minutos de táxi','Hospital, multibancos e lojas da CST e Unitel ficam no centro, perto','Combinem o preço do táxi antes de entrar'],1],
+ ['Dinheiro','Levem notas',['Moeda: <b>dobra</b>, mas euros em notas aceitam-se quase em todo o lado','Cartões só em hotéis e restaurantes maiores, às vezes com taxa','Poucos multibancos, quase só na capital, muitos só <b>Visa</b>','Dinheiro para a viagem toda, dividido por sítios diferentes']],
+ ['__SIM__'],
  ['Malária e saúde','Todo o ano',['Repelente sempre, sobretudo ao fim da tarde e à noite','Calças e mangas compridas quando escurece','Rede mosquiteira se houver','Água engarrafada','Medicamentos são difíceis de encontrar, levem os vossos','<b>Febre = médico</b>, mesmo semanas depois de voltar']],
  ['Segurança','Para não serem apanhados de surpresa',['País calmo, mas evitem manifestações e ajuntamentos','Barcos em mar aberto desaconselhados (pirataria no Golfo da Guiné)','Novembro é época de chuvas: inundações e estradas cortadas','Cortes de luz frequentes','Língua: português, e na rua ouve-se muito o forro']]
 ];
-(function(){var h='';INFO.forEach(function(x){
-  h+='<details class="acc"><summary><span><b>'+x[0]+'</b><span class="s">'+x[1]+'</span></span></summary><div class="in">'+list(x[2])+'</div></details>'});
-  $('#info').innerHTML=h;})();
+var infoOpen={};
+function renderInfo(){var h='';
+  document.querySelectorAll('#info details').forEach(function(d){infoOpen[d.dataset.i]=d.open});
+  INFO.forEach(function(x,i){
+    if(x[0]==='__SIM__'){var o=OPS[OP];
+      h+='<details class="acc" data-i="'+i+'"'+(infoOpen[i]?' open':'')+'><summary><span><b>Cartão de internet</b><span class="s">'+o.sub+'</span></span></summary><div class="in">'+
+        '<p class="small muted" style="margin:8px 0 4px">O meu cartão é da:</p><div class="seg" role="tablist"><button data-op="cst"'+(OP==='cst'?' class="on"':'')+'>CST</button><button data-op="unitel"'+(OP==='unitel'?' class="on"':'')+'>Unitel</button></div>'+
+        list(o.head.concat(SIM_TAIL).map(T))+'</div></details>';return}
+    h+='<details class="acc" data-i="'+i+'"'+(infoOpen[i]?' open':'')+'><summary><span><b>'+x[0]+'</b><span class="s">'+x[1]+'</span></span></summary><div class="in">'+list(x[2])+'</div></details>'});
+  $('#info').innerHTML=h;}
+function applyOp(){S.internet=JSON.parse(T(JSON.stringify(SI_T)));renderInfo();if(typeof renderPP==='function')renderPP();if(typeof PD!=='undefined'&&PD)renderPD()}
+$('#info').addEventListener('click',function(e){var b=e.target.closest('[data-op]');if(!b)return;OP=b.dataset.op;try{localStorage.setItem('stp_op',OP)}catch(err){}log('operadora',OPS[OP].n);applyOp()});
+applyOp();
 
 
 /* ---------- poupar dados (iPhone) ---------- */
@@ -1064,7 +1110,7 @@ var PD=[
  ['yt','Vídeos, séries e música: <b>descarregar em casa</b> antes de ir, e ver só com wifi',''],
  ['soc','Instagram, Facebook e TikTok: se os deixarem ligados, ativem a <b>Poupança de dados</b> nas definições de cada app','São das apps que mais gastam'],
  ['rep','No primeiro dia em São Tomé: Definições → Dados móveis → no fim, <b>Repor estatísticas</b>','A partir daí veem quanto cada app gastou'],
- ['sal','De vez em quando, ver o saldo: marcar <b>*#123*2#</b> e ligar, ou perguntar na loja','Se acabar antes do tempo: Problema → A internet do cartão parou']
+ ['sal','De vez em quando, ver o saldo: {SALDO}, ou perguntem na loja','Se acabar antes do tempo: Problema → A internet do cartão parou']
 ];
 var PDN=PD.filter(function(c){return c[0]!=='#'}).length,pdOpen=null;
 function renderPD(){
@@ -1074,7 +1120,7 @@ function renderPD(){
   groups.forEach(function(x){
     var n=x.items.filter(function(c){return st[c[0]]}).length;done+=n;var all=n===x.items.length;
     h+='<details class="acc" data-g="'+x.t+'"'+(pdOpen[x.t]?' open':'')+'><summary><b>'+x.t+'</b><span class="pill '+(all?'g':'n')+'">'+(all?'Feito':n+'/'+x.items.length)+'</span></summary><div class="in">'+
-      x.items.map(function(c){var on=!!st[c[0]];return '<div class="check'+(on?' done':'')+'" role="checkbox" tabindex="0" aria-checked="'+on+'" data-pd="'+c[0]+'"><span class="box"></span><span class="txt">'+c[1]+(c[2]?'<small>'+c[2]+'</small>':'')+'</span></div>'}).join('')+'</div></details>'});
+      x.items.map(function(c){var on=!!st[c[0]];return '<div class="check'+(on?' done':'')+'" role="checkbox" tabindex="0" aria-checked="'+on+'" data-pd="'+c[0]+'"><span class="box"></span><span class="txt">'+T(c[1])+(c[2]?'<small>'+T(c[2])+'</small>':'')+'</span></div>'}).join('')+'</div></details>'});
   $('#pd').innerHTML=h;$('#pd-count').textContent=done+' de '+PDN+' feitos';
 }
 $('#pd').addEventListener('click',function(e){var c=e.target.closest('[data-pd]');if(!c)return;var st=getChecks('pd');st[c.dataset.pd]=!st[c.dataset.pd];setChecks('pd',st);renderPD();log('poupar dados',c.dataset.pd+(st[c.dataset.pd]?' feito':' desmarcado'))});
