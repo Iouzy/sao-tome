@@ -179,4 +179,21 @@ DESCRIPTION:Lisboa: esperar por todas as malas
 TRIGGER:PT0M
 END:VALARM
 END:VEVENT
+BEGIN:VEVENT
+UID:stp-diario@guia-sao-tome
+DTSTAMP:20261112T143000Z
+DTSTART:20261114T100000Z
+DTEND:20261114T101500Z
+RRULE:FREQ=DAILY;UNTIL=20261129T235959Z
+SUMMARY:Abrir o guia de São Tomé
+DESCRIPTION:Toquem no link para abrir o guia. Regista sozinho onde estão e
+  o Leonardo fica a saber que está tudo bem.\nhttps://iouzy.github.io/sao-
+ tome/st-k7q2/#reg=1
+URL:https://iouzy.github.io/sao-tome/st-k7q2/#reg=1
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Abrir o guia de São Tomé
+TRIGGER:PT0M
+END:VALARM
+END:VEVENT
 END:VCALENDAR
