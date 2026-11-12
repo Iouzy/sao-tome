@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f5c3c">
+<meta name="robots" content="noindex,nofollow">
+<title>Guia São Tomé</title>
+<style>
+:root{
+  --bg:#f4f2ec; --card:#fff; --ink:#18201c; --muted:#5f6a65; --line:#e2dfd6;
+  --brand:#0f5c3c; --brand-ink:#fff; --brand-soft:#e2f1e9;
+  --red:#b3261e; --red-soft:#fbe8e6; --amber:#8a5a00; --amber-soft:#fff2d4;
+  --blue:#1d5c8f; --blue-soft:#e5eff8; --shadow:0 1px 2px rgba(0,0,0,.05),0 4px 14px rgba(0,0,0,.05);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0f1311; --card:#181e1b; --ink:#e8ece9; --muted:#9fa9a4; --line:#29312d;
+    --brand:#3fae7a; --brand-ink:#08140e; --brand-soft:#16291f;
+    --red:#ff8a80; --red-soft:#341b19; --amber:#f2c063; --amber-soft:#33291a;
+    --blue:#8cc2ee; --blue-soft:#18252f; --shadow:none;
+  }
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:16px/1.5 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+button{font:inherit;color:inherit}
+.wrap{max-width:620px;margin:0 auto;padding:0 16px;padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
+header{background:var(--brand);color:var(--brand-ink);padding:16px 0 16px;padding-top:max(18px,env(safe-area-inset-top))}
+header h1{margin:0;font-size:24px;line-height:1.2;letter-spacing:-.01em}
+header p{margin:4px 0 0;opacity:.85;font-size:15px}
+main{padding-bottom:calc(96px + env(safe-area-inset-bottom))}
+.view{display:none;padding-top:16px}
+.view.on{display:block}
+h2{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:26px 2px 10px;font-weight:650}
+h3{margin:0 0 6px;font-size:18px}
+p{margin:8px 0}
+ul,ol{margin:8px 0;padding-left:22px} li{margin:5px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px;margin:10px 0;box-shadow:var(--shadow)}
+.muted{color:var(--muted)} .small{font-size:14px}
+.phase{position:relative}
+.phase .big{font-size:22px;font-weight:700;line-height:1.25}
+.bar{height:8px;border-radius:99px;background:var(--line);overflow:hidden;margin:10px 0 4px}
+.bar i{display:block;height:100%;background:var(--brand);border-radius:99px;transition:width .3s ease}
+.row{display:flex;gap:10px} .row>*{flex:1}
+.call{display:flex;flex-direction:column;align-items:center;justify-content:center;text-decoration:none;
+  border-radius:14px;padding:12px 6px;min-height:64px;background:var(--red);color:#fff;font-weight:700;font-size:18px}
+.call small{font-weight:500;font-size:12px;opacity:.92}
+.call.alt{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.pill{display:inline-block;border-radius:99px;padding:2px 10px;font-size:12px;font-weight:700;letter-spacing:.02em}
+.pill.g{background:var(--brand-soft);color:var(--brand)} .pill.r{background:var(--red-soft);color:var(--red)}
+.pill.a{background:var(--amber-soft);color:var(--amber)} .pill.n{background:var(--line);color:var(--muted)}
+.kv{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid var(--line)}
+.kv:last-child{border-bottom:0} .kv span:first-child{color:var(--muted)} .kv b{text-align:right}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border-radius:12px;padding:11px 14px;
+  border:1px solid var(--line);background:var(--card);font-weight:650;cursor:pointer;min-height:44px;text-decoration:none;color:var(--ink)}
+.btn.p{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}
+.btn.w{width:100%}
+.btn:active,.tile:active,.call:active{transform:scale(.98)}
+/* checklist */
+.check{display:flex;gap:12px;align-items:flex-start;padding:11px 2px;border-bottom:1px solid var(--line);cursor:pointer;user-select:none}
+.check:last-child{border-bottom:0}
+.box{flex:none;width:24px;height:24px;border-radius:7px;border:2px solid var(--muted);margin-top:1px;display:grid;place-items:center;transition:all .15s}
+.check.done .box{background:var(--brand);border-color:var(--brand)}
+.check.done .box::after{content:"";width:6px;height:11px;border:solid var(--brand-ink);border-width:0 2.5px 2.5px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.check.done .txt{color:var(--muted);text-decoration:line-through}
+.txt small{display:block;color:var(--muted);text-decoration:none}
+/* flights */
+.fl{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.fl:last-child{border-bottom:0}
+.dot{flex:none;width:12px;height:12px;border-radius:50%;margin-top:6px;background:var(--line);border:2px solid var(--muted)}
+.fl.past .dot{background:var(--muted);border-color:var(--muted)}
+.fl.next .dot{background:var(--brand);border-color:var(--brand);box-shadow:0 0 0 4px var(--brand-soft)}
+.fl.past{opacity:.6}
+.fl b{display:block} .fl .small b{display:inline}
+/* tiles */
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;text-align:left;cursor:pointer;min-height:96px;
+  display:flex;flex-direction:column;justify-content:flex-start;gap:2px;box-shadow:var(--shadow)}
+.tile b{font-size:16px;line-height:1.25}
+.tile span{font-size:13px;color:var(--muted)}
+.tile .ic{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;margin-bottom:8px;background:var(--brand-soft);color:var(--brand)}
+.tile.hot .ic{background:var(--red-soft);color:var(--red)}
+.ic svg{width:18px;height:18px}
+/* sheet */
+.sheet{position:fixed;inset:0;z-index:30;display:none}
+.sheet.on{display:block}
+.scrim{position:absolute;inset:0;background:rgba(0,0,0,.4);opacity:0;transition:opacity .2s}
+.sheet.on .scrim{opacity:1}
+.panel{position:absolute;left:0;right:0;bottom:0;top:max(28px,env(safe-area-inset-top));background:var(--bg);border-radius:20px 20px 0 0;
+  overflow-y:auto;-webkit-overflow-scrolling:touch;transform:translateY(100%);transition:transform .25s ease;padding-bottom:calc(30px + env(safe-area-inset-bottom))}
+.sheet.on .panel{transform:none}
+.ph{position:sticky;top:0;background:var(--bg);padding:10px 16px 10px;border-bottom:1px solid var(--line);z-index:2}
+.grab{width:40px;height:5px;border-radius:9px;background:var(--line);margin:0 auto 10px}
+.ph .tt{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.ph h3{margin:0;font-size:20px}
+.x{border:0;background:var(--line);border-radius:99px;width:36px;height:36px;font-size:20px;line-height:1;cursor:pointer;flex:none}
+.pb{padding:4px 16px}
+.blk{border-radius:14px;padding:12px 14px;margin:12px 0}
+.blk.do{background:var(--brand-soft)} .blk.no{background:var(--red-soft)} .blk.ins{background:var(--blue-soft)} .blk.real{background:var(--amber-soft)}
+.blk .h{display:block;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+.blk.do .h{color:var(--brand)} .blk.no .h{color:var(--red)} .blk.ins .h{color:var(--blue)} .blk.real .h{color:var(--amber)}
+.blk .check{border-color:rgba(0,0,0,.06)}
+.prog{font-size:13px;color:var(--muted);margin-top:4px}
+.msg{white-space:pre-wrap;background:var(--card);border:1px dashed var(--line);border-radius:12px;padding:12px;font-size:14px;margin:8px 0}
+/* quiz */
+.q{margin:6px 0}
+.opts{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.opt{border:1px solid var(--line);background:var(--card);border-radius:99px;padding:9px 14px;cursor:pointer;font-weight:600;min-height:40px}
+.opt.sel{background:var(--brand);color:var(--brand-ink);border-color:var(--brand)}
+.verdict{border-radius:14px;padding:12px 14px;margin-top:10px;font-weight:600}
+.verdict.y{background:var(--brand-soft)} .verdict.n{background:var(--red-soft)} .verdict.m{background:var(--amber-soft)}
+.verdict b{display:block;font-size:18px}
+/* converter */
+.conv{display:flex;gap:10px;align-items:center}
+.conv label{flex:1;display:block}
+.conv label span{display:block;font-size:13px;color:var(--muted);margin-bottom:4px}
+input[type=number],input[type=date]{width:100%;font:inherit;font-size:20px;font-weight:700;padding:10px 12px;border-radius:12px;
+  border:1px solid var(--line);background:var(--card);color:var(--ink)}
+input:focus,button:focus-visible,.tile:focus-visible{outline:3px solid var(--brand-soft);outline-offset:1px}
+/* nav */
+nav{position:sticky;top:0;z-index:20;background:var(--card);border-bottom:1px solid var(--line);box-shadow:0 2px 10px rgba(0,0,0,.08)}
+nav .in{max-width:620px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr)}
+nav button{border:0;background:none;padding:8px 4px 7px;border-bottom:3px solid transparent;display:flex;flex-direction:column;align-items:center;gap:3px;
+  font-size:11.5px;font-weight:650;color:var(--muted);cursor:pointer}
+nav button svg{width:22px;height:22px}
+nav button.on{color:var(--brand);border-bottom-color:var(--brand)}
+nav button.sos{color:var(--red)}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translate(-50%,20px);opacity:0;
+  background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:99px;font-size:14px;font-weight:600;transition:all .2s;z-index:40;pointer-events:none}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.me{display:flex;gap:12px;align-items:center}
+.me .av{flex:none;width:44px;height:44px;border-radius:50%;background:var(--amber-soft);color:var(--amber);display:grid;place-items:center;font-weight:800;font-size:18px}
+.btn.wa{background:#1fa855;border-color:#1fa855;color:#fff}
+.btn.wa svg{width:20px;height:20px}
+.fab{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:calc(18px + env(safe-area-inset-bottom));z-index:25;width:52px;height:52px;border-radius:50%;
+  background:#1fa855;color:#fff;display:grid;place-items:center;box-shadow:0 4px 16px rgba(0,0,0,.25);cursor:pointer;
+  transition:transform .2s ease,opacity .2s ease}
+.fab.hide{transform:translateY(90px);opacity:0;pointer-events:none}
+.fab svg{width:27px;height:27px}
+.fab:active{transform:scale(.95)}
+.cd{font-variant-numeric:tabular-nums;font-size:38px;font-weight:800;letter-spacing:-.02em;line-height:1.1;margin:6px 0 2px}
+.cd small{font-size:15px;font-weight:600;color:var(--muted);letter-spacing:0;margin:0 6px 0 2px}
+.tl{margin-top:12px;border-top:1px solid var(--line);padding-top:6px}
+.ev{display:flex;gap:10px;align-items:baseline;padding:7px 0}
+.ev .t{flex:none;width:96px;line-height:1.25;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.ev .w{flex:1;font-size:15px}
+.ev .r{flex:none;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.ev.done{opacity:.45}.ev.done .w{text-decoration:line-through}
+.ev.now .w{font-weight:700;color:var(--brand)}
+.tlmore{border:0;background:none;color:var(--brand);font-weight:650;padding:8px 0 0;cursor:pointer}
+.clocks{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+.clk{border:1px solid var(--line);border-radius:12px;padding:8px;text-align:center}
+.clk b{display:block;font-size:22px;font-variant-numeric:tabular-nums}
+.clk span{font-size:12px;color:var(--muted)}
+.clk.cur{border-color:var(--brand);background:var(--brand-soft)}
+.dist{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}
+.dist:last-child{border-bottom:0}
+.dist a{flex:none;font-size:14px;padding:7px 12px;min-height:36px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header><div class="wrap">
+  <h1>São Tomé</h1>
+  <p>12 a 30 de novembro · São Marçal</p>
+</div></header>
+<nav><div class="in">
+  <button data-go="inicio" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Início</button>
+  <button data-go="problema" class="sos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2 20h20L12 3z"/><path d="M12 10v4M12 17h.01"/></svg>Problema</button>
+  <button data-go="seguro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/><path d="m9 12 2 2 4-4"/></svg>Seguro</button>
+  <button data-go="stp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="10" r="3"/><path d="M12 21s7-6.2 7-11a7 7 0 0 0-14 0c0 4.8 7 11 7 11z"/></svg>São Tomé</button>
+</div></nav>
+
+<main class="wrap">
+
+<!-- INÍCIO -->
+<section class="view on" id="v-inicio">
+  <div class="card phase" id="phase"></div>
+
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center"><b>Horas agora</b><span class="small muted" id="here"></span></div>
+    <div class="clocks" id="clocks"></div>
+  </div>
+
+  <div class="card" id="loc">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+      <div><b>A minha localização</b><br><span class="small muted" id="loc-sub">Para saberes onde estás e mandares-me onde estás</span></div>
+    </div>
+    <button class="btn p w" id="loc-btn" style="margin-top:10px">Usar a localização</button>
+    <div id="loc-res"></div>
+  </div>
+
+  <div class="row" style="margin-top:12px">
+    <a class="call" href="tel:112">112<small>Emergência</small></a>
+    <a class="call" href="tel:2222222">222 22 22<small>Polícia / ambulância</small></a>
+  </div>
+
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <span class="pill g">Seguro ativo</span><span class="small muted">Heymondo · Tranquilidade</span>
+    </div>
+    <div class="kv" style="margin-top:6px"><span>Apólice n.º</span><b class="pol">ver no PDF</b></div>
+    <div class="kv"><span>Cobre</span><b>Os dois, 12 a 30 nov</b></div>
+    <div class="kv"><span>Emergência 24h</span><b>App Heymondo ou n.º do PDF</b></div>
+    <div class="row" style="margin-top:10px">
+      <button class="btn" id="copypol">Copiar apólice</button>
+      <button class="btn p" data-go="problema">Aconteceu algo</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="me"><div class="av">L</div>
+    <div><b>Falem comigo</b><br><span class="small muted">Seguro, reclamações à TAAG ou papéis: mandem fotos dos documentos e eu trato daqui.</span></div></div>
+    <div class="row" style="margin-top:12px">
+      <a class="btn wa" data-wa="Leonardo, preciso de ajuda com a viagem."><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2c0 1.3.9 2.5 1 2.7.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg>WhatsApp</a>
+      <a class="btn" data-tel>Ligar</a>
+    </div>
+  </div>
+
+  <h2>Antes de sair</h2>
+  <div class="card">
+    <div style="display:flex;justify-content:space-between"><b>Checklist</b><span class="small muted" id="cl-count"></span></div>
+    <div class="bar"><i id="cl-bar"></i></div>
+    <div id="checklist"></div>
+  </div>
+
+  <h2>Voos</h2>
+  <div class="card" id="flights"></div>
+  <div class="card small">
+    <b>Ida:</b> 10 horas em Luanda. Fiquem juntos no aeroporto, com passaporte de São Tomé pode não ser possível sair sem visto angolano.<br>
+    <b>Volta:</b> só 2h20 em Luanda. Se o voo de São Tomé atrasar mais de 1h30, há risco de perder o de Lisboa. Os 4 voos são da mesma reserva, por isso é a TAAG que tem de vos pôr no seguinte.
+  </div>
+</section>
+
+<!-- PROBLEMA -->
+<section class="view" id="v-problema">
+  <h2 style="margin-top:6px">O que aconteceu?</h2>
+  <div class="tiles" id="tiles"></div>
+  <p class="small muted" style="margin-top:14px">Cada cenário tem os passos para ir marcando, o que não fazer, o que guardar, se o seguro paga e uma mensagem pronta a enviar.</p>
+</section>
+
+<!-- SEGURO -->
+<section class="view" id="v-seguro">
+  <h2 style="margin-top:6px">O seguro paga?</h2>
+  <div class="card" id="quiz"></div>
+
+  <h2>O que cobre</h2>
+  <div class="card">
+    <div class="kv"><span>Despesas médicas</span><b>600.000€</b></div>
+    <div class="kv"><span>Evacuação e repatriamento</span><b>Incluído</b></div>
+    <div class="kv"><span>Bagagem perdida / roubo com violência</span><b>1.500€</b></div>
+    <div class="kv"><span>Atraso +6h, ligação perdida, overbooking</span><b>1.500€</b></div>
+    <div class="kv"><span>AirHelp (reclamar voos)</span><b>Incluído</b></div>
+    <div class="kv"><span>Assistência jurídica</span><b class="muted">Não</b></div>
+  </div>
+  <div class="card">
+    <b>Não cobre</b>
+    <ul class="small">
+      <li>Doenças que já tinham antes da viagem (só a urgência inicial)</li>
+      <li>Acidentes com álcool, drogas ou a fazer algo ilegal</li>
+      <li>Furto sem violência (carteirista)</li>
+      <li>Portáteis, câmaras e eletrónica cara</li>
+      <li>Mergulho com garrafa, moto 4, BTT, rafting</li>
+    </ul>
+    <p class="small muted">Já incluídos: caminhadas, snorkel, surf, caiaque, barco com condutor, 4x4.</p>
+  </div>
+
+  <h2>Como pedir o dinheiro</h2>
+  <div class="card">
+    <ol>
+      <li><b>Liguem antes de gastar</b>, pela app ou pelo número do PDF</li>
+      <li>Juntem: declaração da TAAG ou da polícia, cartões de embarque, faturas, relatório médico, fotos</li>
+      <li>Na app Heymondo, abram um <b>incidente</b> e anexem tudo</li>
+      <li>Guardem os originais até receberem</li>
+      <li>Se recusarem, mandem tudo para mim</li>
+    </ol>
+    <p class="small muted">Tirem foto a cada fatura no momento. Papéis perdem-se, fotos não.</p>
+  </div>
+</section>
+
+<!-- SÃO TOMÉ -->
+<section class="view" id="v-stp">
+  <h2 style="margin-top:6px">Visto com passaporte português</h2>
+  <div class="card" id="visa"></div>
+
+  <h2>Euros ↔ dobras</h2>
+  <div class="card">
+    <div class="conv">
+      <label><span>Euros</span><input type="number" inputmode="decimal" id="eur" value="10"></label>
+      <label><span>Dobras (STN)</span><input type="number" inputmode="decimal" id="stn"></label>
+    </div>
+    <p class="small muted">Câmbio fixo: 1€ = 24,5 dobras. Notas em euros aceitam-se em quase todo o lado.</p>
+  </div>
+
+  <h2>Saber antes</h2>
+  <div id="info"></div>
+</section>
+</main>
+
+
+
+<div class="sheet" id="sheet"><div class="scrim" data-close></div>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="sh-title">
+    <div class="ph"><div class="grab"></div><div class="tt"><h3 id="sh-title"></h3><button class="x" data-close aria-label="Fechar">×</button></div><div class="prog" id="sh-prog"></div></div>
+    <div class="pb" id="sh-body"></div>
+  </div>
+</div>
+<a class="fab" data-wa="Leonardo, preciso de ajuda com a viagem." aria-label="Falar com o Leonardo no WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2c0 1.3.9 2.5 1 2.7.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg></a>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+/* O meu número, com indicativo e sem + nem espaços. Ex.: 351912345678 */
+var ME='',POL='';
+(function(){
+  var q={};try{location.hash.replace(/^#/,'').split('&').forEach(function(p){var kv=p.split('=');if(kv[1])q[kv[0]]=decodeURIComponent(kv[1])})}catch(e){}
+  try{if(q.t)localStorage.setItem('stp_t',q.t);if(q.a)localStorage.setItem('stp_a',q.a)}catch(e){}
+  try{ME=q.t||localStorage.getItem('stp_t')||'';POL=q.a||localStorage.getItem('stp_a')||''}catch(e){ME=q.t||'';POL=q.a||''}
+  ME=ME.replace(/\D/g,'');POL=POL.replace(/[^0-9A-Za-z-]/g,'');
+})();
+var store={get:function(k){try{return JSON.parse(localStorage.getItem('stp_'+k))}catch(e){return null}},
+           set:function(k,v){try{localStorage.setItem('stp_'+k,JSON.stringify(v))}catch(e){}}};
+var mem={};
+function getChecks(id){return store.get(id)||mem[id]||{}}
+function setChecks(id,v){mem[id]=v;store.set(id,v)}
+function $(s,el){return (el||document).querySelector(s)}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+
+function toast(t){var el=$('#toast');el.textContent=t;el.classList.add('on');clearTimeout(el._t);el._t=setTimeout(function(){el.classList.remove('on')},1600)}
+function copy(t){
+  function fb(){var a=document.createElement('textarea');a.value=t;a.setAttribute('readonly','');a.style.position='fixed';a.style.opacity='0';document.body.appendChild(a);a.select();a.setSelectionRange(0,99999);try{document.execCommand('copy');toast('Copiado')}catch(e){toast('Não deu para copiar')}document.body.removeChild(a)}
+  if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(t).then(function(){toast('Copiado')},fb)}else fb();
+}
+function share(t){
+  if(navigator.share){navigator.share({text:t}).catch(function(){})}
+  else{location.href='https://wa.me/?text='+encodeURIComponent(t)}
+}
+
+/* ---------- ícones ---------- */
+var I={
+ bag:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="7" width="14" height="13" rx="2"/><path d="M9 7V4h6v3"/></svg>',
+ plane:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14 3 11l1-2 8 1 5-5a2 2 0 0 1 3 3l-5 5 1 8-2 1-3-7-3 3v3l-2 1-1-4-4-1 1-2h3z"/></svg>',
+ link:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14a4 4 0 0 0 6 0l3-3a4 4 0 0 0-6-6l-1 1"/><path d="M14 10a4 4 0 0 0-6 0l-3 3a4 4 0 0 0 6 6l1-1"/></svg>',
+ x:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="m9 9 6 6M15 9l-6 6"/></svg>',
+ med:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
+ lock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>',
+ doc:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l4 4v14H6z"/><path d="M9 12h6M9 16h4"/></svg>',
+ dmg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="7" width="14" height="13" rx="2"/><path d="m10 10 2 3-2 2 2 3"/></svg>'
+};
+
+/* ---------- cenários ---------- */
+var S={
+ mala:{t:'A mala não apareceu',s:'Atrasada ou perdida',ic:'bag',hot:1,
+  agora:['<b>Não saias da zona das malas.</b> Vai ao balcão de bagagem perdida antes de passar a porta',
+         'Faz a reclamação, chama-se <b>PIR</b>. Dá o talão da mala (costuma vir colado no cartão de embarque)',
+         'Pede cópia do PIR e anota o <b>número do processo</b>',
+         'Dá a morada em São Marçal e um telefone local para a entrega',
+         'Compra só o essencial (roupa, higiene) e <b>guarda as faturas</b>',
+         'Abre incidente na app Heymondo com o PIR e as faturas',
+         'Manda email à TAAG com o número do processo'],
+  nao:['Sair do aeroporto sem o PIR. Depois é quase impossível provar','Deitar fora talões ou faturas','Comprar coisas caras. Só pagam o essencial','Esperar: à TAAG tens <b>21 dias</b> para reclamar de atraso'],
+  guarda:['PIR com número do processo','Talão da mala','Cartão de embarque','Faturas das compras'],
+  seguro:'Mala atrasada: devolvem o que gastaste em coisas básicas, com faturas (horas e valor máximo no PDF da apólice). Perdida de vez: o valor das coisas até 1.500€. É reembolso, não um prémio.',
+  real:'Em agosto de 2026, num TAAG Luanda–São Tomé, de 6 malas de um grupo só chegaram 2, e uma das que ficou tinha medicação. Noutro Luanda–Lisboa, 6 dias depois as malas ainda não tinham chegado.',
+  msg:'Boa tarde. Viajei no voo TAAG ___ de ___ para ___ no dia ___ e a minha mala não foi entregue. Número do processo (PIR): ___. Peço informação sobre a localização e a entrega na morada: ___, São Marçal, São Tomé. Telefone: ___. Obrigado.',
+  msgTo:'Para a TAAG'},
+ estragada:{t:'Mala estragada ou faltam coisas',s:'Chegou, mas danificada',ic:'dmg',
+  agora:['Abre e verifica a mala <b>ainda no aeroporto</b>','Tira fotos ao estrago antes de sair','Reclama no balcão de bagagem e pede comprovativo','Manda reclamação escrita à TAAG em menos de <b>7 dias</b>'],
+  nao:['Sair sem reclamar no balcão','Deitar fora a mala estragada antes de resolverem'],
+  guarda:['Comprovativo do balcão','Fotos','Talão da mala'],
+  seguro:'Perda pela companhia e danos por incêndio ou assalto estão cobertos. Estrago normal no transporte reclama-se primeiro à TAAG. Na dúvida, abre incidente na app.',
+  real:'Num voo TAAG desapareceram 300€ em coisas de dentro de uma mala, sem explicação da companhia.',
+  msg:'Boa tarde. No voo TAAG ___ do dia ___ a minha mala chegou danificada / com objetos em falta. Reclamei no balcão do aeroporto (referência ___). Envio fotos. Peço a reparação ou indemnização do dano. Obrigado.',
+  msgTo:'Para a TAAG'},
+ atraso:{t:'O voo atrasou',s:'O que pedir e a quem',ic:'plane',hot:1,
+  agora:['Pede ao balcão da TAAG <b>declaração escrita</b> do atraso, com horas e motivo','Pede refeições, e hotel e transporte se passar a noite','Se recusarem, pede a recusa por escrito','Guarda cartões de embarque e faturas','Se passar de <b>6 horas</b>, abre incidente na app Heymondo'],
+  nao:['Sair da porta de embarque sem saber o que se passa','Assinar papéis a desistir de reclamar','Pagar hotel caro por tua conta sem falar com a TAAG ou o seguro'],
+  guarda:['Declaração do atraso','Cartões de embarque','Faturas de comida, hotel, táxi'],
+  extra:'<p><b>Na ida (sai de Lisboa)</b> aplica-se a lei europeia: refeições, e hotel se passar para o dia seguinte. Se chegarem a São Tomé mais de 3 horas atrasados por culpa da TAAG, podem ter direito até 600€ cada, e o AirHelp do seguro reclama por vocês.</p><p><b>No regresso</b> não há lei europeia (TAAG e partida de fora da UE). Vale o seguro.</p>',
+  seguro:'Com mais de <b>6 horas</b>: hotel, comida e transporte que pagaram, até 1.500€, com faturas e declaração da TAAG. É onde as seguradoras mais recusam, guardem tudo.',
+  real:'A 1 de maio de 2026 o DT510, o vosso Luanda–São Tomé, saiu mais de 10 horas atrasado e os passageiros dizem que não houve comida nem informação. Levem água e comida na mochila.',
+  msg:'Boa tarde. O voo TAAG ___ do dia ___ (partida prevista ___) saiu às ___, com ___ horas de atraso. Peço declaração escrita do atraso e do motivo, e reembolso das despesas (faturas em anexo). Reserva: ___. Obrigado.',
+  msgTo:'Para a TAAG'},
+ ligacao:{t:'Perdemos a ligação em Luanda',s:'Regresso, a escala de 2h20',ic:'link',hot:1,
+  agora:['Vão ao balcão de transferências da TAAG em Luanda','Peçam lugar no <b>próximo voo para Lisboa</b>, sem custo (é a mesma reserva)','Peçam hotel e refeições até ao novo voo','Fiquem juntos: com passaporte de São Tomé pode não ser possível sair do aeroporto','Peçam declaração escrita da ligação perdida','Avisem-me e abram incidente na app'],
+  nao:['Comprar bilhete novo por vossa conta','Separarem-se','Aceitar sair sem lugar marcado no voo seguinte'],
+  guarda:['Declaração da ligação perdida','Novo cartão de embarque','Faturas'],
+  seguro:'Atraso de mais de 6 horas: hotel, comida, transporte e o que for preciso para seguir viagem, até 1.500€. Uma noite em Luanda fica bem abaixo disso.',
+  real:'O DT650 Luanda–Lisboa já saiu quase 2 horas atrasado, e depois a bagagem demorou outras 2 horas em Lisboa.',
+  msg:'Boa tarde. Perdemos a ligação do voo TAAG DT650 Luanda–Lisboa do dia 29 de novembro por atraso do DT511 São Tomé–Luanda. Reserva: ___. Pedimos lugar no próximo voo para Lisboa, alojamento e refeições até lá, e declaração escrita. Obrigado.',
+  msgTo:'Para a TAAG'},
+ cancelado:{t:'Voo cancelado ou overbooking',s:'Não vos deixam embarcar',ic:'x',
+  agora:['Peçam o próximo voo disponível sem custo','Peçam declaração escrita do cancelamento ou da recusa','Peçam hotel e refeições se tiverem de esperar','Avisem-me e abram incidente na app'],
+  nao:['Aceitar vales ou créditos sem saber que voo vos dão','Assinar desistência de direitos'],
+  guarda:['Declaração da TAAG','Cartões de embarque','Faturas'],
+  seguro:'Overbooking ou cancelamento à última hora dão indemnização pelo seguro, dentro dos 1.500€. Saída de Lisboa: AirHelp para reclamar à TAAG.',
+  msg:'Boa tarde. O voo TAAG ___ do dia ___ foi cancelado / recusaram-nos o embarque. Reserva: ___. Pedimos lugar no próximo voo, assistência e declaração escrita. Obrigado.',
+  msgTo:'Para a TAAG'},
+ doente:{t:'Doença ou acidente',s:'O mais importante do seguro',ic:'med',hot:1,
+  agora:['Se for de vida ou morte: <b>112</b> ou <b>222 22 22</b> primeiro','Liga à <b>Heymondo</b> (app ou número do PDF) e dá o número da apólice <b class="pol">(ver no PDF)</b>','Eles dizem onde ir e <b>pagam diretamente</b>','O hospital é o <b>Ayres de Menezes</b>, no centro, perto de São Marçal','Se tiveres de pagar, guarda fatura e relatório médico'],
+  nao:['Pagar tratamentos ou transportes caros sem falar com a Heymondo','Comprar voo de regresso por tua conta','Ignorar febre: pode ser malária, mesmo semanas depois de voltar'],
+  guarda:['Relatório médico','Faturas e receitas','Número do processo da Heymondo'],
+  seguro:'Despesas médicas até 600.000€, evacuação e repatriamento incluídos. Não paga doenças que já existiam (só a urgência inicial) nem acidentes com álcool ou drogas.',
+  real:'Os médicos lá costumam querer dinheiro adiantado. Por isso é tão importante ligar primeiro à Heymondo.',
+  msg:'Leonardo, aconteceu um problema de saúde. Estamos em ___. Já liguei à Heymondo: sim / não. Número do processo: ___.',
+  msgTo:'Para mim'},
+ roubo:{t:'Roubo ou assalto',s:'O seguro só aceita com violência',ic:'lock',
+  agora:['Faz queixa na polícia (222 22 22) e pede cópia do auto','Cancela os cartões logo','Abre incidente na app com a queixa'],
+  nao:['Reagir num assalto','Andar com tudo na mesma carteira','Deixar o telemóvel na mesa em esplanadas e mercados'],
+  guarda:['Cópia da queixa','Faturas ou fotos do que foi roubado'],
+  seguro:'Só paga roubo com <b>violência ou ameaça</b>, até 1.500€. Carteirista sem dares por isso não paga.',
+  real:'Há clientes da Heymondo a quem recusaram porque não houve força. Em São Tomé o crime é baixo, mas há carteiristas e esticões em mercados e à porta de hotéis.',
+  msg:'Leonardo, fui assaltado/a. Já fiz queixa na polícia: sim / não. Levaram: ___.',
+  msgTo:'Para mim'},
+ passaporte:{t:'Perdi o passaporte',s:'Ou foi roubado',ic:'doc',
+  agora:['Faz queixa na polícia e pede cópia','Passaporte português: <b>Embaixada de Portugal em São Tomé</b>','Passaporte de São Tomé: <b>SMF</b> (Serviço de Migração e Fronteiras)','Mostra as fotos do passaporte no telemóvel, ajudam muito','Avisa a TAAG se for perto do voo'],
+  nao:['Deixar para o último dia','Andar com o passaporte sem precisar, deixa-o guardado onde ficas'],
+  guarda:['Cópia da queixa','Fotos do passaporte','Fotos tipo passe se tiveres'],
+  seguro:'O plano cobre despesas de tratar documentos perdidos ou roubados, dentro das outras coberturas de assistência. Guarda as faturas.',
+  msg:'Leonardo, perdi o passaporte / foi roubado. Já fiz queixa: sim / não.',
+  msgTo:'Para mim'}
+};
+
+/* ---------- navegação ---------- */
+var views=['inicio','problema','seguro','stp'];
+function go(v){
+  views.forEach(function(x){$('#v-'+x).classList.toggle('on',x===v)});
+  document.querySelectorAll('nav button').forEach(function(b){b.classList.toggle('on',b.dataset.go===v)});
+  window.scrollTo(0,0);store.set('view',v);
+}
+document.addEventListener('click',function(e){
+  var g=e.target.closest('[data-go]');if(g){go(g.dataset.go);return}
+  var c=e.target.closest('[data-copy]');if(c){copy(c.dataset.copy);return}
+  if(e.target.closest('[data-close]')){closeSheet();return}
+  var w=e.target.closest('[data-wa]');if(w){e.preventDefault();location.href='https://wa.me/'+ME+'?text='+encodeURIComponent(w.dataset.wa);return}
+  var t=e.target.closest('[data-tel]');if(t){e.preventDefault();if(ME)location.href='tel:+'+ME;else toast('Falta pôr o número');return}
+});
+
+/* ---------- fase da viagem ---------- */
+function d(s){return new Date(s)}
+var EV=[
+ ['2026-11-12T19:30:00Z','Chegar ao aeroporto de Lisboa, Terminal 1','3 h antes','lis'],
+ ['2026-11-12T22:30:00Z','Parte o DT653 Lisboa → Luanda','','lis'],
+ ['2026-11-13T05:05:00Z','Chegam a Luanda','espera longa no aeroporto','lad'],
+ ['2026-11-13T15:15:00Z','Parte o DT510 Luanda → São Tomé','confirmem a hora, pode ser 10:30','lad'],
+ ['2026-11-13T17:30:00Z','Chegam a São Tomé','cartão SIM, táxi para São Marçal','stp'],
+ ['2026-11-16T12:00:00Z','Tratar da prorrogação no SMF','passaporte português, antes do dia 27','stp'],
+ ['2026-11-27T23:59:00Z','Último dia sem visto (passaporte português)','','stp'],
+ ['2026-11-29T15:20:00Z','Sair para o aeroporto de São Tomé','3 h antes','stp'],
+ ['2026-11-29T18:20:00Z','Parte o DT511 São Tomé → Luanda','','stp'],
+ ['2026-11-29T20:35:00Z','Chegam a Luanda','só 2h20 para a ligação','lad'],
+ ['2026-11-29T22:55:00Z','Parte o DT650 Luanda → Lisboa','','lad'],
+ ['2026-11-30T07:10:00Z','Chegam a Lisboa, Terminal 1','em casa','lis']
+].map(function(e){return {t:d(e[0]),w:e[1],n:e[2],z:e[3]}});
+var TZ={lis:'Europe/Lisbon',lad:'Africa/Luanda',stp:'Africa/Sao_Tome'};
+var hereZone=null;
+function zoneNow(now){
+  if(hereZone)return hereZone;
+  if(now<d('2026-11-13T05:05:00Z'))return 'lis';
+  if(now<d('2026-11-13T15:15:00Z'))return 'lad';
+  if(now<d('2026-11-29T18:20:00Z'))return 'stp';
+  if(now<d('2026-11-29T22:55:00Z'))return 'lad';
+  return 'lis';
+}
+var ZN={lis:'Lisboa',lad:'Luanda',stp:'São Tomé'};
+function fmtT(dt,z){var o;try{o=dt.toLocaleString('pt-PT',{timeZone:TZ[z],day:'numeric',month:'numeric',hour:'2-digit',minute:'2-digit'})}catch(e){o=dt.toLocaleString('pt-PT')}return o.replace(',','')}
+function hm(dt,z){try{return dt.toLocaleTimeString('pt-PT',{timeZone:TZ[z],hour:'2-digit',minute:'2-digit'})}catch(e){return '--:--'}}
+function rel(ms){var m=Math.round(ms/6e4);if(m<60)return m+' min';var h=Math.floor(m/60);if(h<48)return h+' h';return Math.round(h/24)+' dias'}
+function p2(n){return (n<10?'0':'')+n}
+var showAll=false;
+function phase(){
+  var now=new Date(),el=$('#phase'),z=zoneNow(now),i,nx=-1;
+  for(i=0;i<EV.length;i++){if(EV[i].t>now){nx=i;break}}
+  var h;
+  if(nx===-1){
+    h='<span class="pill n">Viagem terminada</span><div class="big" style="margin-top:6px">Bem-vindos a casa</div><p class="small muted">Febre nas próximas semanas: médico, e digam que estiveram em São Tomé.</p>';
+  }else{
+    var e=EV[nx],ms=e.t-now,s=Math.floor(ms/1000),dd=Math.floor(s/86400),hh=Math.floor(s%86400/3600),mi=Math.floor(s%3600/60),se=s%60;
+    var pill=now<EV[1].t?'<span class="pill a">Antes de partir</span>':(now<EV[4].t?'<span class="pill g">A caminho</span>':(now<EV[8].t?'<span class="pill g">Em São Tomé</span>':'<span class="pill g">Regresso</span>'));
+    h=pill+'<div class="small muted" style="margin-top:8px">Próximo</div><div style="font-weight:700;font-size:18px;line-height:1.25">'+e.w+'</div>'+
+      '<div class="cd">'+(dd?dd+'<small>d</small>':'')+p2(hh)+'<small>h</small>'+p2(mi)+'<small>m</small>'+p2(se)+'<small>s</small></div>'+
+      '<div class="small muted">'+fmtT(e.t,e.z)+' hora de '+ZN[e.z]+(e.n?' · '+e.n:'')+'</div>';
+    if(now>=EV[4].t&&now<EV[8].t){
+      var n=Math.floor((now-d('2026-11-13T00:00:00Z'))/864e5)+1;
+      h+='<div class="bar" style="margin-top:12px"><i style="width:'+Math.min(100,n/17*100)+'%"></i></div><div class="small muted">Dia '+n+' de 17 em São Tomé</div>';
+    }
+    h+='<div class="tl">';
+    var from=showAll?0:Math.max(0,nx-1),to=showAll?EV.length:Math.min(EV.length,nx+4);
+    for(i=from;i<to;i++){var x=EV[i],done=x.t<=now,cls=done?'done':(i===nx?'now':'');
+      h+='<div class="ev '+cls+'"><span class="t">'+fmtT(x.t,x.z)+'<br><span style="font-size:11px">'+ZN[x.z]+'</span></span><span class="w">'+x.w+'</span><span class="r">'+(done?'':rel(x.t-now))+'</span></div>'}
+    h+='</div><button class="tlmore" id="tlmore">'+(showAll?'Mostrar menos':'Ver a viagem toda')+'</button>';
+  }
+  el.innerHTML=h;
+  var b=$('#tlmore');if(b)b.onclick=function(){showAll=!showAll;phase()};
+  var names={lis:'Lisboa',lad:'Luanda',stp:'São Tomé'};
+  $('#clocks').innerHTML=['lis','lad','stp'].map(function(k){return '<div class="clk'+(k===z?' cur':'')+'"><b>'+hm(now,k)+'</b><span>'+names[k]+'</span></div>'}).join('');
+  $('#here').textContent=(hereZone?'pela localização: ':'pelo plano: ')+names[z];
+}
+
+/* ---------- localização ---------- */
+var PL=[
+ ['Aeroporto de São Tomé',0.37806,6.71222,'stp','Aeroporto+Internacional+de+São+Tomé'],
+ ['São Marçal',0.319,6.7364,'stp','São+Marçal,+São+Tomé'],
+ ['Hospital Ayres de Menezes',null,null,'stp','Hospital+Dr.+Ayres+de+Menezes,+São+Tomé'],
+ ['Aeroporto de Lisboa',38.7742,-9.1342,'lis','Aeroporto+Humberto+Delgado+Terminal+1']
+];
+function km(a,b,c,e){var R=6371,r=Math.PI/180,x=(c-a)*r,y=(e-b)*r,q=Math.sin(x/2)*Math.sin(x/2)+Math.cos(a*r)*Math.cos(c*r)*Math.sin(y/2)*Math.sin(y/2);return 2*R*Math.asin(Math.sqrt(q))}
+function zoneOf(lat,lon){if(lat>-2&&lat<2.5&&lon>5.5&&lon<8)return 'stp';if(lat>-19&&lat<-4&&lon>11&&lon<24.5)return 'lad';if(lat>36&&lat<43&&lon>-10&&lon<-6)return 'lis';return null}
+function maps(q,lat,lon){return 'https://www.google.com/maps/dir/?api=1'+(lat!=null?'&origin='+lat+','+lon:'')+'&destination='+q}
+function showLoc(lat,lon,acc){
+  var z=zoneOf(lat,lon);hereZone=z;phase();
+  var names={lis:'Portugal',lad:'Angola',stp:'São Tomé e Príncipe'};
+  var h='<div class="small" style="margin:10px 0 4px">Estás em <b>'+(z?names[z]:'local fora da rota')+'</b> <span class="muted">(precisão ~'+Math.round(acc)+' m)</span></div>';
+  var list=PL.filter(function(p){return !z||p[3]===z});
+  h+=list.map(function(p){var dist=p[1]!=null?km(lat,lon,p[1],p[2]):null;
+    return '<div class="dist"><span>'+p[0]+(dist!=null?'<br><span class="small muted">a '+(dist<1?Math.round(dist*1000)+' m':dist.toFixed(1)+' km')+' em linha reta</span>':'')+'</span><a class="btn" target="_blank" rel="noopener" href="'+maps(p[4],lat,lon)+'">Ir</a></div>'}).join('');
+  var mapUrl='https://maps.google.com/?q='+lat.toFixed(5)+','+lon.toFixed(5);
+  h+='<a class="btn wa w" style="margin-top:10px" data-wa="'+esc('Leonardo, estou aqui: '+mapUrl)+'">'+document.querySelector('.fab').innerHTML+'Mandar-te onde estou</a>';
+  $('#loc-res').innerHTML=h;$('#loc-btn').textContent='Atualizar localização';
+}
+$('#loc-btn').addEventListener('click',function(){
+  if(!navigator.geolocation){$('#loc-res').innerHTML='<p class="small" style="color:var(--red)">Este browser não dá acesso à localização.</p>';return}
+  $('#loc-btn').textContent='A procurar...';
+  navigator.geolocation.getCurrentPosition(function(p){showLoc(p.coords.latitude,p.coords.longitude,p.coords.accuracy)},
+    function(err){$('#loc-btn').textContent='Tentar outra vez';
+      $('#loc-res').innerHTML='<p class="small" style="color:var(--red)">'+(err.code===1?'A localização foi bloqueada. Abre o ficheiro no Safari ou no Chrome (não dentro do WhatsApp) e aceita o pedido.':'Não deu para obter a localização. Liga o GPS e tenta outra vez.')+'</p>'},
+    {enableHighAccuracy:true,timeout:15000,maximumAge:60000});
+});
+
+/* ---------- checklist ---------- */
+var CL=[
+ ['#','Documentos'],
+ ['pass','Passaportes','O português e o de São Tomé, válidos por mais 6 meses'],
+ ['vac','Certificado da febre amarela','Livrinho amarelo, São Tomé pede à entrada'],
+ ['bil','Reserva dos voos guardada (e impressa se der)','À entrada em São Tomé podem pedir o bilhete de regresso'],
+ ['cop','Fotos dos passaportes e do certificado','No telemóvel e enviadas para o vosso email'],
+ ['pdf','PDF da apólice no telemóvel','Para abrir sem internet'],
+ ['app','App Heymondo com sessão iniciada',''],
+ ['mor','Morada exata em São Marçal no telemóvel','Pedem nas malas, no SMF e em emergências'],
+ ['#','Aeroporto'],
+ ['chk','Check-in feito ou chegar 3 h antes','Voo internacional, 12 nov às 22:30'],
+ ['liq','Líquidos da mochila em frascos até 100 ml','Num saco transparente'],
+ ['peso','Peso das malas confirmado na reserva','Excesso no balcão sai caro'],
+ ['#','Dinheiro'],
+ ['eur','Euros em notas, divididos por sítios','Lá é quase tudo a dinheiro'],
+ ['visa','Cartão Visa','Os poucos multibancos de lá aceitam sobretudo Visa'],
+ ['#','Saúde'],
+ ['med','Medicação na mochila de mão','Nunca no porão'],
+ ['farm','Farmácia básica','Paracetamol, antidiarreico, sais de hidratação, pensos, protetor solar'],
+ ['mal','Antimalárico, se o médico receitou','Começar e acabar como mandaram'],
+ ['rep','Repelente e roupa comprida leve','Para o fim da tarde e a noite'],
+ ['#','Mala'],
+ ['muda','Muda de roupa e higiene na mochila','Para 2 dias, se a mala não chegar'],
+ ['comer','Água e comida para a espera em Luanda','10 horas de escala na ida'],
+ ['fotos','Fotos às malas e ao que levam','Prova o valor se se perderem'],
+ ['etiq','Etiqueta com nome e telefone','Dentro e fora das malas'],
+ ['chuva','Impermeável leve','Novembro é época de chuvas'],
+ ['#','Telemóvel'],
+ ['roam','Dados móveis do cartão português desligados','Roaming fora da Europa é caríssimo. Usem wifi ou cartão local'],
+ ['pw','Powerbank carregado','Há cortes de luz'],
+ ['mapa','Mapa offline de São Tomé','Rede fraca fora da cidade'],
+ ['con','Contactos importantes guardados também em papel','Se o telemóvel morrer ou for roubado']
+];
+var CLN=CL.filter(function(c){return c[0]!=='#'}).length;
+function renderCL(){
+  var st=getChecks('cl'),done=0,h='';
+  CL.forEach(function(c){
+    if(c[0]==='#'){h+='<div class="small" style="font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:14px 2px 2px">'+c[1]+'</div>';return}
+    var on=!!st[c[0]];if(on)done++;
+    h+='<div class="check'+(on?' done':'')+'" role="checkbox" tabindex="0" aria-checked="'+on+'" data-cl="'+c[0]+'"><span class="box"></span><span class="txt">'+c[1]+(c[2]?'<small>'+c[2]+'</small>':'')+'</span></div>'});
+  $('#checklist').innerHTML=h;$('#cl-count').textContent=done+' de '+CLN;$('#cl-bar').style.width=(done/CLN*100)+'%';
+}
+$('#checklist').addEventListener('click',function(e){var c=e.target.closest('[data-cl]');if(!c)return;var st=getChecks('cl');st[c.dataset.cl]=!st[c.dataset.cl];setChecks('cl',st);renderCL()});
+
+/* ---------- voos ---------- */
+var FL=[
+ ['DT653','DTA653','Lisboa → Luanda','12 nov 22:30 → 13 nov 06:05','2026-11-12T22:30:00Z','2026-11-13T05:05:00Z','Sai do <b>Terminal 1</b> de Lisboa · chega ao aeroporto novo de Luanda (<b>NBJ</b>, Dr. António Agostinho Neto) · Boeing 787-10 · cerca de 7h30'],
+ ['DT510','DTA510','Luanda → São Tomé','13 nov 16:15 → 17:30','2026-11-13T15:15:00Z','2026-11-13T17:30:00Z','Sai do aeroporto NBJ de Luanda · chega a São Tomé (TMS) · cerca de 2h'],
+ ['DT511','DTA511','São Tomé → Luanda','29 nov 18:20 → 21:35','2026-11-29T18:20:00Z','2026-11-29T20:35:00Z','Sai de São Tomé (TMS) · chega ao NBJ de Luanda · cerca de 2h15'],
+ ['DT650','DTA650','Luanda → Lisboa','29 nov 23:55 → 30 nov 07:10','2026-11-29T22:55:00Z','2026-11-30T07:10:00Z','Sai do NBJ de Luanda · chega ao <b>Terminal 1</b> de Lisboa · costuma ser Boeing 777-300ER · cerca de 7h40']
+];
+function left(ms){var m=Math.round(ms/6e4),dd=Math.floor(m/1440),hh=Math.floor(m%1440/60),mm=m%60;
+  return dd>0?dd+' d '+hh+' h':(hh>0?hh+' h '+mm+' min':mm+' min')}
+function renderFL(){
+  var now=new Date(),nextSet=false,h='';
+  FL.forEach(function(f){
+    var dep=d(f[4]),arr=d(f[5]),cls='',tag='';
+    if(now>arr){cls='past';tag='<span class="pill n">Já devia ter chegado</span>'}
+    else if(now>=dep){cls='next';nextSet=true;tag='<span class="pill g">No ar · chega em '+left(arr-now)+'</span>'}
+    else if(!nextSet){cls='next';nextSet=true;tag='<span class="pill a">Sai daqui a '+left(dep-now)+'</span>'}
+    h+='<div class="fl '+cls+'"><span class="dot"></span><div style="flex:1;min-width:0"><b>'+f[2]+'</b><span class="small muted">'+f[3]+' · '+f[0]+'</span>'+
+      (tag?'<div style="margin-top:6px">'+tag+'</div>':'')+
+      '<div class="small" style="margin-top:6px">'+f[6]+'</div>'+'<div class="opts" style="margin:8px 0 2px"><a class="opt" style="text-decoration:none;color:inherit;font-size:14px" href="https://www.flightradar24.com/data/flights/'+f[0].toLowerCase()+'" target="_blank" rel="noopener">Flightradar24</a>'+
+      '<a class="opt" style="text-decoration:none;color:inherit;font-size:14px" href="https://www.flightaware.com/live/flight/'+f[1]+'" target="_blank" rel="noopener">FlightAware</a></div></div></div>'});
+  $('#flights').innerHTML='<div class="verdict m" style="margin:0 0 10px"><b>Confirmem os horários na reserva TAAG</b>A TAAG muda horários com frequência. Os sites de voos mostram horários diferentes do bilhete (por exemplo Luanda–São Tomé às 10:30). Vejam em flytaag.com, em gerir reserva, antes de cada voo.</div>'+h+'<p class="small muted" style="margin:10px 0 0">A contagem usa os horários do bilhete e funciona sem internet. O estado real (atrasos, portas, onde está o avião) abre nos botões e precisa de internet. Horas locais: Lisboa e São Tomé iguais, Luanda mais 1 h.</p>';
+}
+
+/* ---------- tiles e sheet ---------- */
+function renderTiles(){
+  var h='';Object.keys(S).forEach(function(k){var s=S[k];
+    h+='<button class="tile'+(s.hot?' hot':'')+'" data-sc="'+k+'"><span class="ic">'+I[s.ic]+'</span><b>'+s.t+'</b><span>'+s.s+'</span></button>'});
+  $('#tiles').innerHTML=h;
+}
+$('#tiles').addEventListener('click',function(e){var t=e.target.closest('[data-sc]');if(t)openSheet(t.dataset.sc)});
+
+var cur=null,lastFocus=null;
+function list(a){return '<ul>'+a.map(function(x){return '<li>'+x+'</li>'}).join('')+'</ul>'}
+function openSheet(k){
+  cur=k;var s=S[k];lastFocus=document.activeElement;
+  $('#sh-title').textContent=s.t;
+  var h='<div class="blk do"><span class="h">Agora, por esta ordem</span><div id="steps"></div></div>';
+  h+='<div class="blk no"><span class="h">Não façam</span>'+list(s.nao)+'</div>';
+  if(s.extra)h+='<div class="card">'+s.extra+'</div>';
+  h+='<div class="card"><b>Guardem</b>'+list(s.guarda)+'</div>';
+  h+='<div class="blk ins"><span class="h">O seguro paga?</span>'+s.seguro+'</div>';
+  if(s.real)h+='<div class="blk real"><span class="h">Aconteceu a outros</span>'+s.real+'</div>';
+  h+='<div class="card"><b>Mensagem pronta</b> <span class="small muted">· '+s.msgTo+'</span><div class="msg">'+esc(s.msg)+'</div><div class="row"><button class="btn" id="m-copy">Copiar</button><button class="btn p" id="m-share">Enviar</button></div></div>';
+  h+='<div class="card"><div class="me"><div class="av">L</div><div><b>Mandem-me as fotos</b><br><span class="small muted">Dos papéis e faturas. Eu trato da reclamação.</span></div></div><a class="btn wa w" style="margin-top:12px" data-wa="'+esc('Leonardo, aconteceu: '+s.t+'. Vou mandar fotos dos papéis.')+'"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2c0 1.3.9 2.5 1 2.7.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg>Falar comigo no WhatsApp</a></div>';
+  h+='<button class="btn w" id="m-reset" style="margin:6px 0 10px">Limpar passos marcados</button>';
+  $('#sh-body').innerHTML=h;renderSteps();
+  $('#m-copy').onclick=function(){copy(s.msg)};
+  $('#m-share').onclick=function(){share(s.msg)};
+  $('#m-reset').onclick=function(){setChecks('sc_'+k,{});renderSteps()};
+  var sh=$('#sheet');sh.style.display='block';requestAnimationFrame(function(){sh.classList.add('on')});
+  $('.panel').scrollTop=0;document.body.style.overflow='hidden';setTimeout(function(){$('.x').focus()},50);
+}
+function renderSteps(){
+  var s=S[cur],st=getChecks('sc_'+cur),done=0,h='';
+  s.agora.forEach(function(a,i){var on=!!st[i];if(on)done++;
+    h+='<div class="check'+(on?' done':'')+'" role="checkbox" tabindex="0" aria-checked="'+on+'" data-st="'+i+'"><span class="box"></span><span class="txt"><b>'+(i+1)+'.</b> '+a+'</span></div>'});
+  $('#steps').innerHTML=h;$('#sh-prog').textContent=done+' de '+s.agora.length+' passos feitos';
+}
+$('#sh-body').addEventListener('click',function(e){var c=e.target.closest('[data-st]');if(!c)return;var st=getChecks('sc_'+cur);st[c.dataset.st]=!st[c.dataset.st];setChecks('sc_'+cur,st);renderSteps()});
+function closeSheet(){var sh=$('#sheet');sh.classList.remove('on');document.body.style.overflow='';setTimeout(function(){sh.style.display='none'},250);if(lastFocus)lastFocus.focus()}
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'&&$('#sheet').classList.contains('on'))closeSheet();
+  if((e.key===' '||e.key==='Enter')&&e.target.classList&&e.target.classList.contains('check')){e.preventDefault();e.target.click()}
+});
+
+/* ---------- quiz seguro ---------- */
+var Q={
+ start:{q:'O que aconteceu?',o:[['Voo atrasado','atr'],['Mala atrasada','mat'],['Mala perdida','mpe'],['Roubo','rob'],['Doença ou acidente','doe'],['Telemóvel ou câmara','ele']]},
+ atr:{q:'Quantas horas de atraso?',o:[['Menos de 6','v_atr1'],['6 ou mais','v_atr2']]},
+ mat:{q:'Compraste coisas básicas enquanto esperavas?',o:[['Sim, com faturas','v_mat1'],['Não','v_mat2']]},
+ mpe:{q:'Fizeste o PIR no aeroporto?',o:[['Sim','v_mpe1'],['Não','v_mpe2']]},
+ rob:{q:'Houve violência ou ameaça?',o:[['Sim','rob2'],['Não, foi sem dar por isso','v_rob0']]},
+ rob2:{q:'Fizeste queixa na polícia?',o:[['Sim','v_rob1'],['Ainda não','v_rob3']]},
+ doe:{q:'O problema já existia antes da viagem?',o:[['Não, é novo','doe2'],['Sim, já tinha','v_doe0']]},
+ doe2:{q:'Houve álcool ou drogas envolvidos?',o:[['Não','v_doe1'],['Sim','v_doe3']]},
+ ele:{q:'Foi roubado com violência ou perdido pela companhia?',o:[['Sim','v_ele1'],['Não','v_ele0']]}
+};
+var V={
+ v_atr1:['m','Pelo seguro não','Com menos de 6 horas o seguro não paga. Peçam refeições à TAAG. Se for a ida e chegarem mais de 3 horas atrasados a São Tomé, o AirHelp pode reclamar até 600€.'],
+ v_atr2:['y','Sim, até 1.500€','Hotel, comida e transporte que pagaram, com faturas e declaração da TAAG.'],
+ v_mat1:['y','Sim','Devolvem as compras de primeira necessidade. Confirma no PDF a partir de quantas horas e o máximo.'],
+ v_mat2:['m','Não há nada a devolver','O seguro só reembolsa o que gastaste. Se a mala não chegar de vez, isso já é mala perdida.'],
+ v_mpe1:['y','Sim, até 1.500€','O valor das coisas, com o PIR e prova do que levavas (fotos, faturas).'],
+ v_mpe2:['n','Difícil','Sem o PIR é quase impossível provar. Volta ao aeroporto e reclama já no balcão da TAAG.'],
+ v_rob0:['n','Não','Furto sem violência não está coberto.'],
+ v_rob1:['y','Sim, até 1.500€','Abre incidente na app com a cópia da queixa e prova do valor.'],
+ v_rob3:['m','Só com queixa','Faz queixa na polícia (222 22 22) e pede cópia. Sem ela não pagam.'],
+ v_doe0:['m','Só a urgência','Doenças que já existiam não estão cobertas, só a urgência inicial até estabilizar. Liga na mesma à Heymondo.'],
+ v_doe1:['y','Sim, até 600.000€','Liga primeiro à Heymondo, eles pagam diretamente. Evacuação incluída.'],
+ v_doe3:['n','Pode não pagar','Acidentes com álcool ou drogas estão excluídos. Liga na mesma à Heymondo.'],
+ v_ele1:['m','Talvez, com desconto','Eletrónica cara não está bem coberta neste plano. Abre incidente na app e vê o que dizem.'],
+ v_ele0:['n','Não','Eletrónica sem roubo com violência nem perda pela companhia não está coberta.']
+};
+var path=[];
+function renderQuiz(){
+  var h='';
+  path.forEach(function(p,i){var n=Q[p.n];
+    h+='<div class="q"><b>'+n.q+'</b><div class="opts">'+n.o.map(function(o){return '<button class="opt'+(p.c===o[1]?' sel':'')+'" data-qi="'+i+'" data-qn="'+o[1]+'">'+o[0]+'</button>'}).join('')+'</div></div>'});
+  var last=path[path.length-1];
+  if(last&&last.c&&V[last.c]){var v=V[last.c];h+='<div class="verdict '+v[0]+'"><b>'+v[1]+'</b>'+v[2]+'</div><button class="btn w" data-qreset style="margin-top:10px">Começar de novo</button>'}
+  $('#quiz').innerHTML=h;
+}
+$('#quiz').addEventListener('click',function(e){
+  if(e.target.closest('[data-qreset]')){path=[{n:'start'}];renderQuiz();return}
+  var b=e.target.closest('[data-qi]');if(!b)return;var i=+b.dataset.qi,nx=b.dataset.qn;
+  path=path.slice(0,i+1);path[i].c=nx;if(Q[nx])path.push({n:nx});renderQuiz();
+});
+path=[{n:'start'}];
+
+/* ---------- visto ---------- */
+function renderVisa(){
+  var saved=store.get('entrada')||'2026-11-13';
+  $('#visa').innerHTML='<label class="small muted" for="ent">Dia de entrada em São Tomé</label><input type="date" id="ent" value="'+saved+'"><div id="vres" style="margin-top:10px"></div>';
+  var f=function(){var v=$('#ent').value;store.set('entrada',v);if(!v){$('#vres').innerHTML='';return}
+    var e=new Date(v+'T12:00:00'),lim=new Date(e.getTime()+14*864e5),saida=new Date('2026-11-29T12:00:00');
+    var dias=Math.round((saida-e)/864e5)+1,fmt=function(x){return x.toLocaleDateString('pt-PT',{day:'numeric',month:'long'})};
+    var over=dias>15;
+    $('#vres').innerHTML='<div class="kv"><span>Último dia sem visto</span><b>'+fmt(lim)+'</b></div><div class="kv"><span>Dias até ao voo (29 nov)</span><b>'+dias+'</b></div>'+
+      (over?'<div class="verdict n"><b>Precisa de prorrogação</b>Tratem disso no SMF nos primeiros dias, não no fim. Levem passaporte, bilhete de regresso e morada em São Marçal.</div>':'<div class="verdict y"><b>Dentro dos 15 dias</b>Não é preciso visto.</div>')+
+      '<p class="small muted">Com passaporte de São Tomé não é preciso nada.</p>';
+  };
+  $('#ent').addEventListener('change',f);$('#ent').addEventListener('input',f);f();
+}
+
+/* ---------- conversor ---------- */
+var R=24.5,eur=$('#eur'),stn=$('#stn');
+function fmtN(n){return isFinite(n)?(Math.round(n*100)/100).toString():''}
+eur.addEventListener('input',function(){stn.value=fmtN(parseFloat(eur.value)*R)});
+stn.addEventListener('input',function(){eur.value=fmtN(parseFloat(stn.value)/R)});
+stn.value=fmtN(10*R);
+
+/* ---------- info ---------- */
+var INFO=[
+ ['São Marçal','Onde vão ficar',['Arredores da cidade de São Tomé, a uns <b>2 km do centro</b>, para sudeste','Aeroporto do outro lado da cidade: 10 a 15 minutos de táxi','Hospital, multibancos e lojas da CST e Unitel ficam no centro, perto','Combinem o preço do táxi antes de entrar'],1],
+ ['Dinheiro','Levem notas',['Moeda: <b>dobra</b>, mas euros em notas aceitam-se quase em todo o lado','Cartões só em hotéis e restaurantes maiores, às vezes com taxa','Poucos multibancos, quase só na capital, muitos só <b>Visa</b>','Dinheiro para a viagem toda, dividido por sítios diferentes']],
+ ['Telemóvel','Cartão local',['<b>CST</b> tem melhor cobertura, <b>Unitel</b> mais pacotes','Cartão uns 3€, com dados uns 15 a 20€ chegam','Pedem passaporte e pode demorar até 3 horas a ativar','Comprem nas lojas da cidade, o quiosque do aeroporto às vezes não tem']],
+ ['Malária e saúde','Todo o ano',['Repelente sempre, sobretudo ao fim da tarde e à noite','Calças e mangas compridas quando escurece','Rede mosquiteira se houver','Água engarrafada','Medicamentos são difíceis de encontrar, levem os vossos','<b>Febre = médico</b>, mesmo semanas depois de voltar']],
+ ['Segurança','Para não serem apanhados de surpresa',['País calmo, mas evitem manifestações e ajuntamentos','Barcos em mar aberto desaconselhados (pirataria no Golfo da Guiné)','Novembro é época de chuvas: inundações e estradas cortadas','Cortes de luz frequentes','Língua: português, e na rua ouve-se muito o forro']]
+];
+(function(){var h='';INFO.forEach(function(x,i){
+  h+='<details class="card" style="padding:0"'+(x[3]?' open':'')+'><summary style="list-style:none;cursor:pointer;padding:14px 16px;display:flex;justify-content:space-between;align-items:center"><span><b>'+x[0]+'</b><br><span class="small muted">'+x[1]+'</span></span><span class="muted" style="font-size:22px">+</span></summary><div style="padding:0 16px 12px">'+list(x[2])+'</div></details>'});
+  $('#info').innerHTML=h;})();
+
+/* ---------- init ---------- */
+if(POL){document.querySelectorAll('.pol').forEach(function(el){el.textContent=POL})}
+$('#copypol').addEventListener('click',function(){if(POL)copy(POL);else toast('O número está no PDF da apólice')});
+if(!ME){document.querySelectorAll('[data-tel]').forEach(function(b){b.style.display='none'})}
+phase();renderCL();renderFL();renderTiles();renderQuiz();renderVisa();
+var v=store.get('view');if(v&&views.indexOf(v)>-1)go(v);
+setInterval(phase,1000);setInterval(renderFL,60000);
+/* a bola esconde-se enquanto se faz scroll e volta quando se para */
+var fab=$('.fab'),ft;
+window.addEventListener('scroll',function(){
+  fab.classList.add('hide');clearTimeout(ft);
+  var end=window.innerHeight+window.scrollY>=document.documentElement.scrollHeight-60;
+  if(!end)ft=setTimeout(function(){fab.classList.remove('hide')},1200);
+},{passive:true});
+})();
+</script>
+</body>
+</html>
