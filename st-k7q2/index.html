@@ -159,7 +159,21 @@ nav button.sos{color:var(--red)}
 .dist:last-child{border-bottom:0}
 .dist a{flex:none;font-size:14px;padding:7px 12px;min-height:36px}
 @media (prefers-reduced-motion: reduce){*{transition:none!important}}
+.map{height:360px;border-radius:14px;overflow:hidden;border:1px solid var(--line);margin-top:10px;background:var(--line);z-index:0}
+.leaflet-container{font:inherit}
+.leaflet-popup-content{margin:10px 12px;font-size:14px;line-height:1.4}
+.leaflet-popup-content b{font-size:15px}
+.pl{display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--line)}
+.pl:last-child{border-bottom:0}
+.pl .n{flex:none;width:26px;height:26px;border-radius:50%;background:var(--brand);color:var(--brand-ink);display:grid;place-items:center;font-size:13px;font-weight:800;margin-top:2px}
+.pl .b{flex:1;min-width:0}
+.pl .b span{display:block}
+.pl .acts{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
+.pl .acts button,.pl .acts a{font-size:13px;padding:6px 11px;min-height:34px}
+.youare{border-radius:12px;padding:10px 12px;background:var(--blue-soft);margin-top:10px;font-size:15px}
+.youare b{display:block;font-size:17px}
 </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 </head>
 <body>
 
@@ -283,7 +297,20 @@ nav button.sos{color:var(--red)}
 
 <!-- SÃO TOMÉ -->
 <section class="view" id="v-stp">
-  <h2 style="margin-top:6px">Visto com passaporte português</h2>
+  <h2 style="margin-top:6px">Mapa: o que visitar</h2>
+  <div class="card">
+    <div class="small muted">São Marçal é um bairro residencial a uns 2 km do centro. Para ver coisas vai-se à cidade ou de táxi pela ilha. A lista abaixo fica por ordem de distância de onde estás.</div>
+    <div class="row" style="margin-top:10px">
+      <button class="btn p" id="map-me">Onde estou</button>
+      <button class="btn" id="map-home">São Marçal</button>
+    </div>
+    <div id="youare"></div>
+    <div class="map" id="map"><div class="small muted" style="padding:16px">O mapa precisa de internet.</div></div>
+    <p class="small muted" style="margin:6px 0 0">Posições aproximadas. O botão "Ir" abre o caminho certo no Google Maps.</p>
+  </div>
+  <div class="card" id="places"></div>
+
+  <h2>Visto com passaporte português</h2>
   <div class="card" id="visa"></div>
 
   <h2>Euros ↔ dobras</h2>
@@ -430,6 +457,7 @@ function go(v){
   views.forEach(function(x){$('#v-'+x).classList.toggle('on',x===v)});
   document.querySelectorAll('nav button').forEach(function(b){b.classList.toggle('on',b.dataset.go===v)});
   window.scrollTo(0,0);store.set('view',v);
+  if(v==='stp')setTimeout(initMap,50);
 }
 document.addEventListener('click',function(e){
   var g=e.target.closest('[data-go]');if(g){go(g.dataset.go);return}
@@ -718,12 +746,89 @@ var INFO=[
   h+='<details class="card" style="padding:0"'+(x[3]?' open':'')+'><summary style="list-style:none;cursor:pointer;padding:14px 16px;display:flex;justify-content:space-between;align-items:center"><span><b>'+x[0]+'</b><br><span class="small muted">'+x[1]+'</span></span><span class="muted" style="font-size:22px">+</span></summary><div style="padding:0 16px 12px">'+list(x[2])+'</div></details>'});
   $('#info').innerHTML=h;})();
 
+/* ---------- mapa ---------- */
+var HOME=[0.3189,6.7364];
+var POI=[
+ ['Praia de Pantufo',0.3125,6.7455,'Praia','Aldeia de pescadores a 1 km de São Marçal. Canoas a chegar ao fim da tarde.','Praia+de+Pantufo,+São+Tomé'],
+ ['Mercado Municipal',0.3362,6.7283,'Cidade','O mercado grande da cidade: fruta, peixe, especiarias. Vai de manhã e guarda bem o telemóvel.','Mercado+Municipal+São+Tomé'],
+ ['Catedral da Sé',0.3376,6.7303,'Cidade','Catedral do século XVI, no centro, ao lado do palácio presidencial.','Catedral+da+Sé+São+Tomé'],
+ ['Marginal e Baía Ana Chaves',0.3405,6.7330,'Cidade','Passeio à beira-mar com casas coloniais. Bom ao pôr do sol.','Avenida+Marginal+12+de+Julho+São+Tomé'],
+ ['Chocolate Claudio Corallo',0.3437,6.7343,'Cidade','Fábrica de chocolate de cacau da ilha, com prova. Confirma os horários antes.','Claudio+Corallo+São+Tomé'],
+ ['Forte de São Sebastião',0.3486,6.7367,'Cidade','Forte de 1575 com o Museu Nacional, à entrada da baía.','Museu+Nacional+Forte+São+Sebastião+São+Tomé'],
+ ['Praia Lagarto',0.3790,6.7230,'Praia','Praia perto do aeroporto, fácil para um mergulho rápido.','Praia+Lagarto+São+Tomé'],
+ ['Roça Monte Café',0.2972,6.6397,'Roça','Roça de café com museu e visita guiada, a uns 30 min de carro.','Roça+Monte+Café+São+Tomé'],
+ ['Cascata São Nicolau',0.2867,6.6239,'Natureza','Cascata no meio da floresta, a seguir ao Monte Café.','Cascata+São+Nicolau+São+Tomé'],
+ ['Bom Sucesso e Lagoa Amélia',0.2856,6.6092,'Natureza','Jardim botânico e trilho até uma cratera antiga. Vai com guia, chove muito.','Jardim+Botânico+Bom+Sucesso+São+Tomé'],
+ ['Roça Agostinho Neto',0.3960,6.6510,'Roça','Uma das roças maiores, com o antigo hospital. Mostra bem a história do cacau.','Roça+Agostinho+Neto+São+Tomé'],
+ ['Lagoa Azul',0.4044,6.6153,'Praia','Água transparente e embondeiros no caminho. Das mais bonitas do norte.','Lagoa+Azul+São+Tomé'],
+ ['Boca do Inferno',0.2290,6.7360,'Natureza','O mar entra pelas rochas e rebenta para cima. Não te aproximes da beira.','Boca+do+Inferno+São+Tomé'],
+ ['Roça Água Izé',0.2190,6.7270,'Roça','Roça antiga à beira-mar, a caminho do sul.','Roça+Água+Izé+São+Tomé'],
+ ['Pico Cão Grande',0.1150,6.5700,'Natureza','Agulha de rocha com 300 m, no sul. Dia inteiro de passeio.','Pico+Cão+Grande+São+Tomé'],
+ ['Ilhéu das Rolas (Equador)',0.0010,6.5270,'Ilha','A linha do Equador, com marco. Barco curto desde Porto Alegre, no extremo sul.','Ilhéu+das+Rolas+São+Tomé']
+];
+var CAT={Praia:'#1d7fb8',Cidade:'#8a5a00',Roça:'#7a4b2a',Natureza:'#1f7a4d',Ilha:'#6a3fa0'};
+var map=null,meMarker=null,meCircle=null,me=null,watch=null,markers=[];
+function pin(c,txt){return L.divIcon({className:'',iconSize:[26,26],iconAnchor:[13,13],html:'<div style="width:26px;height:26px;border-radius:50%;background:'+c+';color:#fff;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.4);display:grid;place-items:center;font:800 12px/1 -apple-system,sans-serif">'+txt+'</div>'})}
+function initMap(){
+  renderPlaces();
+  if(map||typeof L==='undefined'||!navigator.onLine&&typeof L==='undefined')return;
+  var el=$('#map');el.innerHTML='';
+  map=L.map(el,{zoomControl:true,attributionControl:true}).setView([0.30,6.68],11);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'© OpenStreetMap'}).addTo(map);
+  L.marker(HOME,{icon:pin('#c62828','SM')}).addTo(map).bindPopup('<b>São Marçal</b><br>Onde vão ficar');
+  POI.forEach(function(p,i){
+    var m=L.marker([p[1],p[2]],{icon:pin(CAT[p[3]],i+1)}).addTo(map)
+      .bindPopup('<b>'+p[0]+'</b><br><span style="opacity:.75">'+p[3]+'</span><br>'+p[4]+'<br><a target="_blank" rel="noopener" href="'+maps(p[5],me?me[0]:null,me?me[1]:null)+'">Ir no Google Maps</a>');
+    markers.push(m);
+  });
+  setTimeout(function(){map.invalidateSize()},100);
+}
+function origin(){return me||HOME}
+function renderPlaces(){
+  var o=origin(),list=POI.map(function(p,i){return {p:p,i:i,d:km(o[0],o[1],p[1],p[2])}}).sort(function(a,b){return a.d-b.d});
+  $('#places').innerHTML='<b>'+(me?'Perto de ti':'A partir de São Marçal')+'</b>'+list.map(function(x){var p=x.p;
+    return '<div class="pl"><span class="n" style="background:'+CAT[p[3]]+';color:#fff">'+(x.i+1)+'</span><div class="b"><b>'+p[0]+'</b><span class="small muted">'+p[3]+' · '+(x.d<1?Math.round(x.d*1000)+' m':x.d.toFixed(1)+' km')+' em linha reta</span><span class="small">'+p[4]+'</span>'+
+      '<div class="acts"><button class="btn" data-show="'+x.i+'">Ver no mapa</button><a class="btn" target="_blank" rel="noopener" href="'+maps(p[5],me?me[0]:null,me?me[1]:null)+'">Ir</a></div></div></div>'}).join('');
+}
+$('#places').addEventListener('click',function(e){var b=e.target.closest('[data-show]');if(!b||!map)return;var i=+b.dataset.show;
+  $('#map').scrollIntoView({behavior:'smooth',block:'center'});map.setView([POI[i][1],POI[i][2]],14);markers[i].openPopup()});
+$('#map-home').addEventListener('click',function(){if(map)map.setView(HOME,14)});
+function where(lat,lon,acc){
+  me=[lat,lon];renderPlaces();
+  var hz=zoneOf(lat,lon);if(hz){hereZone=hz;phase()}
+  var near=POI.map(function(p){return {p:p,d:km(lat,lon,p[1],p[2])}}).sort(function(a,b){return a.d-b.d})[0];
+  var dh=km(lat,lon,HOME[0],HOME[1]);
+  var txt=dh<0.6?'Estás em São Marçal':(near&&near.d<0.8?'Estás perto de '+near.p[0]:(hz==='stp'?'Estás em São Tomé':'Estás fora de São Tomé'));
+  $('#youare').innerHTML='<div class="youare"><b>'+txt+'</b><span id="addr" class="small muted">'+(hz==='stp'?'A '+(dh<1?Math.round(dh*1000)+' m':dh.toFixed(1)+' km')+' de São Marçal':'')+'</span><div class="small muted">Precisão ~'+Math.round(acc)+' m</div></div>';
+  if(map){
+    if(!meMarker){meMarker=L.circleMarker(me,{radius:8,color:'#fff',weight:3,fillColor:'#1d6fe0',fillOpacity:1}).addTo(map).bindPopup('Estás aqui');meCircle=L.circle(me,{radius:acc,color:'#1d6fe0',weight:1,fillOpacity:.12}).addTo(map);map.setView(me,15)}
+    else{meMarker.setLatLng(me);meCircle.setLatLng(me).setRadius(acc)}
+  }
+}
+var lastAddr=0;
+function addr(lat,lon){
+  if(Date.now()-lastAddr<20000||!navigator.onLine)return;lastAddr=Date.now();
+  fetch('https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=17&accept-language=pt&lat='+lat+'&lon='+lon).then(function(r){return r.json()}).then(function(j){
+    var a=j.address||{},parts=[a.road,a.suburb||a.neighbourhood||a.village||a.hamlet,a.city||a.town].filter(Boolean);
+    var el=$('#addr');if(el&&parts.length)el.textContent=parts.join(', ');
+  }).catch(function(){});
+}
+$('#map-me').addEventListener('click',function(){
+  if(!navigator.geolocation){$('#youare').innerHTML='<p class="small" style="color:var(--red)">Este browser não dá acesso à localização.</p>';return}
+  $('#map-me').textContent='A procurar...';
+  if(watch!=null)navigator.geolocation.clearWatch(watch);
+  watch=navigator.geolocation.watchPosition(function(p){$('#map-me').textContent='A seguir-te';where(p.coords.latitude,p.coords.longitude,p.coords.accuracy);addr(p.coords.latitude,p.coords.longitude)},
+    function(err){$('#map-me').textContent='Onde estou';$('#youare').innerHTML='<p class="small" style="color:var(--red)">'+(err.code===1?'A localização está bloqueada. No iPhone: Definições > Privacidade > Localização > Safari > Ao usar a app.':'Não deu para obter a localização. Liga o GPS e tenta outra vez.')+'</p>'},
+    {enableHighAccuracy:true,timeout:20000,maximumAge:15000});
+});
+
 /* ---------- init ---------- */
 if(POL){document.querySelectorAll('.pol').forEach(function(el){el.textContent=POL})}
 $('#copypol').addEventListener('click',function(){if(POL)copy(POL);else toast('O número está no PDF da apólice')});
 if(!ME){document.querySelectorAll('[data-tel]').forEach(function(b){b.style.display='none'})}
 phase();renderCL();renderFL();renderTiles();renderQuiz();renderVisa();
 var v=store.get('view');if(v&&views.indexOf(v)>-1)go(v);
+window.addEventListener('load',function(){if($('#v-stp').classList.contains('on'))initMap()});
 setInterval(phase,1000);setInterval(renderFL,60000);
 /* a bola esconde-se enquanto se faz scroll e volta quando se para */
 var fab=$('.fab'),ft;
@@ -734,5 +839,6 @@ window.addEventListener('scroll',function(){
 },{passive:true});
 })();
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 </body>
 </html>
