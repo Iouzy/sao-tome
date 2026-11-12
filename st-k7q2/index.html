@@ -851,7 +851,7 @@ document.addEventListener('keydown',function(e){
 
 
 /* ---------- SOS ---------- */
-var sosPos=null;
+var sosPos=null,sosSent=false;
 function sosLoc(){
   if(!navigator.geolocation){$('#sos-st').textContent='Sem acesso à localização. O alerta vai na mesma.';return}
   navigator.geolocation.getCurrentPosition(function(p){
@@ -866,16 +866,21 @@ function sosText(){
   var where=p?'Localização: https://maps.google.com/?q='+p[0].toFixed(5)+','+p[1].toFixed(5)+' (precisão ~'+p[2]+' m, às '+new Date(p[3]).toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit'})+')':'Localização: não disponível.';
   return '🆘 EMERGÊNCIA. '+h+' precisa de ajuda. Contacta as autoridades. '+where+' Enviado pelo guia de São Tomé.';
 }
-function sosOpen(){sosPos=null;$('#sos-more').innerHTML='';$('#sos-go').hidden=false;$('#sos-go').textContent='ENVIAR ALERTA';
+function sosOpen(){sosPos=null;sosSent=false;$('#sos-x').textContent='Foi engano, fechar';$('#sos-more').innerHTML='';$('#sos-go').hidden=false;$('#sos-go').textContent='ENVIAR ALERTA';
   $('#sos').classList.add('on');document.body.style.overflow='hidden';sosLoc();log('SOS aberto','');setTimeout(function(){$('#sos-go').focus()},50)}
 function sosClose(){$('#sos').classList.remove('on');document.body.style.overflow=''}
 document.addEventListener('click',function(e){if(e.target.closest('[data-sos]')){e.preventDefault();sosOpen()}});
-$('#sos-x').addEventListener('click',function(){log('SOS cancelado','');sosClose()});
+$('#sos-x').addEventListener('click',function(){
+  if(sosSent){if(!confirm('Avisar o Leonardo que está tudo bem e foi engano?'))return;
+    if(LOG){var q=qGet();q.push({t:new Date().toISOString(),n:NAME,d:DID,e:'EMERGÊNCIA CANCELADA',x:(NAME||'Alguém da família')+' disse que foi engano e está tudo bem.',la:'',lo:'',ac:''});qSet(q);flush()}
+    toast('Avisado: foi engano')}
+  else log('SOS cancelado','');
+  sosClose()});
 $('#sos-go').addEventListener('click',function(){
   var t=sosText(),p=sosPos||pos;
   /* vai pela internet: fica na folha e o Leonardo recebe email */
   if(LOG){var q=qGet();q.push({t:new Date().toISOString(),n:NAME,d:DID,e:'EMERGÊNCIA',x:t,la:p?p[0].toFixed(5):'',lo:p?p[1].toFixed(5):'',ac:p?p[2]:''});qSet(q);flush()}
-  $('#sos-go').hidden=true;
+  $('#sos-go').hidden=true;sosSent=true;$('#sos-x').textContent='Foi engano, está tudo bem';
   var off=navigator.onLine===false||!LOG;
   $('#sos-more').innerHTML=
     (off?'<div class="st"><b>Sem internet agora.</b> O alerta fica guardado e vai sozinho assim que houver rede. Deixem o guia aberto. Se puderem, liguem para o 112.</div>'
