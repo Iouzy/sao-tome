@@ -457,6 +457,7 @@ function share(t){
 
 /* ---------- ícones ---------- */
 var I={
+ wifi:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5a10 10 0 0 1 14 0"/><path d="M8.5 16a5 5 0 0 1 7 0"/><path d="M12 19.5h.01"/><path d="M2 9a15 15 0 0 1 20 0"/></svg>',
  bag:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="7" width="14" height="13" rx="2"/><path d="M9 7V4h6v3"/></svg>',
  plane:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14 3 11l1-2 8 1 5-5a2 2 0 0 1 3 3l-5 5 1 8-2 1-3-7-3 3v3l-2 1-1-4-4-1 1-2h3z"/></svg>',
  link:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14a4 4 0 0 0 6 0l3-3a4 4 0 0 0-6-6l-1 1"/><path d="M14 10a4 4 0 0 0-6 0l-3 3a4 4 0 0 0 6 6l1-1"/></svg>',
@@ -537,7 +538,22 @@ var S={
   guarda:['Cópia da queixa','Fotos do passaporte','Fotos tipo passe se tiveres'],
   seguro:'O plano cobre despesas de tratar documentos perdidos ou roubados, dentro das outras coberturas de assistência. Guarda as faturas.',
   msg:'Leonardo, perdi o passaporte / foi roubado. Já fiz queixa: sim / não.',
-  msgTo:'Para mim'}
+  msgTo:'Para mim'},
+ internet:{t:'A internet do cartão parou',s:'Antes do fim do pacote',ic:'wifi',
+  agora:['Desliguem e voltem a ligar o telemóvel. Depois liguem e desliguem o modo de avião',
+   'Vejam se os dados estão na linha da CST: <b>Definições → Dados móveis → Dados móveis</b>',
+   'Vejam quanto saldo de dados resta: marquem <b>*#123*2#</b> e carreguem em ligar. Se não funcionar, perguntem na loja',
+   '<b>Saldo a zero:</b> os dados acabaram, que é o mais comum. Comprem outro pacote numa loja ou quiosque da CST e vejam a secção <b>Poupar dados</b> em São Tomé → Cartão de internet',
+   '<b>Ainda há saldo e não funciona:</b> vão a uma loja da CST com o passaporte e o recibo e peçam para verem o cartão',
+   'Tirem uma captura de ecrã do saldo e guardem o recibo, para poderem reclamar',
+   'Se a loja não resolver, peçam para fazer <b>reclamação por escrito</b> e fiquem com uma cópia',
+   'Até resolver, usem wifi (casa, cafés, restaurantes) e avisem o Leonardo'],
+  nao:['Ligar os dados do cartão português: o roaming fora da Europa é caríssimo','Comprar pacotes uns atrás dos outros sem perceber porque acabam','Deitar fora o recibo do cartão e do pacote'],
+  guarda:['Recibo do cartão e do pacote','Captura de ecrã do saldo','Número do cartão CST'],
+  seguro:'O seguro não cobre internet nem telemóvel sem dados. É um assunto entre vocês e a CST.',
+  real:'Em outubro de 2026 houve um protesto em São Tomé contra os serviços da CST, e o regulador (AGER) falou de queixas de clientes sobre pacotes de dados que acabam muito depressa. Um cliente contou que o pacote do mês ficou sem saldo na manhã seguinte.',
+  msg:'Boa tarde. Comprei no dia ___ um cartão CST com o pacote Netfone de ___ GB por 30 dias (recibo em anexo). No dia ___ a internet deixou de funcionar. Saldo indicado: ___. Peço que verifiquem e reponham o serviço. Número do cartão: ___. Obrigado.',
+  msgTo:'Para a CST, na loja ou por escrito'}
 };
 
 /* ---------- navegação ---------- */
@@ -982,6 +998,14 @@ var INFO=[
   '<b>6.</b> No iPhone com dois cartões: <b>Definições → Dados móveis → Dados móveis</b>, escolham a linha CST. Na linha portuguesa deixem o <b>Roaming de dados desligado</b>',
   '<b>7.</b> O <b>WhatsApp continua com o número de sempre</b>, não mudem nada. Mandem o número novo ao Leonardo',
   '<b>8.</b> Se os dados acabarem: carreguem saldo numa loja ou quiosque da CST e peçam para renovar o pacote',
+  '<b>Poupar dados (importante):</b> há queixas recentes de pacotes da CST que acabam muito antes do fim. Façam isto logo no primeiro dia:',
+  '· iPhone: <b>Definições → Dados móveis → Opções de dados móveis → Modo de poucos dados</b>: ligado',
+  '· <b>Definições → Fotos → Dados móveis</b>: desligado (senão as fotos vão para o iCloud pela rede)',
+  '· <b>Definições → App Store → Transferências automáticas e Dados móveis</b>: desligado',
+  '· WhatsApp: <b>Definições → Armazenamento e dados → Transferência automática de multimédia</b>: tudo em "Wi-Fi"',
+  '· Videochamadas gastam muito, uma hora pode levar 0,5 a 1 GB. Façam-nas com wifi quando der',
+  '· Vejam o saldo de vez em quando: marquem <b>*#123*2#</b> e carreguem em ligar',
+  '· Se parar antes do fim: <b>Problema → A internet do cartão parou</b>',
   '<b>Alternativa sem loja:</b> um eSIM comprado online antes de partir (por exemplo 4 GB por 30 dias, cerca de 20 dólares). Funciona logo ao aterrar, mas só em telemóveis com eSIM e é mais caro',
   'Preços do site da CST. Podem mudar, por isso confirmem na loja',
   'Tomadas iguais às de Portugal (220 V): <b>não precisam de adaptador</b>']],
