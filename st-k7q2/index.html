@@ -78,6 +78,13 @@ ul,ol{margin:8px 0;padding-left:22px} li{margin:5px 0}
 .fl.past{opacity:.6}
 .fl b{display:block} .fl .small b{display:inline}
 #pp .pill{white-space:nowrap;flex:none}
+.pp-step{border-bottom:1px solid var(--line);padding-bottom:8px}
+.pp-step:last-of-type{border-bottom:0}
+.pp-step .check{border-bottom:0;padding-bottom:4px}
+.pp-i{margin:0 0 0 38px;border:0;background:none;color:var(--brand);font:inherit;font-size:14px;font-weight:650;padding:4px 0;cursor:pointer;min-height:32px}
+.pp-i::after{content:"";display:inline-block;width:6px;height:6px;margin-left:7px;border:solid currentColor;border-width:0 2px 2px 0;transform:translateY(-2px) rotate(45deg)}
+.pp-i.on::after{transform:translateY(1px) rotate(-135deg)}
+.pp-x{margin:4px 0 4px 38px;padding:10px 12px;border-radius:12px;background:var(--blue-soft);font-size:15px;line-height:1.45}
 .pp-note{font-size:14px;color:var(--muted);margin:8px 0 2px}
 .pp-acts{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 4px}
 .pp-acts .btn{font-size:14px;padding:8px 12px;min-height:40px}
@@ -672,78 +679,80 @@ function renderFL(){
 }
 
 /* ---------- passo a passo ---------- */
+/* cada passo: [o que fazer, explicação que abre em "Explicar"] */
 var PP=[
  {id:'lis1',t:'1. Aeroporto de Lisboa',s:'12 nov · chegar às 19:30 ao Terminal 1',fim:'2026-11-12T22:30:00Z',
-  p:['Chegar ao <b>Terminal 1</b> às 19:30, 3 horas antes do voo',
-     'Ir ao balcão da <b>TAAG</b> com os passaportes, o certificado da febre amarela e o comprovativo do visto',
-     'Ao despachar as malas, ver se a etiqueta diz <b>TMS</b> (São Tomé). Assim só as voltam a ver em São Tomé',
-     'Pedir os <b>dois cartões de embarque</b>: Lisboa–Luanda e Luanda–São Tomé. Se só derem um, perguntar onde se levanta o outro em Luanda',
-     '<b>Tirar foto aos talões das malas</b> (os autocolantes com código de barras que colam no cartão de embarque ou no passaporte). Guardar os talões em papel até ao fim da viagem',
-     'Tirar foto aos cartões de embarque',
-     'Segurança: líquidos no saco transparente, telemóveis e computador fora da mochila',
-     'Controlo de passaportes',
-     'Ver a porta no ecrã e estar lá <b>45 minutos antes</b>',
-     'Avisar o Leonardo que já despacharam as malas'],
+  p:[['Chegar ao <b>Terminal 1</b> às 19:30, 3 horas antes do voo','O Terminal 1 é o principal do aeroporto de Lisboa (o Terminal 2 é só de companhias baratas). De táxi ou Uber digam <b>"Partidas, Terminal 1"</b>. Três horas parece muito, mas o balcão da TAAG costuma ter fila e fecha 1 hora antes do voo.'],
+     ['Ir ao balcão da <b>TAAG</b> com os passaportes, o certificado da febre amarela e o comprovativo do visto','Logo à entrada das Partidas há ecrãs grandes. Procurem o voo <b>DT653 Luanda</b>: ao lado aparece o número dos balcões (por exemplo "Check-in 61–68"). Lá pesam as malas, ficam com elas e dão-vos os cartões de embarque. Podem pedir lugares juntos.'],
+     ['Ao despachar as malas, ver se a etiqueta diz <b>TMS</b> (São Tomé). Assim só as voltam a ver em São Tomé','A etiqueta é a tira de papel que colam na asa da mala, com um código de barras e 3 letras grandes: o destino final. <b>TMS</b> é São Tomé. Se disser LAD ou NBJ (Luanda), peçam para corrigir, senão em Luanda têm de ir buscar as malas e despachá-las outra vez.'],
+     ['Pedir os <b>dois cartões de embarque</b>: Lisboa–Luanda e Luanda–São Tomé. Se só derem um, perguntar onde se levanta o outro em Luanda','O cartão de embarque é o papel (ou código no telemóvel) com o vosso nome, o voo, a porta e o lugar. Sem ele não entram no avião. Como têm dois voos seguidos, o ideal é saírem de Lisboa já com os dois.'],
+     ['<b>Tirar foto aos talões das malas</b> (os autocolantes com código de barras que colam no cartão de embarque ou no passaporte). Guardar os talões em papel até ao fim da viagem','O talão é um autocolante pequeno com o mesmo código de barras da etiqueta da mala. É a única prova de que despacharam aquela mala: se ela não aparecer, o balcão de bagagem pede este número. Uma foto de cada talão, e guardem também o papel.'],
+     ['Tirar foto aos cartões de embarque','Se perderem o papel ou o telemóvel ficar sem bateria, a foto ajuda no balcão. A TAAG e o seguro também pedem o cartão de embarque para qualquer reclamação de atraso.'],
+     ['Segurança: líquidos no saco transparente, telemóveis e computador fora da mochila','É onde as mochilas passam por uma máquina de raio-X e vocês por um pórtico. Tirem dos bolsos telemóveis, chaves, moedas e cinto. Ponham num tabuleiro o saco dos líquidos, os telemóveis, tablets e o computador. Garrafas de água cheias não passam: bebam antes ou levem a garrafa vazia.'],
+     ['Controlo de passaportes','É um balcão com um polícia (ou máquinas automáticas) que vê o passaporte e regista que estão a sair da Europa. Fica depois da segurança, a caminho das portas. Mostrem o passaporte português. Pode ter fila: passem por aqui primeiro e só depois vão às lojas ou comer.'],
+     ['Ver a porta no ecrã e estar lá <b>45 minutos antes</b>','A porta (em inglês <i>gate</i>) é o sítio por onde se entra para o avião e tem um número, por exemplo "Porta 42". Às vezes vem no cartão de embarque, mas pode mudar: a certa é a que aparece nos <b>ecrãs pendurados</b> por todo o aeroporto. Procurem <b>DT653 Luanda</b> e vejam a coluna "Porta / Gate", depois sigam as placas com esse número. O embarque fecha uns 20 minutos antes do voo.'],
+     ['Avisar o Leonardo que já despacharam as malas','Carreguem no botão verde "Avisar o Leonardo" aqui em baixo: a mensagem já vai escrita.']],
   wa:'Leonardo, já despachámos as malas em Lisboa e estamos a passar a segurança.'},
  {id:'v1',t:'2. Voo Lisboa → Luanda',s:'DT653 · 22:30 · noite inteira, cerca de 7h30',fim:'2026-11-13T05:05:00Z',
-  p:['Mochila com documentos e medicação <b>sempre convosco</b>, nunca longe do lugar',
-     'Dormir o que der e beber água',
-     'Antes de sair do avião, ver o bolso do banco e o chão: passaportes, telemóveis, óculos',
-     'À saída, seguir as placas <b>Transferências / Transfers</b>. <b>Não</b> ir para Chegadas nem para a imigração'],
+  p:[['Mochila com documentos e medicação <b>sempre convosco</b>, nunca longe do lugar','A mala de porão vai na barriga do avião e só a voltam a ver no fim. Tudo o que é importante (passaportes, medicação, dinheiro, carregador) vai na mochila, que fica convosco: no compartimento por cima do banco ou debaixo do banco da frente.'],
+     ['Dormir o que der e beber água','O voo é de noite e no dia seguinte têm 10 horas de espera em Luanda. Dão jantar e pequeno-almoço a bordo. Podem pedir água às hospedeiras sempre que quiserem, é de graça.'],
+     ['Antes de sair do avião, ver o bolso do banco e o chão: passaportes, telemóveis, óculos','O bolso do banco da frente é onde mais se esquecem passaportes e telemóveis. Depois de saírem do avião já não deixam voltar lá dentro.'],
+     ['À saída, seguir as placas <b>Transferências / Transfers</b>. <b>Não</b> ir para Chegadas nem para a imigração','Ao sair do avião há placas com dois caminhos: <b>"Chegadas / Arrivals"</b> é para quem fica em Angola, <b>"Transferências / Transfers / Conexões"</b> é para quem apanha outro voo. Vocês seguem Transferências. Se não virem placas, perguntem a um funcionário: "Transferência para São Tomé?"']],
   nota:'Em Luanda é mais 1 hora. O telemóvel acerta sozinho.'},
  {id:'lad1',t:'3. Escala em Luanda',s:'13 nov · cerca de 10 horas de espera',fim:'2026-11-13T15:15:00Z',
-  p:['Seguir sempre <b>Transferências</b>. As malas seguem sozinhas para São Tomé, <b>não as vão buscar</b>',
-     'No balcão de transferências da TAAG: mostrar as fotos dos talões e perguntar se as malas estão no voo para São Tomé',
-     'Levantar o cartão de embarque do Luanda–São Tomé, se ainda não o têm',
-     'Ficar <b>juntos</b> e não sair do aeroporto',
-     'Comer, beber e carregar os telemóveis (powerbank)',
-     'Avisar o Leonardo que chegaram bem a Luanda (wifi do aeroporto)',
-     'Ver no ecrã a porta do <b>DT510</b> e se a hora mudou',
-     'Estar na porta 1 hora antes do voo'],
+  p:[['Seguir sempre <b>Transferências</b>. As malas seguem sozinhas para São Tomé, <b>não as vão buscar</b>','Como os voos são todos da mesma reserva, a TAAG passa as malas de um avião para o outro. Vocês não passam pela imigração de Angola nem pelo tapete das malas.'],
+     ['No balcão de transferências da TAAG: mostrar as fotos dos talões e perguntar se as malas estão no voo para São Tomé','É um balcão da TAAG na zona de transferências, com uma placa "Transfer Desk" ou "Transferências". Mostrem os cartões de embarque e as fotos dos talões e perguntem: "As nossas malas seguem para São Tomé?"'],
+     ['Levantar o cartão de embarque do Luanda–São Tomé, se ainda não o têm','Se em Lisboa só vos deram o cartão do primeiro voo, é neste balcão que imprimem o do Luanda–São Tomé. Sem ele não passam para a porta.'],
+     ['Ficar <b>juntos</b> e não sair do aeroporto','Com passaporte de São Tomé pode não ser possível sair do aeroporto sem visto angolano. E se se separarem é difícil encontrarem-se, porque a rede pode não dar. Se alguém for à casa de banho, combinem um sítio onde se encontram.'],
+     ['Comer, beber e carregar os telemóveis (powerbank)','No aeroporto é tudo caro e podem só aceitar kwanzas ou dólares, por isso levaram comida. Procurem tomadas perto das portas ou usem o powerbank.'],
+     ['Avisar o Leonardo que chegaram bem a Luanda (wifi do aeroporto)','Nas definições do telemóvel, em Wi-Fi, liguem à rede do aeroporto e abram o WhatsApp. Não liguem os dados móveis do cartão português: o roaming fora da Europa é caríssimo.'],
+     ['Ver no ecrã a porta do <b>DT510</b> e se a hora mudou','Nos ecrãs procurem <b>DT510 São Tomé</b>. A porta pode só aparecer 1 a 2 horas antes. Vejam também a coluna "Estado / Status": "Atrasado / Delayed" com a hora nova, ou "Embarque / Boarding" quando já estão a entrar.'],
+     ['Estar na porta 1 hora antes do voo','O voo das 16:15 é na hora de Luanda, que é mais 1 hora do que em Lisboa. O relógio do telemóvel já deve mostrar a hora de Luanda.']],
   nota:'Se em Lisboa disseram que as malas ficam em Luanda, aí sim têm de as ir buscar. Perguntem no balcão de transferências antes de fazer qualquer coisa.',
   wa:'Leonardo, chegámos a Luanda. Estamos na zona de transferências à espera do voo para São Tomé.'},
  {id:'stp1',t:'4. Voo para São Tomé e chegada',s:'DT510 · 13 nov · aterra às 17:30',fim:'2026-11-13T20:00:00Z',
-  p:['Embarcar com os documentos à mão para a chegada',
-     'Se derem um papel de entrada no avião, preencher com a morada em São Marçal',
-     'Imigração: passaporte, certificado da febre amarela e, no passaporte português, o número do visto. <b>O visto paga-se aqui</b>, levem euros à mão',
-     'Ir para o tapete e <b>esperar por todas as malas e mochilas</b>. Contar uma a uma',
-     'Ver se alguma vem estragada ou aberta e tirar foto <b>antes de sair</b>',
-     'Se faltar alguma: <b>não saiam</b>. Balcão de bagagem com os talões e pedir o papel da reclamação (PIR)',
-     'Guardar os talões e os cartões de embarque até voltarem a Lisboa',
-     'Avisar o Leonardo que chegaram'],
+  p:[['Embarcar com os documentos à mão para a chegada','Ao sair do avião vão logo para a imigração. Ter os papéis já na mão poupa tempo na fila.'],
+     ['Se derem um papel de entrada no avião, preencher com a morada em São Marçal','Às vezes as hospedeiras dão um formulário com nome, passaporte, voo e morada em São Tomé. Preencham no avião. Se não derem, pode ser entregue na fila da imigração.'],
+     ['Imigração: passaporte, certificado da febre amarela e, no passaporte português, o número do visto. <b>O visto paga-se aqui</b>, levem euros à mão','A imigração é o balcão onde um agente do SMF (Serviço de Migração e Fronteiras) vê o passaporte e põe o carimbo de entrada. Pode pedir o livrinho amarelo da febre amarela, o bilhete de regresso e a morada. Com passaporte português, mostrem o número do pedido do visto e paguem ali, em euros.'],
+     ['Ir para o tapete e <b>esperar por todas as malas e mochilas</b>. Contar uma a uma','Depois da imigração vão para a sala das malas. O tapete é a passadeira rolante onde as malas vão aparecendo. Em São Tomé é pequeno, é fácil. Pode demorar: esperem até o tapete parar e não sair mais nada.'],
+     ['Ver se alguma vem estragada ou aberta e tirar foto <b>antes de sair</b>','Rodas partidas, rasgões, fecho aberto, cadeado partido. Se reclamarem depois de sair do aeroporto, é muito mais difícil provar.'],
+     ['Se faltar alguma: <b>não saiam</b>. Balcão de bagagem com os talões e pedir o papel da reclamação (PIR)','O PIR é o papel da reclamação da mala e tem um número de processo. Sem ele, a TAAG e o seguro quase não aceitam a reclamação. O balcão fica na própria sala das malas. Carreguem em "Problema: A mala não apareceu" aqui em baixo para ver todos os passos.'],
+     ['Guardar os talões e os cartões de embarque até voltarem a Lisboa','Se houver problemas com malas ou atrasos, mesmo depois da viagem, são estes papéis que provam tudo.'],
+     ['Comprar um <b>cartão SIM local</b> (CST ou Unitel), no aeroporto ou na cidade','O cartão SIM é o chip pequeno do telemóvel. Com um cartão de São Tomé têm internet e chamadas a preço local, em vez do roaming português, que lá é caríssimo. Há duas operadoras: <b>CST</b> e <b>Unitel</b>. Se houver banca no aeroporto, comprem lá. Se não, nas lojas delas na cidade. Levem o <b>passaporte</b>, porque pedem para registar o cartão. Peçam um pacote de <b>dados (internet)</b>. Se o telemóvel tiver dois cartões, deixem o português ligado com os dados móveis desligados. O <b>WhatsApp continua com o vosso número de sempre</b>: não mudem nada nele. Para falar com Portugal usem chamadas de WhatsApp, que são grátis com internet. Mandem-me o número novo por WhatsApp.'],
+     ['Avisar o Leonardo que chegaram','Carreguem no botão verde "Avisar o Leonardo" aqui em baixo.']],
   sc:[['mala','A mala não apareceu'],['estragada','Mala estragada']],
   wa:'Leonardo, chegámos a São Tomé! Malas todas connosco.'},
  {id:'stp2',t:'5. Regresso: aeroporto de São Tomé',s:'29 nov · voo às 18:20, chegar às 15:20',fim:'2026-11-29T18:20:00Z',
-  p:['De manhã, confirmar a hora do voo em flytaag.com (gerir reserva)',
-     'Gastar ou trocar as dobras antes. Em Portugal não se trocam',
-     'Chegar ao aeroporto às <b>15:20</b>, 3 horas antes',
-     'No check-in, ver se a etiqueta das malas diz <b>LIS</b> (Lisboa). Assim só as voltam a ver em Lisboa',
-     'Pedir os <b>dois cartões de embarque</b>: São Tomé–Luanda e Luanda–Lisboa',
-     '<b>Tirar foto aos talões das malas</b> e aos cartões de embarque',
-     'Imigração e segurança',
-     'Esperar na porta. Se o voo atrasar mais de 1 hora, avisar o Leonardo'],
+  p:[['De manhã, confirmar a hora do voo em flytaag.com (gerir reserva)','A TAAG muda horários com frequência. Em flytaag.com, em "Gerir reserva", escrevam o código da reserva e o apelido e vejam a hora.'],
+     ['Gastar ou trocar as dobras antes. Em Portugal não se trocam','A dobra é o dinheiro de São Tomé e fora do país ninguém a troca. Gastem-na ou troquem por euros antes de ir para o aeroporto.'],
+     ['Chegar ao aeroporto às <b>15:20</b>, 3 horas antes','O aeroporto de São Tomé é pequeno, mas o check-in pode ser lento e fecha cedo.'],
+     ['No check-in, ver se a etiqueta das malas diz <b>LIS</b> (Lisboa). Assim só as voltam a ver em Lisboa','É como na ida: as 3 letras grandes na etiqueta da mala são o destino final. <b>LIS</b> é Lisboa. Se disser LAD ou NBJ (Luanda), peçam para corrigir.'],
+     ['Pedir os <b>dois cartões de embarque</b>: São Tomé–Luanda e Luanda–Lisboa','Na volta só têm 2h20 em Luanda. Sair de São Tomé já com os dois cartões evita perder tempo no balcão de transferências.'],
+     ['<b>Tirar foto aos talões das malas</b> e aos cartões de embarque','São talões novos, os da volta. Os de Lisboa já não servem para estas malas.'],
+     ['Imigração e segurança','Na imigração carimbam a saída de São Tomé. Na segurança as mochilas passam pelo raio-X como em Lisboa: líquidos até 100 ml no saco transparente.'],
+     ['Esperar na porta. Se o voo atrasar mais de 1 hora, avisar o Leonardo','Em São Tomé há poucas portas e os avisos são feitos em voz alta. Se o voo atrasar mais de 1h30, a ligação em Luanda fica em risco: avisem-me logo e vejam "Problema: O voo atrasou".']],
   sc:[['atraso','O voo atrasou']],
   wa:'Leonardo, já fizemos o check-in em São Tomé. Malas despachadas até Lisboa.'},
  {id:'lad2',t:'6. Voo para Luanda e escala curta',s:'DT511 · aterra 21:35 · só 2h20 para o voo de Lisboa',fim:'2026-11-29T22:55:00Z',
-  p:['Ao aterrar, ir <b>logo</b> para <b>Transferências</b>, sem paragens',
-     'As malas seguem sozinhas para Lisboa, <b>não as vão buscar</b>',
-     'Se não têm o cartão de embarque do Luanda–Lisboa, balcão de transferências da TAAG',
-     'Ver no ecrã a porta do <b>DT650</b> e ir direto para lá',
-     'Se perderem o voo: balcão de transferências da TAAG e abrir o problema abaixo'],
+  p:[['Ao aterrar, ir <b>logo</b> para <b>Transferências</b>, sem paragens','Só têm 2h20 e o embarque fecha uns 20 a 30 minutos antes do voo. Nada de lojas nem comida até estarem na porta certa.'],
+     ['As malas seguem sozinhas para Lisboa, <b>não as vão buscar</b>','É como na ida: a TAAG passa as malas para o avião de Lisboa. Não passam pela imigração de Angola.'],
+     ['Se não têm o cartão de embarque do Luanda–Lisboa, balcão de transferências da TAAG','Só é preciso se em São Tomé vos deram apenas um cartão. Mostrem a reserva e os passaportes.'],
+     ['Ver no ecrã a porta do <b>DT650</b> e ir direto para lá','Nos ecrãs procurem <b>DT650 Lisboa</b> e sigam as placas com o número da porta. Primeiro vão à porta e só depois, se sobrar tempo, comprem alguma coisa perto dela.'],
+     ['Se perderem o voo: balcão de transferências da TAAG e abrir o problema abaixo','Não comprem bilhete novo. Como é tudo a mesma reserva, a TAAG tem de vos pôr no voo seguinte e dar hotel e comida até lá.']],
   sc:[['ligacao','Perdemos a ligação']],
   wa:'Leonardo, estamos em Luanda, a caminho da porta do voo para Lisboa.'},
  {id:'lis2',t:'7. Voo para Lisboa e chegada',s:'DT650 · 30 nov · aterra às 07:10 no Terminal 1',fim:'2026-11-30T10:00:00Z',
-  p:['Dormir o que der e beber água',
-     'Antes de sair do avião, ver o bolso do banco e o chão',
-     'Controlo de passaportes',
-     'Ir para o tapete e <b>esperar por todas as malas e mochilas</b>. Contar uma a uma',
-     'Ver se alguma vem estragada e tirar foto antes de sair',
-     'Se faltar alguma: <b>não saiam</b>. Balcão de bagagem com os talões e pedir o PIR',
-     'Avisar o Leonardo que chegaram'],
+  p:[['Dormir o que der e beber água','É outra vez um voo de noite e chegam de manhã.'],
+     ['Antes de sair do avião, ver o bolso do banco e o chão','O bolso do banco da frente é onde mais se esquecem passaportes e telemóveis. Depois de saírem já não deixam voltar.'],
+     ['Controlo de passaportes','Em Lisboa, antes das malas, há o controlo de fronteira. Com passaporte português podem usar as máquinas automáticas ou a fila <b>"UE / EU"</b>. Quem só tiver passaporte de São Tomé vai à fila <b>"Todos os passaportes / All passports"</b>.'],
+     ['Ir para o tapete e <b>esperar por todas as malas e mochilas</b>. Contar uma a uma','Na sala das malas há ecrãs com o voo <b>DT650 Luanda</b> e o número do tapete ao lado (por exemplo "Tapete 7"). Esperem até o tapete parar e não sair mais nada.'],
+     ['Ver se alguma vem estragada e tirar foto antes de sair','Rodas partidas, rasgões, fecho aberto. Depois de sair do aeroporto é muito mais difícil provar.'],
+     ['Se faltar alguma: <b>não saiam</b>. Balcão de bagagem com os talões e pedir o PIR','O balcão de bagagem perdida fica na sala das malas, antes da saída. Depois de passarem as portas da saída já não podem voltar atrás.'],
+     ['Avisar o Leonardo que chegaram','Carreguem no botão verde "Avisar o Leonardo" aqui em baixo.']],
   sc:[['mala','A mala não apareceu'],['estragada','Mala estragada']],
   wa:'Leonardo, chegámos a Lisboa! Malas todas connosco.'}
 ];
-var ppOpen=null;
+var ppOpen=null,ppInfo={};
 function renderPP(){
   var now=new Date(),st=getChecks('pp'),cur=null,h='';
   PP.forEach(function(x){if(cur===null&&now<d(x.fim))cur=x.id});
@@ -753,7 +762,9 @@ function renderPP(){
     var n=0;x.p.forEach(function(_,i){if(st[x.id+i])n++});
     var all=n===x.p.length,tag=all?'<span class="pill g">Feito</span>':(x.id===cur?'<span class="pill a">Agora · '+n+'/'+x.p.length+'</span>':'<span class="pill n">'+n+'/'+x.p.length+'</span>');
     h+='<details class="acc" data-pp="'+x.id+'"'+(ppOpen[x.id]?' open':'')+'><summary><span><b>'+x.t+'</b><span class="s">'+x.s+'</span></span>'+tag+'</summary><div class="in">'+
-      x.p.map(function(a,i){var on=!!st[x.id+i];return '<div class="check'+(on?' done':'')+'" role="checkbox" tabindex="0" aria-checked="'+on+'" data-pk="'+x.id+i+'"><span class="box"></span><span class="txt"><b>'+(i+1)+'.</b> '+a+'</span></div>'}).join('')+
+      x.p.map(function(a,i){var k=x.id+i,on=!!st[k],io=!!ppInfo[k];
+        return '<div class="pp-step"><div class="check'+(on?' done':'')+'" role="checkbox" tabindex="0" aria-checked="'+on+'" data-pk="'+k+'"><span class="box"></span><span class="txt"><b>'+(i+1)+'.</b> '+a[0]+'</span></div>'+
+          (a[1]?'<button class="pp-i'+(io?' on':'')+'" data-pi="'+k+'" aria-expanded="'+io+'">'+(io?'Fechar':'Explicar')+'</button><div class="pp-x"'+(io?'':' hidden')+'>'+a[1]+'</div>':'')+'</div>'}).join('')+
       (x.nota?'<p class="pp-note">'+x.nota+'</p>':'')+
       ((x.sc||x.wa)?'<div class="pp-acts">'+(x.sc||[]).map(function(c){return '<button class="btn" data-pps="'+c[0]+'">Problema: '+c[1]+'</button>'}).join('')+
         (x.wa?'<a class="btn wa" data-wa="'+esc(x.wa)+'">Avisar o Leonardo</a>':'')+'</div>':'')+
@@ -762,6 +773,9 @@ function renderPP(){
 }
 $('#pp').addEventListener('click',function(e){
   var s=e.target.closest('[data-pps]');if(s){openSheet(s.dataset.pps);return}
+  var b=e.target.closest('[data-pi]');if(b){var k=b.dataset.pi,io=!ppInfo[k];ppInfo[k]=io;
+    b.classList.toggle('on',io);b.textContent=io?'Fechar':'Explicar';b.setAttribute('aria-expanded',io);b.nextElementSibling.hidden=!io;
+    if(io)log('explicar',k);return}
   var c=e.target.closest('[data-pk]');if(!c)return;
   var st=getChecks('pp');st[c.dataset.pk]=!st[c.dataset.pk];setChecks('pp',st);renderPP();
   var k=c.dataset.pk,x=PP.filter(function(y){return k.indexOf(y.id)===0})[0];
