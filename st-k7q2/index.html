@@ -298,8 +298,9 @@ details.acc>.in{padding:6px 16px 12px}
 
   <h2>Lembretes no telemóvel</h2>
   <div class="card">
-    <p style="margin-top:0">Põe alarmes no Calendário para os momentos importantes: chegar ao aeroporto, ir para a porta, Transferências em Luanda, esperar pelas malas, e o repelente ao fim da tarde. Tocam mesmo sem internet e com o guia fechado.</p>
+    <p style="margin-top:0">Põe alarmes no Calendário para os momentos importantes: chegar ao aeroporto, ir para a porta, Transferências em Luanda, esperar pelas malas, o repelente ao fim da tarde e, <b>todos os dias às 10:00 em São Tomé, abrir o guia</b> (um toque no link do lembrete regista onde estão). Tocam mesmo sem internet e com o guia fechado.</p>
     <a class="btn p w" href="lembretes.ics" id="ics-btn">Adicionar lembretes ao calendário</a>
+    <a class="btn w" href="lembrete-diario.ics" id="ics-d" style="margin-top:8px">Já os adicionei antes: só o lembrete diário</a>
     <p class="small muted" style="margin:10px 0 0">No iPhone, abram no <b>Safari</b> e carreguem em <b>Adicionar tudo</b>. Façam isto só uma vez, senão os lembretes ficam repetidos. Se a TAAG mudar a hora de um voo, os lembretes não mudam sozinhos.</p>
   </div>
 
@@ -710,7 +711,7 @@ function renderFL(){
   $('#flights').innerHTML='<div class="verdict m" style="margin:0 0 10px"><b>Confirmem os horários na TAAG</b>A TAAG muda horários com frequência e há sites a mostrar o Luanda–São Tomé às 10:30. Vejam em flytaag.com, em gerir reserva, antes de cada voo.</div>'+h+'<p class="small muted" style="margin:10px 2px 0">Horas locais. Lisboa e São Tomé têm a mesma hora, Luanda tem mais 1 h.</p>';
 }
 
-$('#ics-btn').addEventListener('click',function(){log('lembretes','adicionou ao calendário')});
+$('#ics-btn').addEventListener('click',function(){log('lembretes','adicionou ao calendário')});$('#ics-d').addEventListener('click',function(){log('lembretes','adicionou o diário')});
 /* ---------- passo a passo ---------- */
 /* cada passo: [o que fazer, explicação que abre em "Explicar"] */
 var PP=[
@@ -1118,6 +1119,13 @@ if(!ME){document.querySelectorAll('[data-tel]').forEach(function(b){b.style.disp
 phase();renderCL();renderPP();renderFL();renderTiles();renderQuiz();renderVisa();
 log('abriu o guia',(navigator.userAgent.match(/iPhone|Android|iPad|Windows|Mac/)||[''])[0]);
 if(LOG&&store.get('auto'))regLoc(false);
+/* aberto pelo lembrete diário do calendário: regista logo onde estão */
+if(/(^#|&)reg=1(&|$)/.test(location.hash)){
+  log('lembrete diário','abriu pelo lembrete');
+  try{history.replaceState(null,'',location.pathname)}catch(e){}
+  if(LOG){var nb=document.querySelector('nav [data-go="inicio"]');if(nb)nb.click();
+    setTimeout(function(){$('#safe').scrollIntoView({behavior:'smooth',block:'start'});regLoc(true)},300)}
+}
 var v=store.get('view');if(v&&views.indexOf(v)>-1)go(v);
 
 setInterval(phase,1000);
