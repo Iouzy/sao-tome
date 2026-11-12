@@ -48,6 +48,18 @@ ul,ol{margin:8px 0;padding-left:22px} li{margin:5px 0}
 .row{display:flex;gap:10px} .row>*{flex:1}
 .call{display:flex;flex-direction:column;align-items:center;justify-content:center;text-decoration:none;
   border-radius:14px;padding:12px 6px;min-height:64px;background:#c62828;color:#fff;font-weight:700;font-size:18px}
+.sos-big{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;border:0;border-radius:16px;min-height:72px;margin-bottom:10px;
+  background:#c62828;color:#fff;font:inherit;font-size:20px;font-weight:800;letter-spacing:.02em;cursor:pointer;box-shadow:0 4px 14px rgba(198,40,40,.35)}
+.sos-big small{display:block;font-size:13px;font-weight:500;opacity:.92;letter-spacing:0}
+.sos-top{position:absolute;right:16px;top:50%;transform:translateY(-50%);border:2px solid #fff;background:#c62828;color:#fff;font:inherit;font-weight:800;font-size:15px;border-radius:99px;padding:7px 14px;cursor:pointer}
+.sos-ov{position:fixed;inset:0;z-index:60;background:#b71c1c;color:#fff;display:none;overflow:auto;padding:calc(20px + env(safe-area-inset-top)) 16px calc(24px + env(safe-area-inset-bottom))}
+.sos-ov.on{display:block}
+.sos-ov h3{font-size:28px;margin:8px 0 6px}
+.sos-ov p{font-size:16px;line-height:1.45;margin:0 0 14px}
+.sos-ov .go{display:block;width:100%;border:0;border-radius:18px;min-height:96px;background:#fff;color:#b71c1c;font:inherit;font-size:24px;font-weight:900;cursor:pointer;margin:6px 0 14px}
+.sos-ov .alt{display:flex;align-items:center;justify-content:center;width:100%;border:2px solid #fff;border-radius:14px;min-height:56px;background:transparent;color:#fff;font:inherit;font-size:17px;font-weight:700;text-decoration:none;margin-bottom:10px;cursor:pointer}
+.sos-ov .st{background:rgba(0,0,0,.22);border-radius:12px;padding:10px 12px;font-size:15px;margin-bottom:14px}
+.sos-ov .cx{background:none;border:0;color:#fff;opacity:.9;font:inherit;font-size:16px;text-decoration:underline;padding:12px 0;cursor:pointer;width:100%}
 .call small{font-weight:500;font-size:12px;opacity:.92}
 .call.alt{background:var(--card);color:var(--ink);border:1px solid var(--line)}
 .pill{display:inline-block;border-radius:99px;padding:2px 10px;font-size:12px;font-weight:700;letter-spacing:.02em}
@@ -210,7 +222,8 @@ details.acc>.in{padding:6px 16px 12px}
 </head>
 <body>
 
-<header><div class="wrap">
+<header><div class="wrap" style="position:relative">
+  <button class="sos-top" data-sos aria-label="Emergência: pedir ajuda">SOS</button>
   <h1>São Tomé</h1>
   <p>12 a 30 de novembro · São Marçal</p>
 </div></header>
@@ -233,6 +246,7 @@ details.acc>.in{padding:6px 16px 12px}
   </div>
 
   <h2>Emergência</h2>
+  <button class="sos-big" data-sos><span>🆘</span><span>PEDIR AJUDA<small>Avisa o Leonardo para chamar as autoridades</small></span></button>
   <div class="row">
     <a class="call" href="tel:112">112<small>Emergência</small></a>
     <a class="call" href="tel:2222222">222 22 22<small>Polícia / ambulância</small></a>
@@ -384,6 +398,15 @@ details.acc>.in{padding:6px 16px 12px}
 
 
 
+<div class="sos-ov" id="sos" role="dialog" aria-modal="true" aria-labelledby="sos-h">
+  <h3 id="sos-h">Emergência</h3>
+  <p>O Leonardo recebe um alerta pela internet com o vosso nome e onde estão, para chamar as autoridades e ajudar.</p>
+  <div class="st" id="sos-st">A procurar a localização…</div>
+  <button class="go" id="sos-go">ENVIAR ALERTA</button>
+  <div id="sos-more"></div>
+  <a class="alt" href="tel:112">Ligar 112</a>
+  <button class="cx" id="sos-x">Foi engano, fechar</button>
+</div>
 <div class="sheet" id="sheet"><div class="scrim" data-close></div>
   <div class="panel" role="dialog" aria-modal="true" aria-labelledby="sh-title">
     <div class="ph"><div class="grab"></div><div class="tt"><h3 id="sh-title"></h3><button class="x" data-close aria-label="Fechar">×</button></div><div class="prog" id="sh-prog"></div></div>
@@ -631,7 +654,8 @@ var CL=[
  ['chuva','Impermeável leve','Novembro é época de chuvas'],
  ['#','Telemóvel'],
  ['roam','Dados móveis do cartão português desligados','Roaming fora da Europa é caríssimo. Usem wifi ou cartão local'],
- ['pw','Powerbank carregado','Há cortes de luz'],
+ ['pw','Powerbank carregado, na mochila de mão','Proibido na mala de porão. E há cortes de luz'],
+ ['off','Abrir este guia uma vez com internet, já hoje','Fica guardado e depois abre sem rede: no avião, em Luanda e em São Tomé'],
  ['mapa','Mapa offline de São Tomé','Rede fraca fora da cidade'],
  ['con','Contactos importantes guardados também em papel','Se o telemóvel morrer ou for roubado']
 ];
@@ -718,7 +742,8 @@ var PP=[
      ['Ver se alguma vem estragada ou aberta e tirar foto <b>antes de sair</b>','Rodas partidas, rasgões, fecho aberto, cadeado partido. Se reclamarem depois de sair do aeroporto, é muito mais difícil provar.'],
      ['Se faltar alguma: <b>não saiam</b>. Balcão de bagagem com os talões e pedir o papel da reclamação (PIR)','O PIR é o papel da reclamação da mala e tem um número de processo. Sem ele, a TAAG e o seguro quase não aceitam a reclamação. O balcão fica na própria sala das malas. Carreguem em "Problema: A mala não apareceu" aqui em baixo para ver todos os passos.'],
      ['Guardar os talões e os cartões de embarque até voltarem a Lisboa','Se houver problemas com malas ou atrasos, mesmo depois da viagem, são estes papéis que provam tudo.'],
-     ['Comprar um <b>cartão SIM local</b> (CST ou Unitel), no aeroporto ou na cidade','O cartão SIM é o chip pequeno do telemóvel. Com um cartão de São Tomé têm internet e chamadas a preço local, em vez do roaming português, que lá é caríssimo. Há duas operadoras: <b>CST</b> e <b>Unitel</b>. Se houver banca no aeroporto, comprem lá. Se não, nas lojas delas na cidade. Levem o <b>passaporte</b>, porque pedem para registar o cartão. Peçam um pacote de <b>dados (internet)</b>. Se o telemóvel tiver dois cartões, deixem o português ligado com os dados móveis desligados. O <b>WhatsApp continua com o vosso número de sempre</b>: não mudem nada nele. Para falar com Portugal usem chamadas de WhatsApp, que são grátis com internet. Mandem-me o número novo por WhatsApp.'],
+     ['Comprar um <b>cartão SIM local</b> (CST ou Unitel): no aeroporto se houver, senão no dia seguinte numa loja no centro','O cartão SIM é o chip pequeno do telemóvel. Com um cartão de São Tomé têm internet e chamadas a preço local, em vez do roaming português, que lá é caríssimo. Há duas operadoras: a <b>CST</b> tem melhor rede, a <b>Unitel</b> mais pacotes. O quiosque do aeroporto às vezes não tem cartões; as lojas no centro ficam perto de São Marçal. Levem o <b>passaporte</b>, porque pedem para registar, e pode demorar <b>até 3 horas</b> a ativar. O cartão custa uns 3€ e com internet uns 15 a 20€ chegam. Se o telemóvel tiver dois cartões, deixem o português com os dados móveis desligados. O <b>WhatsApp continua com o vosso número de sempre</b>: não mudem nada nele. Para falar com Portugal usem chamadas de WhatsApp. Mandem-me o número novo.'],
+     ['Se ninguém vos for buscar: táxi para São Marçal, <b>combinar o preço antes de entrar</b>','Os táxis esperam à saída do aeroporto. São Marçal fica do outro lado da cidade, a 10 a 15 minutos. Os táxis não têm taxímetro: perguntem o preço antes de pôr as malas no carro e só entrem quando estiverem de acordo. Pagam em dobras ou euros; tenham notas pequenas, porque muitas vezes não há troco. Mostrem ao motorista a morada no telemóvel.'],
      ['Avisar o Leonardo que chegaram','Carreguem no botão verde "Avisar o Leonardo" aqui em baixo.']],
   sc:[['mala','A mala não apareceu'],['estragada','Mala estragada']],
   wa:'Leonardo, chegámos a São Tomé! Malas todas connosco.'},
@@ -824,6 +849,47 @@ document.addEventListener('keydown',function(e){
   if((e.key===' '||e.key==='Enter')&&e.target.classList&&e.target.classList.contains('check')){e.preventDefault();e.target.click()}
 });
 
+
+/* ---------- SOS ---------- */
+var sosPos=null,sosSent=false;
+function sosLoc(){
+  if(!navigator.geolocation){$('#sos-st').textContent='Sem acesso à localização. O alerta vai na mesma.';return}
+  navigator.geolocation.getCurrentPosition(function(p){
+    sosPos=[p.coords.latitude,p.coords.longitude,Math.round(p.coords.accuracy),Date.now()];pos=sosPos;
+    $('#sos-st').textContent='Localização encontrada (precisão ~'+sosPos[2]+' m).';
+  },function(){
+    $('#sos-st').textContent=pos?'Sem GPS agora. Vai a última localização conhecida.':'Sem localização. O alerta vai na mesma, digam onde estão.';
+  },{enableHighAccuracy:true,timeout:10000,maximumAge:60000});
+}
+function sosText(){
+  var p=sosPos||pos,h=NAME||'Alguém da família';
+  var where=p?'Localização: https://maps.google.com/?q='+p[0].toFixed(5)+','+p[1].toFixed(5)+' (precisão ~'+p[2]+' m, às '+new Date(p[3]).toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit'})+')':'Localização: não disponível.';
+  return '🆘 EMERGÊNCIA. '+h+' precisa de ajuda. Contacta as autoridades. '+where+' Enviado pelo guia de São Tomé.';
+}
+function sosOpen(){sosPos=null;sosSent=false;$('#sos-x').textContent='Foi engano, fechar';$('#sos-more').innerHTML='';$('#sos-go').hidden=false;$('#sos-go').textContent='ENVIAR ALERTA';
+  $('#sos').classList.add('on');document.body.style.overflow='hidden';sosLoc();log('SOS aberto','');setTimeout(function(){$('#sos-go').focus()},50)}
+function sosClose(){$('#sos').classList.remove('on');document.body.style.overflow=''}
+document.addEventListener('click',function(e){if(e.target.closest('[data-sos]')){e.preventDefault();sosOpen()}});
+$('#sos-x').addEventListener('click',function(){
+  if(sosSent){if(!confirm('Avisar o Leonardo que está tudo bem e foi engano?'))return;
+    if(LOG){var q=qGet();q.push({t:new Date().toISOString(),n:NAME,d:DID,e:'EMERGÊNCIA CANCELADA',x:(NAME||'Alguém da família')+' disse que foi engano e está tudo bem.',la:'',lo:'',ac:''});qSet(q);flush()}
+    toast('Avisado: foi engano')}
+  else log('SOS cancelado','');
+  sosClose()});
+$('#sos-go').addEventListener('click',function(){
+  var t=sosText(),p=sosPos||pos;
+  /* vai pela internet: fica na folha e o Leonardo recebe email */
+  if(LOG){var q=qGet();q.push({t:new Date().toISOString(),n:NAME,d:DID,e:'EMERGÊNCIA',x:t,la:p?p[0].toFixed(5):'',lo:p?p[1].toFixed(5):'',ac:p?p[2]:''});qSet(q);flush()}
+  $('#sos-go').hidden=true;sosSent=true;$('#sos-x').textContent='Foi engano, está tudo bem';
+  var off=navigator.onLine===false||!LOG;
+  $('#sos-more').innerHTML=
+    (off?'<div class="st"><b>Sem internet agora.</b> O alerta fica guardado e vai sozinho assim que houver rede. Deixem o guia aberto. Se puderem, liguem para o 112.</div>'
+        :'<div class="st"><b>Alerta enviado.</b> O Leonardo recebe-o já, com o vosso nome e onde estão. Deixem o guia aberto.</div>')+
+    (ME?'<a class="alt" href="tel:+'+ME+'">Ligar ao Leonardo</a>':'');
+  if(!off)setTimeout(flush,4000);
+});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&$('#sos').classList.contains('on'))sosClose()});
+
 /* ---------- quiz seguro ---------- */
 var Q={
  start:{q:'O que aconteceu?',o:[['Voo atrasado','atr'],['Mala atrasada','mat'],['Mala perdida','mpe'],['Roubo','rob'],['Doença ou acidente','doe'],['Telemóvel ou câmara','ele']]},
@@ -894,7 +960,7 @@ stn.value=fmtN(10*R);
 var INFO=[
  ['São Marçal','Onde vão ficar',['Arredores da cidade de São Tomé, a uns <b>2 km do centro</b>, para sudeste','Aeroporto do outro lado da cidade: 10 a 15 minutos de táxi','Hospital, multibancos e lojas da CST e Unitel ficam no centro, perto','Combinem o preço do táxi antes de entrar'],1],
  ['Dinheiro','Levem notas',['Moeda: <b>dobra</b>, mas euros em notas aceitam-se quase em todo o lado','Cartões só em hotéis e restaurantes maiores, às vezes com taxa','Poucos multibancos, quase só na capital, muitos só <b>Visa</b>','Dinheiro para a viagem toda, dividido por sítios diferentes']],
- ['Telemóvel','Cartão local',['<b>CST</b> tem melhor cobertura, <b>Unitel</b> mais pacotes','Cartão uns 3€, com dados uns 15 a 20€ chegam','Pedem passaporte e pode demorar até 3 horas a ativar','Comprem nas lojas da cidade, o quiosque do aeroporto às vezes não tem']],
+ ['Telemóvel','Cartão local',['<b>CST</b> tem melhor cobertura, <b>Unitel</b> mais pacotes','Cartão uns 3€, com dados uns 15 a 20€ chegam','Pedem passaporte e pode demorar até 3 horas a ativar','Comprem nas lojas da cidade, o quiosque do aeroporto às vezes não tem','Tomadas iguais às de Portugal (220 V): <b>não precisam de adaptador</b>']],
  ['Malária e saúde','Todo o ano',['Repelente sempre, sobretudo ao fim da tarde e à noite','Calças e mangas compridas quando escurece','Rede mosquiteira se houver','Água engarrafada','Medicamentos são difíceis de encontrar, levem os vossos','<b>Febre = médico</b>, mesmo semanas depois de voltar']],
  ['Segurança','Para não serem apanhados de surpresa',['País calmo, mas evitem manifestações e ajuntamentos','Barcos em mar aberto desaconselhados (pirataria no Golfo da Guiné)','Novembro é época de chuvas: inundações e estradas cortadas','Cortes de luz frequentes','Língua: português, e na rua ouve-se muito o forro']]
 ];
@@ -1045,7 +1111,8 @@ log('abriu o guia',(navigator.userAgent.match(/iPhone|Android|iPad|Windows|Mac/)
 if(LOG&&store.get('auto'))regLoc(false);
 var v=store.get('view');if(v&&views.indexOf(v)>-1)go(v);
 
-setInterval(phase,1000);setInterval(renderFL,60000);setInterval(renderPP,60000);
+setInterval(phase,1000);
+if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost'))navigator.serviceWorker.register('sw.js').catch(function(){});setInterval(renderFL,60000);setInterval(renderPP,60000);
 /* a bola esconde-se enquanto se faz scroll e volta quando se para */
 var fab=$('.fab'),ft;
 window.addEventListener('scroll',function(){
