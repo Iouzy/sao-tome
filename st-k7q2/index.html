@@ -77,6 +77,10 @@ ul,ol{margin:8px 0;padding-left:22px} li{margin:5px 0}
 .fl.next .dot{background:var(--brand);border-color:var(--brand);box-shadow:0 0 0 4px var(--brand-soft)}
 .fl.past{opacity:.6}
 .fl b{display:block} .fl .small b{display:inline}
+#pp .pill{white-space:nowrap;flex:none}
+.pp-note{font-size:14px;color:var(--muted);margin:8px 0 2px}
+.pp-acts{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 4px}
+.pp-acts .btn{font-size:14px;padding:8px 12px;min-height:40px}
 /* tiles */
 .tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .tile{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;text-align:left;cursor:pointer;min-height:96px;
@@ -270,6 +274,9 @@ details.acc>.in{padding:6px 16px 12px}
   <h2 style="margin-top:6px">Antes de sair <small id="cl-count"></small></h2>
   <div class="bar" style="margin:0 2px 10px"><i id="cl-bar"></i></div>
   <div id="checklist"></div>
+
+  <h2>Passo a passo <small>O que fazer em cada voo, por ordem. Vão marcando</small></h2>
+  <div id="pp"></div>
 
   <h2>Voos <small>Toca num voo para ver terminal, avião e estado em direto</small></h2>
   <div id="flights"></div>
@@ -664,6 +671,103 @@ function renderFL(){
   $('#flights').innerHTML='<div class="verdict m" style="margin:0 0 10px"><b>Confirmem os horários na TAAG</b>A TAAG muda horários com frequência e há sites a mostrar o Luanda–São Tomé às 10:30. Vejam em flytaag.com, em gerir reserva, antes de cada voo.</div>'+h+'<p class="small muted" style="margin:10px 2px 0">Horas locais. Lisboa e São Tomé têm a mesma hora, Luanda tem mais 1 h.</p>';
 }
 
+/* ---------- passo a passo ---------- */
+var PP=[
+ {id:'lis1',t:'1. Aeroporto de Lisboa',s:'12 nov · chegar às 19:30 ao Terminal 1',fim:'2026-11-12T22:30:00Z',
+  p:['Chegar ao <b>Terminal 1</b> às 19:30, 3 horas antes do voo',
+     'Ir ao balcão da <b>TAAG</b> com os passaportes, o certificado da febre amarela e o comprovativo do visto',
+     'Ao despachar as malas, ver se a etiqueta diz <b>TMS</b> (São Tomé). Assim só as voltam a ver em São Tomé',
+     'Pedir os <b>dois cartões de embarque</b>: Lisboa–Luanda e Luanda–São Tomé. Se só derem um, perguntar onde se levanta o outro em Luanda',
+     '<b>Tirar foto aos talões das malas</b> (os autocolantes com código de barras que colam no cartão de embarque ou no passaporte). Guardar os talões em papel até ao fim da viagem',
+     'Tirar foto aos cartões de embarque',
+     'Segurança: líquidos no saco transparente, telemóveis e computador fora da mochila',
+     'Controlo de passaportes',
+     'Ver a porta no ecrã e estar lá <b>45 minutos antes</b>',
+     'Avisar o Leonardo que já despacharam as malas'],
+  wa:'Leonardo, já despachámos as malas em Lisboa e estamos a passar a segurança.'},
+ {id:'v1',t:'2. Voo Lisboa → Luanda',s:'DT653 · 22:30 · noite inteira, cerca de 7h30',fim:'2026-11-13T05:05:00Z',
+  p:['Mochila com documentos e medicação <b>sempre convosco</b>, nunca longe do lugar',
+     'Dormir o que der e beber água',
+     'Antes de sair do avião, ver o bolso do banco e o chão: passaportes, telemóveis, óculos',
+     'À saída, seguir as placas <b>Transferências / Transfers</b>. <b>Não</b> ir para Chegadas nem para a imigração'],
+  nota:'Em Luanda é mais 1 hora. O telemóvel acerta sozinho.'},
+ {id:'lad1',t:'3. Escala em Luanda',s:'13 nov · cerca de 10 horas de espera',fim:'2026-11-13T15:15:00Z',
+  p:['Seguir sempre <b>Transferências</b>. As malas seguem sozinhas para São Tomé, <b>não as vão buscar</b>',
+     'No balcão de transferências da TAAG: mostrar as fotos dos talões e perguntar se as malas estão no voo para São Tomé',
+     'Levantar o cartão de embarque do Luanda–São Tomé, se ainda não o têm',
+     'Ficar <b>juntos</b> e não sair do aeroporto',
+     'Comer, beber e carregar os telemóveis (powerbank)',
+     'Avisar o Leonardo que chegaram bem a Luanda (wifi do aeroporto)',
+     'Ver no ecrã a porta do <b>DT510</b> e se a hora mudou',
+     'Estar na porta 1 hora antes do voo'],
+  nota:'Se em Lisboa disseram que as malas ficam em Luanda, aí sim têm de as ir buscar. Perguntem no balcão de transferências antes de fazer qualquer coisa.',
+  wa:'Leonardo, chegámos a Luanda. Estamos na zona de transferências à espera do voo para São Tomé.'},
+ {id:'stp1',t:'4. Voo para São Tomé e chegada',s:'DT510 · 13 nov · aterra às 17:30',fim:'2026-11-13T20:00:00Z',
+  p:['Embarcar com os documentos à mão para a chegada',
+     'Se derem um papel de entrada no avião, preencher com a morada em São Marçal',
+     'Imigração: passaporte, certificado da febre amarela e, no passaporte português, o número do visto. <b>O visto paga-se aqui</b>, levem euros à mão',
+     'Ir para o tapete e <b>esperar por todas as malas e mochilas</b>. Contar uma a uma',
+     'Ver se alguma vem estragada ou aberta e tirar foto <b>antes de sair</b>',
+     'Se faltar alguma: <b>não saiam</b>. Balcão de bagagem com os talões e pedir o papel da reclamação (PIR)',
+     'Guardar os talões e os cartões de embarque até voltarem a Lisboa',
+     'Avisar o Leonardo que chegaram'],
+  sc:[['mala','A mala não apareceu'],['estragada','Mala estragada']],
+  wa:'Leonardo, chegámos a São Tomé! Malas todas connosco.'},
+ {id:'stp2',t:'5. Regresso: aeroporto de São Tomé',s:'29 nov · voo às 18:20, chegar às 15:20',fim:'2026-11-29T18:20:00Z',
+  p:['De manhã, confirmar a hora do voo em flytaag.com (gerir reserva)',
+     'Gastar ou trocar as dobras antes. Em Portugal não se trocam',
+     'Chegar ao aeroporto às <b>15:20</b>, 3 horas antes',
+     'No check-in, ver se a etiqueta das malas diz <b>LIS</b> (Lisboa). Assim só as voltam a ver em Lisboa',
+     'Pedir os <b>dois cartões de embarque</b>: São Tomé–Luanda e Luanda–Lisboa',
+     '<b>Tirar foto aos talões das malas</b> e aos cartões de embarque',
+     'Imigração e segurança',
+     'Esperar na porta. Se o voo atrasar mais de 1 hora, avisar o Leonardo'],
+  sc:[['atraso','O voo atrasou']],
+  wa:'Leonardo, já fizemos o check-in em São Tomé. Malas despachadas até Lisboa.'},
+ {id:'lad2',t:'6. Voo para Luanda e escala curta',s:'DT511 · aterra 21:35 · só 2h20 para o voo de Lisboa',fim:'2026-11-29T22:55:00Z',
+  p:['Ao aterrar, ir <b>logo</b> para <b>Transferências</b>, sem paragens',
+     'As malas seguem sozinhas para Lisboa, <b>não as vão buscar</b>',
+     'Se não têm o cartão de embarque do Luanda–Lisboa, balcão de transferências da TAAG',
+     'Ver no ecrã a porta do <b>DT650</b> e ir direto para lá',
+     'Se perderem o voo: balcão de transferências da TAAG e abrir o problema abaixo'],
+  sc:[['ligacao','Perdemos a ligação']],
+  wa:'Leonardo, estamos em Luanda, a caminho da porta do voo para Lisboa.'},
+ {id:'lis2',t:'7. Voo para Lisboa e chegada',s:'DT650 · 30 nov · aterra às 07:10 no Terminal 1',fim:'2026-11-30T10:00:00Z',
+  p:['Dormir o que der e beber água',
+     'Antes de sair do avião, ver o bolso do banco e o chão',
+     'Controlo de passaportes',
+     'Ir para o tapete e <b>esperar por todas as malas e mochilas</b>. Contar uma a uma',
+     'Ver se alguma vem estragada e tirar foto antes de sair',
+     'Se faltar alguma: <b>não saiam</b>. Balcão de bagagem com os talões e pedir o PIR',
+     'Avisar o Leonardo que chegaram'],
+  sc:[['mala','A mala não apareceu'],['estragada','Mala estragada']],
+  wa:'Leonardo, chegámos a Lisboa! Malas todas connosco.'}
+];
+var ppOpen=null;
+function renderPP(){
+  var now=new Date(),st=getChecks('pp'),cur=null,h='';
+  PP.forEach(function(x){if(cur===null&&now<d(x.fim))cur=x.id});
+  if(ppOpen===null){ppOpen={};if(cur)ppOpen[cur]=true}
+  else document.querySelectorAll('#pp details').forEach(function(e){ppOpen[e.dataset.pp]=e.open});
+  PP.forEach(function(x){
+    var n=0;x.p.forEach(function(_,i){if(st[x.id+i])n++});
+    var all=n===x.p.length,tag=all?'<span class="pill g">Feito</span>':(x.id===cur?'<span class="pill a">Agora · '+n+'/'+x.p.length+'</span>':'<span class="pill n">'+n+'/'+x.p.length+'</span>');
+    h+='<details class="acc" data-pp="'+x.id+'"'+(ppOpen[x.id]?' open':'')+'><summary><span><b>'+x.t+'</b><span class="s">'+x.s+'</span></span>'+tag+'</summary><div class="in">'+
+      x.p.map(function(a,i){var on=!!st[x.id+i];return '<div class="check'+(on?' done':'')+'" role="checkbox" tabindex="0" aria-checked="'+on+'" data-pk="'+x.id+i+'"><span class="box"></span><span class="txt"><b>'+(i+1)+'.</b> '+a+'</span></div>'}).join('')+
+      (x.nota?'<p class="pp-note">'+x.nota+'</p>':'')+
+      ((x.sc||x.wa)?'<div class="pp-acts">'+(x.sc||[]).map(function(c){return '<button class="btn" data-pps="'+c[0]+'">Problema: '+c[1]+'</button>'}).join('')+
+        (x.wa?'<a class="btn wa" data-wa="'+esc(x.wa)+'">Avisar o Leonardo</a>':'')+'</div>':'')+
+      '</div></details>'});
+  $('#pp').innerHTML=h;
+}
+$('#pp').addEventListener('click',function(e){
+  var s=e.target.closest('[data-pps]');if(s){openSheet(s.dataset.pps);return}
+  var c=e.target.closest('[data-pk]');if(!c)return;
+  var st=getChecks('pp');st[c.dataset.pk]=!st[c.dataset.pk];setChecks('pp',st);renderPP();
+  var k=c.dataset.pk,x=PP.filter(function(y){return k.indexOf(y.id)===0})[0];
+  if(x)log('passo a passo',x.t+' · passo '+(+k.slice(x.id.length)+1)+(st[k]?' feito':' desmarcado'));
+});
+
 /* ---------- tiles e sheet ---------- */
 function renderTiles(){
   var h='';Object.keys(S).forEach(function(k){var s=S[k];
@@ -922,12 +1026,12 @@ if(LOG){
 if(POL){document.querySelectorAll('.pol').forEach(function(el){el.textContent=POL})}
 $('#copypol').addEventListener('click',function(){if(POL)copy(POL);else toast('O número está no PDF da apólice')});
 if(!ME){document.querySelectorAll('[data-tel]').forEach(function(b){b.style.display='none'})}
-phase();renderCL();renderFL();renderTiles();renderQuiz();renderVisa();
+phase();renderCL();renderPP();renderFL();renderTiles();renderQuiz();renderVisa();
 log('abriu o guia',(navigator.userAgent.match(/iPhone|Android|iPad|Windows|Mac/)||[''])[0]);
 if(LOG&&store.get('auto'))regLoc(false);
 var v=store.get('view');if(v&&views.indexOf(v)>-1)go(v);
 
-setInterval(phase,1000);setInterval(renderFL,60000);
+setInterval(phase,1000);setInterval(renderFL,60000);setInterval(renderPP,60000);
 /* a bola esconde-se enquanto se faz scroll e volta quando se para */
 var fab=$('.fab'),ft;
 window.addEventListener('scroll',function(){
