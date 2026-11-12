@@ -503,7 +503,7 @@ var EV=[
  ['2026-11-13T05:05:00Z','Chegam a Luanda','espera longa no aeroporto','lad'],
  ['2026-11-13T15:15:00Z','Parte o DT510 Luanda → São Tomé','confirmem a hora, pode ser 10:30','lad'],
  ['2026-11-13T17:30:00Z','Chegam a São Tomé','cartão SIM, táxi para São Marçal','stp'],
- ['2026-11-16T12:00:00Z','Tratar da prorrogação no SMF','passaporte português, antes do dia 27','stp'],
+ ['2026-11-16T12:00:00Z','Visto tratado no SMF (se não saiu online)','passaporte português, antes do dia 27','stp'],
  ['2026-11-27T23:59:00Z','Último dia sem visto (passaporte português)','','stp'],
  ['2026-11-29T15:20:00Z','Sair para o aeroporto de São Tomé','3 h antes','stp'],
  ['2026-11-29T18:20:00Z','Parte o DT511 São Tomé → Luanda','','stp'],
@@ -571,6 +571,7 @@ var CL=[
  ['#','Documentos'],
  ['pass','Passaportes','O português e o de São Tomé, válidos por mais 6 meses'],
  ['vac','Certificado da febre amarela','Livrinho amarelo, São Tomé pede à entrada'],
+  ['evisa','Visto pedido online (passaporte português)','smf.st/evisa, e guardar o comprovativo'],
  ['bil','Reserva dos voos guardada (e impressa se der)','À entrada em São Tomé podem pedir o bilhete de regresso'],
  ['cop','Fotos dos passaportes e do certificado','No telemóvel e enviadas para o vosso email'],
  ['pdf','PDF da apólice no telemóvel','Para abrir sem internet'],
@@ -738,7 +739,7 @@ function renderVisa(){
     var dias=Math.round((saida-e)/864e5)+1,fmt=function(x){return x.toLocaleDateString('pt-PT',{day:'numeric',month:'long'})};
     var over=dias>15;
     $('#vres').innerHTML='<div class="kv"><span>Último dia sem visto</span><b>'+fmt(lim)+'</b></div><div class="kv"><span>Dias até ao voo (29 nov)</span><b>'+dias+'</b></div>'+
-      (over?'<div class="verdict n"><b>Precisa de prorrogação</b>Tratem disso no SMF nos primeiros dias, não no fim. Levem passaporte, bilhete de regresso e morada em São Marçal.</div>':'<div class="verdict y"><b>Dentro dos 15 dias</b>Não é preciso visto.</div>')+
+      (over?'<div class="verdict n"><b>Precisa de visto</b>Mais de 15 dias já não é isento. Peçam o visto online em smf.st/evisa antes de partir e guardem o número de processo. A resposta demora até 7 dias úteis e o pagamento é feito na fronteira. À chegada, mostrem o número no serviço de migração do aeroporto.</div><p class="small">Levem: passaporte, bilhete de regresso, comprovativo do pedido online e prova de dinheiro (pedem 100€ por dia).</p><a class="btn w" target="_blank" rel="noopener" href="https://www.smf.st/evisa/">Pedir visto online</a>':'<div class="verdict y"><b>Dentro dos 15 dias</b>Não é preciso visto.</div>')+
       '<p class="small muted">Com passaporte de São Tomé não é preciso nada.</p>';
   };
   $('#ent').addEventListener('change',f);$('#ent').addEventListener('input',f);f();
