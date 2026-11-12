@@ -261,6 +261,7 @@ details.acc>.in{padding:6px 16px 12px}
     <div id="reg-res"></div>
     <label class="check" style="border:0;margin-top:6px" id="auto-row"><span class="box"></span><span class="txt">Partilhar a localização sempre que o guia estiver aberto<small>Regista ao abrir e de 10 em 10 minutos</small></span></label>
     <div id="reg-hist"></div>
+    <div id="net-st" class="small muted" style="margin-top:8px"></div>
     <p class="small muted" style="margin:10px 0 0">Este guia regista o que abres e marcas, e a localização que partilhares, e envia para o Leonardo. É para a vossa segurança. Com o guia fechado não regista nada.</p>
   </div>
   </div>
@@ -1071,8 +1072,19 @@ function flush(){
   if(!LOG||sending||navigator.onLine===false)return;var q=qGet();if(!q.length)return;
   sending=true;var n=q.length;
   fetch('https://script.google.com/macros/s/'+LOG+'/exec',{method:'POST',mode:'no-cors',body:JSON.stringify({events:q})})
-    .then(function(){qSet(qGet().slice(n));sending=false}).catch(function(){sending=false});
+    .then(function(){qSet(qGet().slice(n));sending=false;netOk=Date.now();netErr='';netStat()})
+    .catch(function(e){sending=false;netErr=(e&&e.message)||'erro';netStat()});
 }
+var netOk=0,netErr='';
+function netStat(){var el=document.getElementById('net-st');if(!el)return;
+  var n=qGet().length;
+  el.innerHTML='Ligado ao código <b>…'+esc(LOG.slice(-6))+'</b> · '+(n?'<b>'+n+'</b> por enviar':'nada por enviar')+
+    (netOk?' · último envio às '+new Date(netOk).toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit'}):'')+
+    (netErr?'<br><span style="color:var(--red)">Não consegue enviar: '+esc(netErr)+'. Se usam o Brave, desliguem os escudos (leão) para este site.</span>':'')+
+    (n?' · <a href="#" id="net-go" style="color:var(--blue)">enviar agora</a>':'');
+  var g=document.getElementById('net-go');if(g)g.onclick=function(e){e.preventDefault();sending=false;flush()};
+}
+setInterval(netStat,5000);
 window.addEventListener('online',flush);setInterval(flush,60000);
 document.addEventListener('click',function(e){var c=e.target.closest('a.call');if(c)log('ligou',c.getAttribute('href').replace('tel:',''))});
 
