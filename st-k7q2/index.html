@@ -52,6 +52,12 @@ ul,ol{margin:8px 0;padding-left:22px} li{margin:5px 0}
   background:#c62828;color:#fff;font:inherit;font-size:20px;font-weight:800;letter-spacing:.02em;cursor:pointer;box-shadow:0 4px 14px rgba(198,40,40,.35)}
 .sos-big small{display:block;font-size:13px;font-weight:500;opacity:.92;letter-spacing:0}
 .sos-top{position:absolute;right:16px;top:50%;transform:translateY(-50%);border:2px solid #fff;background:#c62828;color:#fff;font:inherit;font-weight:800;font-size:15px;border-radius:99px;padding:7px 14px;cursor:pointer}
+.name-ov{position:fixed;inset:0;z-index:55;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:16px}
+.name-ov[hidden]{display:none}
+.name-box{background:var(--card);color:var(--ink);border-radius:18px;padding:20px 18px;width:100%;max-width:420px;box-shadow:0 10px 30px rgba(0,0,0,.3)}
+.name-box h3{margin:0 0 6px;font-size:21px}
+.name-box p{margin:0 0 14px;color:var(--muted);font-size:15px}
+.name-box input{width:100%;box-sizing:border-box;font:inherit;font-size:18px;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--bg,var(--card));color:var(--ink);margin-bottom:12px}
 .sos-ov{position:fixed;inset:0;z-index:60;background:#b71c1c;color:#fff;display:none;overflow:auto;padding:calc(20px + env(safe-area-inset-top)) 16px calc(24px + env(safe-area-inset-bottom))}
 .sos-ov.on{display:block}
 .sos-ov h3{font-size:28px;margin:8px 0 6px}
@@ -225,7 +231,7 @@ details.acc>.in{padding:6px 16px 12px}
 <header><div class="wrap" style="position:relative">
   <button class="sos-top" data-sos aria-label="Emergência: pedir ajuda">SOS</button>
   <h1>São Tomé</h1>
-  <p>12 a 30 de novembro · São Marçal</p>
+  <p><span id="hello"></span>12 a 30 de novembro · São Marçal</p>
 </div></header>
 <nav><div class="in">
   <button data-go="inicio" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Início</button>
@@ -411,6 +417,15 @@ details.acc>.in{padding:6px 16px 12px}
 
 
 
+<div class="name-ov" id="name-ov" role="dialog" aria-modal="true" aria-labelledby="name-h" hidden>
+  <div class="name-box">
+    <h3 id="name-h">Quem está a usar este telemóvel?</h3>
+    <p>Escreve o teu nome. Assim o Leonardo sabe quem é que registou a localização ou carregou no SOS.</p>
+    <input id="name-in" placeholder="O teu nome" autocomplete="given-name" maxlength="30">
+    <button class="btn p w" id="name-ok">Guardar</button>
+    <button class="btn w" data-sos style="margin-top:10px;color:#c62828;font-weight:800">É uma emergência: SOS</button>
+  </div>
+</div>
 <div class="sos-ov" id="sos" role="dialog" aria-modal="true" aria-labelledby="sos-h">
   <h3 id="sos-h">Emergência</h3>
   <p>O Leonardo recebe um alerta pela internet com o vosso nome e onde estão, para chamar as autoridades e ajudar.</p>
@@ -435,7 +450,7 @@ details.acc>.in{padding:6px 16px 12px}
 var ME='',POL='',LOG='';
 (function(){
   var q={};try{location.hash.replace(/^#/,'').split('&').forEach(function(p){var kv=p.split('=');if(kv[1])q[kv[0]]=decodeURIComponent(kv[1])})}catch(e){}
-  try{if(q.t)localStorage.setItem('stp_t',q.t);if(q.a)localStorage.setItem('stp_a',q.a);if(q.l)localStorage.setItem('stp_l',q.l)}catch(e){}
+  try{if(q.t)localStorage.setItem('stp_t',q.t);if(q.a)localStorage.setItem('stp_a',q.a);if(q.l)localStorage.setItem('stp_l',q.l);if(q.n)localStorage.setItem('stp_n',q.n.slice(0,30))}catch(e){}
   try{LOG=q.l||localStorage.getItem('stp_l')||''}catch(e){LOG=q.l||''}
   LOG=LOG.replace(/[^0-9A-Za-z_-]/g,'');
   try{ME=q.t||localStorage.getItem('stp_t')||'';POL=q.a||localStorage.getItem('stp_a')||''}catch(e){ME=q.t||'';POL=q.a||''}
@@ -1195,15 +1210,21 @@ function regLoc(manual){
     $('#reg-res').innerHTML='<p class="small" style="color:var(--red)">'+(err.code===1?'A localização está bloqueada. No iPhone: Definições > Privacidade > Serviços de localização > Safari > Ao usar a app.':'Não deu para obter a localização. Liga o GPS e tenta outra vez.')+'</p>';
   },{enableHighAccuracy:true,timeout:20000,maximumAge:30000});
 }
+function hello(){var h=$('#hello');if(h)h.textContent=NAME?'Olá, '+NAME+' · ':''}
+function saveName(v){v=(v||'').trim().slice(0,30);if(!v)return false;NAME=v;try{localStorage.setItem('stp_n',v)}catch(e){}log('nome',v);hello();who();return true}
+$('#name-ok').addEventListener('click',function(){if(saveName($('#name-in').value))$('#name-ov').hidden=true;else $('#name-in').focus()});
+$('#name-in').addEventListener('keydown',function(e){if(e.key==='Enter')$('#name-ok').click()});
 function who(){
   $('#who').innerHTML=NAME?'<div class="small muted" style="margin-bottom:10px">A usar como <b style="color:var(--ink)">'+esc(NAME)+'</b> · <a href="#" id="who-ch" style="color:var(--blue)">mudar</a></div>'
     :'<div class="who"><input id="who-in" placeholder="O teu nome" autocomplete="given-name" maxlength="30"><button class="btn" id="who-ok">Guardar</button></div>';
-  var ok=$('#who-ok');if(ok)ok.onclick=function(){var v=$('#who-in').value.trim();if(!v)return;NAME=v;try{localStorage.setItem('stp_n',v)}catch(e){}log('nome',v);who()};
-  var ch=$('#who-ch');if(ch)ch.onclick=function(e){e.preventDefault();NAME='';who()};
+  var ok=$('#who-ok');if(ok)ok.onclick=function(){saveName($('#who-in').value)};
+  var ch=$('#who-ch');if(ch)ch.onclick=function(e){e.preventDefault();$('#name-in').value=NAME;$('#name-ov').hidden=false;setTimeout(function(){$('#name-in').focus()},100)};
 }
 function autoUI(){var on=!!store.get('auto');$('#auto-row').classList.toggle('done',on);$('#auto-row').querySelector('.txt').style.textDecoration='none'}
 if(LOG){
   $('#safe').hidden=false;who();hist();autoUI();
+  hello();
+  if(!NAME){$('#name-ov').hidden=false;setTimeout(function(){$('#name-in').focus()},100)}
   $('#reg-btn').addEventListener('click',function(){regLoc(true)});
   $('#auto-row').addEventListener('click',function(e){e.preventDefault();var on=!store.get('auto');store.set('auto',on);autoUI();log('partilha automática',on?'ligada':'desligada');if(on)regLoc(false)});
   setInterval(function(){if(store.get('auto')&&!document.hidden)regLoc(false)},10*6e4);
