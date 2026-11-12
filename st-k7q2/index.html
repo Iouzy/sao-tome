@@ -572,7 +572,22 @@ var S={
   seguro:'O seguro não cobre internet nem telemóvel sem dados. É um assunto entre vocês e a {OP}.',
   real:'{REAL}',
   msg:'Boa tarde. Comprei no dia ___ um cartão {OP} com o pacote {PACOTE} de ___ GB por 30 dias (recibo em anexo). No dia ___ a internet deixou de funcionar. Saldo indicado: ___. Peço que verifiquem e reponham o serviço. Número do cartão: ___. Obrigado.',
-  msgTo:'Para a {OP}, na loja ou por escrito'}
+  msgTo:'Para a {OP}, na loja ou por escrito'},
+ seguranca:{t:'Não deixam passar uma coisa',s:'Na segurança ou no check-in',ic:'bag',
+  agora:['Mantenham a calma e perguntem ao funcionário <b>o que é</b> e <b>porquê</b>',
+   '<b>Líquido com mais de 100 ml</b> (água, perfume, creme): ou deitam fora ou, se o check-in ainda estiver aberto, voltam ao balcão da TAAG e despacham-no na mala',
+   '<b>Medicamento líquido ou com agulhas:</b> mostrem a receita ou a caixa com o nome. Medicamentos necessários costumam poder passar',
+   '<b>Powerbank ou bateria na mala de porão:</b> chamam-vos, ou não deixam embarcar a mala. Vão ao sítio que indicarem, tirem o powerbank e levem-no na mochila',
+   '<b>Mala com peso a mais no check-in:</b> passem coisas para a mochila de mão, ou paguem o excesso no balcão',
+   '<b>Tesoura, canivete ou ferramenta na mochila:</b> ou fica, ou voltam ao check-in e despacham-na (só se ainda houver tempo)',
+   '<b>Compras no free shop de Lisboa</b> (perfumes, bebidas): em Luanda há segurança outra vez. Peçam que fique no <b>saco selado</b> com o recibo lá dentro e não o abram até São Tomé',
+   'Se já passaram a segurança, <b>não dá para voltar atrás</b>. Avaliem se vale a pena ou deixem ficar',
+   'Vejam a hora: o embarque fecha 20 minutos antes do voo. Não percam o avião por uma coisa pequena'],
+  nao:['Discutir com os agentes de segurança','Deixar a medicação para trás sem tentar mostrar a receita','Voltar ao check-in quando falta pouco para o embarque fechar'],
+  guarda:['Receitas dos medicamentos','Recibo e saco selado do free shop'],
+  seguro:'O seguro não paga coisas que a segurança tira. Bagagem perdida ou estragada pela companhia é outro caso: vejam "A mala não apareceu".',
+  msg:'Leonardo, na segurança não deixaram passar ___. Fizemos ___. Está tudo bem, vamos para a porta.',
+  msgTo:'Para mim'}
 };
 var SI_T=S.internet;
 
@@ -764,6 +779,7 @@ var PP=[
      ['Controlo de passaportes','É um balcão com um polícia (ou máquinas automáticas) que vê o passaporte e regista que estão a sair da Europa. Fica depois da segurança, a caminho das portas. Mostrem o passaporte português. Pode ter fila: passem por aqui primeiro e só depois vão às lojas ou comer.'],
      ['Ver a porta no ecrã e estar lá <b>45 minutos antes</b>','A porta (em inglês <i>gate</i>) é o sítio por onde se entra para o avião e tem um número, por exemplo "Porta 42". Às vezes vem no cartão de embarque, mas pode mudar: a certa é a que aparece nos <b>ecrãs pendurados</b> por todo o aeroporto. Procurem <b>DT653 Luanda</b> e vejam a coluna "Porta / Gate", depois sigam as placas com esse número. O embarque fecha uns 20 minutos antes do voo.'],
      ['Avisar o Leonardo que já despacharam as malas','Carreguem no botão verde "Avisar o Leonardo" aqui em baixo: a mensagem já vai escrita.']],
+  sc:[['seguranca','Não deixam passar uma coisa']],
   wa:'Leonardo, já despachámos as malas em Lisboa e estamos a passar a segurança.'},
  {id:'v1',t:'2. Voo Lisboa → Luanda',s:'DT653 · 22:30 · noite inteira, cerca de 7h30',fim:'2026-11-13T05:05:00Z',
   p:[['Mochila com documentos e medicação <b>sempre convosco</b>, nunca longe do lugar','A mala de porão vai na barriga do avião e só a voltam a ver no fim. Tudo o que é importante (passaportes, medicação, dinheiro, carregador) vai na mochila, que fica convosco: no compartimento por cima do banco ou debaixo do banco da frente.'],
@@ -804,7 +820,7 @@ var PP=[
      ['<b>Tirar foto aos talões das malas</b> e aos cartões de embarque','São talões novos, os da volta. Os de Lisboa já não servem para estas malas.'],
      ['Imigração e segurança','Na imigração carimbam a saída de São Tomé. Na segurança as mochilas passam pelo raio-X como em Lisboa: líquidos até 100 ml no saco transparente.'],
      ['Esperar na porta. Se o voo atrasar mais de 1 hora, avisar o Leonardo','Em São Tomé há poucas portas e os avisos são feitos em voz alta. Se o voo atrasar mais de 1h30, a ligação em Luanda fica em risco: avisem-me logo e vejam "Problema: O voo atrasou".']],
-  sc:[['atraso','O voo atrasou']],
+  sc:[['atraso','O voo atrasou'],['seguranca','Não deixam passar uma coisa']],
   wa:'Leonardo, já fizemos o check-in em São Tomé. Malas despachadas até Lisboa.'},
  {id:'lad2',t:'6. Voo para Luanda e escala curta',s:'DT511 · aterra 21:35 · só 2h20 para o voo de Lisboa',fim:'2026-11-29T22:55:00Z',
   p:[['Ao aterrar, ir <b>logo</b> para <b>Transferências</b>, sem paragens','Só têm 2h20 e o embarque fecha uns 20 a 30 minutos antes do voo. Nada de lojas nem comida até estarem na porta certa.'],
