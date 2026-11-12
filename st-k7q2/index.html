@@ -67,6 +67,7 @@ ul,ol{margin:8px 0;padding-left:22px} li{margin:5px 0}
 .check.done .box{background:var(--brand);border-color:var(--brand)}
 .check.done .box::after{content:"";width:6px;height:11px;border:solid var(--brand-ink);border-width:0 2.5px 2.5px 0;transform:rotate(45deg) translate(-1px,-1px)}
 .check.done .txt{color:var(--muted);text-decoration:line-through}
+#auto-row.done .txt{color:var(--ink)}
 .txt small{display:block;color:var(--muted);text-decoration:none}
 /* flights */
 .fl{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
@@ -188,6 +189,11 @@ details.acc>.in{padding:6px 16px 12px}
 .seg button.on{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
 .lead{font-size:15px;color:var(--muted);margin:2px 2px 12px}
 .clocks.inl{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+.who{display:flex;gap:8px;margin-bottom:10px}
+.who input{flex:1;min-width:0;font:inherit;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink)}
+.hist{margin-top:10px;border-top:1px solid var(--line);padding-top:8px}
+.hist div{display:flex;justify-content:space-between;gap:10px;font-size:14px;padding:4px 0;color:var(--muted)}
+.hist a{color:var(--blue)}
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 </head>
@@ -221,6 +227,18 @@ details.acc>.in{padding:6px 16px 12px}
     <a class="call" href="tel:2222222">222 22 22<small>Polícia / ambulância</small></a>
   </div>
   <button class="btn p w" data-go="problema" style="margin-top:10px">Aconteceu alguma coisa</button>
+
+  <div id="safe" hidden>
+  <h2>Segurança <small>Regista onde estás sempre que quiseres</small></h2>
+  <div class="card">
+    <div id="who"></div>
+    <button class="btn p w" id="reg-btn">Registar onde estou</button>
+    <div id="reg-res"></div>
+    <label class="check" style="border:0;margin-top:6px" id="auto-row"><span class="box"></span><span class="txt">Partilhar a localização sempre que o guia estiver aberto<small>Regista ao abrir e de 10 em 10 minutos</small></span></label>
+    <div id="reg-hist"></div>
+    <p class="small muted" style="margin:10px 0 0">Este guia regista o que abres e marcas, e a localização que partilhares, e envia para o Leonardo. É para a vossa segurança. Com o guia fechado não regista nada.</p>
+  </div>
+  </div>
 
   <h2>Seguro</h2>
   <div class="card">
@@ -364,10 +382,12 @@ details.acc>.in{padding:6px 16px 12px}
 <script>
 (function(){
 /* O meu número, com indicativo e sem + nem espaços. Ex.: 351912345678 */
-var ME='',POL='';
+var ME='',POL='',LOG='';
 (function(){
   var q={};try{location.hash.replace(/^#/,'').split('&').forEach(function(p){var kv=p.split('=');if(kv[1])q[kv[0]]=decodeURIComponent(kv[1])})}catch(e){}
-  try{if(q.t)localStorage.setItem('stp_t',q.t);if(q.a)localStorage.setItem('stp_a',q.a)}catch(e){}
+  try{if(q.t)localStorage.setItem('stp_t',q.t);if(q.a)localStorage.setItem('stp_a',q.a);if(q.l)localStorage.setItem('stp_l',q.l)}catch(e){}
+  try{LOG=q.l||localStorage.getItem('stp_l')||''}catch(e){LOG=q.l||''}
+  LOG=LOG.replace(/[^0-9A-Za-z_-]/g,'');
   try{ME=q.t||localStorage.getItem('stp_t')||'';POL=q.a||localStorage.getItem('stp_a')||''}catch(e){ME=q.t||'';POL=q.a||''}
   ME=ME.replace(/\D/g,'');POL=POL.replace(/[^0-9A-Za-z-]/g,'');
 })();
@@ -479,19 +499,19 @@ var views=['inicio','viagem','problema','seguro','stp'];
 function go(v){
   views.forEach(function(x){$('#v-'+x).classList.toggle('on',x===v)});
   document.querySelectorAll('nav button').forEach(function(b){b.classList.toggle('on',b.dataset.go===v)});
-  window.scrollTo(0,0);store.set('view',v);
+  window.scrollTo(0,0);store.set('view',v);log('separador',v);
   if(v==='stp'&&!$('#stp-mapa').hidden)setTimeout(initMap,50);
 }
 document.addEventListener('click',function(e){var b=e.target.closest('[data-seg]');if(!b)return;
   var m=b.dataset.seg==='mapa';$('#stp-guia').hidden=m;$('#stp-mapa').hidden=!m;
   document.querySelectorAll('[data-seg]').forEach(function(x){x.classList.toggle('on',x===b)});
-  if(m)setTimeout(function(){initMap();if(map)map.invalidateSize()},60);
+  if(m){log('mapa','aberto');setTimeout(function(){initMap();if(map)map.invalidateSize()},60)}
 });
 document.addEventListener('click',function(e){
   var g=e.target.closest('[data-go]');if(g){go(g.dataset.go);return}
   var c=e.target.closest('[data-copy]');if(c){copy(c.dataset.copy);return}
   if(e.target.closest('[data-close]')){closeSheet();return}
-  var w=e.target.closest('[data-wa]');if(w){e.preventDefault();location.href='https://wa.me/'+ME+'?text='+encodeURIComponent(w.dataset.wa);return}
+  var w=e.target.closest('[data-wa]');if(w){e.preventDefault();log('whatsapp',w.dataset.wa.slice(0,60));location.href='https://wa.me/'+ME+'?text='+encodeURIComponent(w.dataset.wa);return}
   var t=e.target.closest('[data-tel]');if(t){e.preventDefault();if(ME)location.href='tel:+'+ME;else toast('Falta pôr o número');return}
 });
 
@@ -615,7 +635,7 @@ function renderCL(){
       x.items.map(function(c){var on=!!st[c[0]];return '<div class="check'+(on?' done':'')+'" role="checkbox" tabindex="0" aria-checked="'+on+'" data-cl="'+c[0]+'"><span class="box"></span><span class="txt">'+c[1]+(c[2]?'<small>'+c[2]+'</small>':'')+'</span></div>'}).join('')+'</div></details>'});
   $('#checklist').innerHTML=h;$('#cl-count').textContent=done+' de '+CLN+' coisas tratadas';$('#cl-bar').style.width=(done/CLN*100)+'%';
 }
-$('#checklist').addEventListener('click',function(e){var c=e.target.closest('[data-cl]');if(!c)return;var st=getChecks('cl');st[c.dataset.cl]=!st[c.dataset.cl];setChecks('cl',st);renderCL()});
+$('#checklist').addEventListener('click',function(e){var c=e.target.closest('[data-cl]');if(!c)return;var st=getChecks('cl');st[c.dataset.cl]=!st[c.dataset.cl];setChecks('cl',st);renderCL();log('checklist',(CL.filter(function(x){return x[0]===c.dataset.cl})[0]||[])[1]+(st[c.dataset.cl]?' · feito':' · desmarcado'))});
 
 /* ---------- voos ---------- */
 var FL=[
@@ -655,7 +675,7 @@ $('#tiles').addEventListener('click',function(e){var t=e.target.closest('[data-s
 var cur=null,lastFocus=null;
 function list(a){return '<ul>'+a.map(function(x){return '<li>'+x+'</li>'}).join('')+'</ul>'}
 function openSheet(k){
-  cur=k;var s=S[k];lastFocus=document.activeElement;
+  cur=k;var s=S[k];lastFocus=document.activeElement;log('problema',s.t);
   $('#sh-title').textContent=s.t;
   var h='<div class="blk do"><span class="h">Agora, por esta ordem</span><div id="steps"></div></div>';
   h+='<div class="blk no"><span class="h">Não façam</span>'+list(s.nao)+'</div>';
@@ -679,7 +699,7 @@ function renderSteps(){
     h+='<div class="check'+(on?' done':'')+'" role="checkbox" tabindex="0" aria-checked="'+on+'" data-st="'+i+'"><span class="box"></span><span class="txt"><b>'+(i+1)+'.</b> '+a+'</span></div>'});
   $('#steps').innerHTML=h;$('#sh-prog').textContent=done+' de '+s.agora.length+' passos feitos';
 }
-$('#sh-body').addEventListener('click',function(e){var c=e.target.closest('[data-st]');if(!c)return;var st=getChecks('sc_'+cur);st[c.dataset.st]=!st[c.dataset.st];setChecks('sc_'+cur,st);renderSteps()});
+$('#sh-body').addEventListener('click',function(e){var c=e.target.closest('[data-st]');if(!c)return;var st=getChecks('sc_'+cur);st[c.dataset.st]=!st[c.dataset.st];setChecks('sc_'+cur,st);renderSteps();log('passo',S[cur].t+' · passo '+(+c.dataset.st+1)+(st[c.dataset.st]?' feito':' desmarcado'))});
 function closeSheet(){var sh=$('#sheet');sh.classList.remove('on');document.body.style.overflow='';setTimeout(function(){sh.style.display='none'},250);if(lastFocus)lastFocus.focus()}
 document.addEventListener('keydown',function(e){
   if(e.key==='Escape'&&$('#sheet').classList.contains('on'))closeSheet();
@@ -726,7 +746,7 @@ function renderQuiz(){
 $('#quiz').addEventListener('click',function(e){
   if(e.target.closest('[data-qreset]')){path=[{n:'start'}];renderQuiz();return}
   var b=e.target.closest('[data-qi]');if(!b)return;var i=+b.dataset.qi,nx=b.dataset.qn;
-  path=path.slice(0,i+1);path[i].c=nx;if(Q[nx])path.push({n:nx});renderQuiz();
+  path=path.slice(0,i+1);path[i].c=nx;if(Q[nx])path.push({n:nx});renderQuiz();if(V[nx])log('seguro',b.textContent+' → '+V[nx][1]);
 });
 path=[{n:'start'}];
 
@@ -809,11 +829,11 @@ function renderPlaces(){
     return '<div class="pl"><span class="n" style="background:'+CAT[p[3]]+';color:#fff">'+(x.i+1)+'</span><div class="b"><b>'+p[0]+'</b><span class="small muted">'+p[3]+' · '+(x.d<1?Math.round(x.d*1000)+' m':x.d.toFixed(1)+' km')+' em linha reta</span><span class="small">'+p[4]+'</span>'+
       '<div class="acts"><button class="btn" data-show="'+x.i+'">Ver no mapa</button><a class="btn" target="_blank" rel="noopener" href="'+maps(p[5],me?me[0]:null,me?me[1]:null)+'">Ir</a></div></div></div>'}).join('');
 }
-$('#places').addEventListener('click',function(e){var b=e.target.closest('[data-show]');if(!b||!map)return;var i=+b.dataset.show;
+$('#places').addEventListener('click',function(e){var b=e.target.closest('[data-show]');if(!b||!map)return;var i=+b.dataset.show;log('local visto',POI[i][0]);
   $('#map').scrollIntoView({behavior:'smooth',block:'center'});map.setView([POI[i][1],POI[i][2]],14);markers[i].openPopup()});
 $('#map-home').addEventListener('click',function(){if(map)map.setView(HOME,14)});
 function where(lat,lon,acc){
-  me=[lat,lon];renderPlaces();
+  me=[lat,lon];pos=[lat,lon,Math.round(acc),Date.now()];renderPlaces();
   var hz=zoneOf(lat,lon);if(hz){hereZone=hz;phase()}
   var near=POI.map(function(p){return {p:p,d:km(lat,lon,p[1],p[2])}}).sort(function(a,b){return a.d-b.d})[0];
   var dh=km(lat,lon,HOME[0],HOME[1]);
@@ -842,11 +862,69 @@ $('#map-me').addEventListener('click',function(){
     {enableHighAccuracy:true,timeout:20000,maximumAge:15000});
 });
 
+/* ---------- registo ---------- */
+var pos=null,NAME='',DID='',sending=false;
+try{NAME=localStorage.getItem('stp_n')||'';DID=localStorage.getItem('stp_d')||'';if(!DID){DID=Math.random().toString(36).slice(2,8);localStorage.setItem('stp_d',DID)}}catch(e){DID=DID||Math.random().toString(36).slice(2,8)}
+function qGet(){return store.get('q')||mem.q||[]}
+function qSet(v){mem.q=v;store.set('q',v)}
+function log(ev,det){
+  if(!LOG)return;
+  var fresh=pos&&Date.now()-pos[3]<15*6e4;
+  var q=qGet();q.push({t:new Date().toISOString(),n:NAME,d:DID,e:ev,x:det||'',la:fresh?pos[0].toFixed(5):'',lo:fresh?pos[1].toFixed(5):'',ac:fresh?pos[2]:''});
+  if(q.length>400)q=q.slice(-400);qSet(q);flush();
+}
+function flush(){
+  if(!LOG||sending||navigator.onLine===false)return;var q=qGet();if(!q.length)return;
+  sending=true;var n=q.length;
+  fetch('https://script.google.com/macros/s/'+LOG+'/exec',{method:'POST',mode:'no-cors',body:JSON.stringify({events:q})})
+    .then(function(){qSet(qGet().slice(n));sending=false}).catch(function(){sending=false});
+}
+window.addEventListener('online',flush);setInterval(flush,60000);
+document.addEventListener('click',function(e){var c=e.target.closest('a.call');if(c)log('ligou',c.getAttribute('href').replace('tel:',''))});
+
+function hist(){
+  var h=store.get('hist')||[];if(!h.length){$('#reg-hist').innerHTML='';return}
+  $('#reg-hist').innerHTML='<div class="hist"><b class="small">Os teus últimos registos</b>'+h.slice(0,5).map(function(x){
+    return '<div><span>'+new Date(x.t).toLocaleString('pt-PT',{day:'numeric',month:'numeric',hour:'2-digit',minute:'2-digit'})+(x.m?'':' · auto')+'</span><a target="_blank" rel="noopener" href="https://maps.google.com/?q='+x.la+','+x.lo+'">ver no mapa</a></div>'}).join('')+'</div>';
+}
+function regLoc(manual){
+  if(!navigator.geolocation){if(manual)$('#reg-res').innerHTML='<p class="small" style="color:var(--red)">Este browser não dá acesso à localização.</p>';return}
+  if(manual)$('#reg-btn').textContent='A procurar...';
+  navigator.geolocation.getCurrentPosition(function(p){
+    var la=p.coords.latitude,lo=p.coords.longitude,ac=Math.round(p.coords.accuracy);
+    pos=[la,lo,ac,Date.now()];var z=zoneOf(la,lo);if(z){hereZone=z}
+    log('localização',manual?'registada pela pessoa':'automática');
+    var h=store.get('hist')||[];h.unshift({t:Date.now(),la:la.toFixed(5),lo:lo.toFixed(5),m:manual?1:0});store.set('hist',h.slice(0,20));hist();
+    if(manual){$('#reg-btn').textContent='Registar onde estou';
+      var dh=km(la,lo,HOME[0],HOME[1]);
+      $('#reg-res').innerHTML='<div class="verdict y" style="margin-top:10px"><b>Registado às '+new Date().toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit'})+'</b>'+(z==='stp'?'A '+(dh<1?Math.round(dh*1000)+' m':dh.toFixed(1)+' km')+' de São Marçal. ':'')+'Precisão ~'+ac+' m.'+(navigator.onLine===false?' Sem internet agora: envia assim que houver rede.':'')+'</div>'}
+  },function(err){
+    if(!manual)return;$('#reg-btn').textContent='Registar onde estou';
+    $('#reg-res').innerHTML='<p class="small" style="color:var(--red)">'+(err.code===1?'A localização está bloqueada. No iPhone: Definições > Privacidade > Serviços de localização > Safari > Ao usar a app.':'Não deu para obter a localização. Liga o GPS e tenta outra vez.')+'</p>';
+  },{enableHighAccuracy:true,timeout:20000,maximumAge:30000});
+}
+function who(){
+  $('#who').innerHTML=NAME?'<div class="small muted" style="margin-bottom:10px">A usar como <b style="color:var(--ink)">'+esc(NAME)+'</b> · <a href="#" id="who-ch" style="color:var(--blue)">mudar</a></div>'
+    :'<div class="who"><input id="who-in" placeholder="O teu nome" autocomplete="given-name" maxlength="30"><button class="btn" id="who-ok">Guardar</button></div>';
+  var ok=$('#who-ok');if(ok)ok.onclick=function(){var v=$('#who-in').value.trim();if(!v)return;NAME=v;try{localStorage.setItem('stp_n',v)}catch(e){}log('nome',v);who()};
+  var ch=$('#who-ch');if(ch)ch.onclick=function(e){e.preventDefault();NAME='';who()};
+}
+function autoUI(){var on=!!store.get('auto');$('#auto-row').classList.toggle('done',on);$('#auto-row').querySelector('.txt').style.textDecoration='none'}
+if(LOG){
+  $('#safe').hidden=false;who();hist();autoUI();
+  $('#reg-btn').addEventListener('click',function(){regLoc(true)});
+  $('#auto-row').addEventListener('click',function(e){e.preventDefault();var on=!store.get('auto');store.set('auto',on);autoUI();log('partilha automática',on?'ligada':'desligada');if(on)regLoc(false)});
+  setInterval(function(){if(store.get('auto')&&!document.hidden)regLoc(false)},10*6e4);
+  document.addEventListener('visibilitychange',function(){if(!document.hidden){log('voltou ao guia','');if(store.get('auto'))regLoc(false)}});
+}
+
 /* ---------- init ---------- */
 if(POL){document.querySelectorAll('.pol').forEach(function(el){el.textContent=POL})}
 $('#copypol').addEventListener('click',function(){if(POL)copy(POL);else toast('O número está no PDF da apólice')});
 if(!ME){document.querySelectorAll('[data-tel]').forEach(function(b){b.style.display='none'})}
 phase();renderCL();renderFL();renderTiles();renderQuiz();renderVisa();
+log('abriu o guia',(navigator.userAgent.match(/iPhone|Android|iPad|Windows|Mac/)||[''])[0]);
+if(LOG&&store.get('auto'))regLoc(false);
 var v=store.get('view');if(v&&views.indexOf(v)>-1)go(v);
 
 setInterval(phase,1000);setInterval(renderFL,60000);
