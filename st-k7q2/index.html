@@ -378,6 +378,10 @@ details.acc>.in{padding:6px 16px 12px}
     <h2>Saber antes</h2>
     <div id="info"></div>
 
+    <h2>Poupar dados no iPhone <small id="pd-count"></small></h2>
+    <p class="lead">Façam isto em casa, antes de partir, com wifi. Quanto mais marcarem, mais dura o pacote. No iOS 18, as definições de cada app estão em <b>Definições → Apps → nome da app</b>.</p>
+    <div id="pd"></div>
+
     <h2>Euros e dobras</h2>
     <div class="card">
       <div class="conv">
@@ -681,6 +685,7 @@ var CL=[
  ['roam','Dados móveis do cartão português desligados','Roaming fora da Europa é caríssimo. Usem wifi ou cartão local'],
  ['pw','Powerbank carregado, na mochila de mão','Proibido na mala de porão. E há cortes de luz'],
  ['ics','Lembretes no calendário','Viagem, Lembretes no telemóvel: um toque e ficam os alarmes todos'],
+ ['pdi','Poupar dados no iPhone','São Tomé, Poupar dados no iPhone: fazer em casa, com wifi'],
  ['off','Abrir este guia uma vez com internet, já hoje','Fica guardado e depois abre sem rede: no avião, em Luanda e em São Tomé'],
  ['mapa','Mapa offline de São Tomé','Rede fraca fora da cidade'],
  ['con','Contactos importantes guardados também em papel','Se o telemóvel morrer ou for roubado']
@@ -1006,6 +1011,7 @@ var INFO=[
   '· Videochamadas gastam muito, uma hora pode levar 0,5 a 1 GB. Façam-nas com wifi quando der',
   '· Vejam o saldo de vez em quando: marquem <b>*#123*2#</b> e carreguem em ligar',
   '· Se parar antes do fim: <b>Problema → A internet do cartão parou</b>',
+  '· <b>Lista completa para o iPhone, para ir marcando: mais abaixo, em "Poupar dados no iPhone"</b>',
   '<b>Alternativa sem loja:</b> um eSIM comprado online antes de partir (por exemplo 4 GB por 30 dias, cerca de 20 dólares). Funciona logo ao aterrar, mas só em telemóveis com eSIM e é mais caro',
   'Preços do site da CST. Podem mudar, por isso confirmem na loja',
   'Tomadas iguais às de Portugal (220 V): <b>não precisam de adaptador</b>']],
@@ -1015,6 +1021,49 @@ var INFO=[
 (function(){var h='';INFO.forEach(function(x){
   h+='<details class="acc"><summary><span><b>'+x[0]+'</b><span class="s">'+x[1]+'</span></span></summary><div class="in">'+list(x[2])+'</div></details>'});
   $('#info').innerHTML=h;})();
+
+
+/* ---------- poupar dados (iPhone) ---------- */
+var PD=[
+ ['#','O mais importante'],
+ ['md','<b>Modo de poucos dados</b>: Definições → Dados móveis → Opções de dados móveis → Modo de dados → <b>Modo de poucos dados</b>','Faz o iPhone parar quase tudo o que corre em segundo plano'],
+ ['apps','<b>Dados móveis só para as apps precisas</b>: Definições → Dados móveis, descer até à lista de apps e <b>desligar todas</b> menos WhatsApp, Firefox ou Safari (este guia), Mapas ou Google Maps e Encontrar','É o passo que mais poupa. Se precisarem de outra app, liguem-na só nessa altura'],
+ ['wa','<b>Assistência Wi-Fi: desligado</b>. Está no fim de Definições → Dados móveis','Senão o iPhone usa os dados sem avisar quando o wifi está fraco'],
+ ['icd','<b>iCloud Drive: desligado</b>, também no fim de Definições → Dados móveis',''],
+ ['#','Fotos, cópias e atualizações'],
+ ['fot','Definições → Fotos → <b>Dados móveis: desligado</b>','Senão cada foto vai para o iCloud pela rede. Sobem quando houver wifi'],
+ ['bg','Definições → Geral → <b>Atualização em segundo plano</b> → escolher <b>Wi-Fi</b>',''],
+ ['as','Definições → App Store → <b>Atualizações de apps: desligado</b>, <b>Transferências automáticas</b> nos dados móveis: desligado, <b>Reprodução automática de vídeo: desligado</b>',''],
+ ['sw','Definições → Geral → Atualização de software → Atualizações automáticas → <b>desligar as transferências</b>','Uma atualização do iOS pode gastar vários GB'],
+ ['mus','Música e Podcasts: Definições → Música (e Podcasts) → <b>Dados móveis: desligado</b>',''],
+ ['msg','Definições → Mensagens → <b>Modo de imagem de baixa qualidade: ligado</b>',''],
+ ['mail','Definições → Mail → Contas → Obter dados → <b>Manualmente</b>','O email só atualiza quando abrirem a app'],
+ ['hs','Definições → Hotspot pessoal → <b>desligado</b>','Para ninguém usar os vossos dados pelo vosso telemóvel'],
+ ['#','WhatsApp'],
+ ['wam','WhatsApp → Definições → Armazenamento e dados → Transferência automática de multimédia: <b>Fotos, Áudio, Vídeos e Documentos em "Wi-Fi"</b>','Veem a foto ou o vídeo quando tocarem nele'],
+ ['wac','WhatsApp → Definições → Armazenamento e dados → <b>Usar menos dados em chamadas: ligado</b>',''],
+ ['wab','WhatsApp → Definições → Conversas → Cópia de segurança → <b>Incluir vídeos: desligado</b>',''],
+ ['vid','Videochamadas <b>só com wifi</b>. Por dados, chamada de voz','Uma hora de videochamada pode gastar 0,5 a 1 GB'],
+ ['#','Antes de partir e lá'],
+ ['off','Mapas offline: no Google Maps, foto de perfil → <b>Mapas offline</b> → selecionar o mapa → escolher a ilha de São Tomé → Transferir. Nos Mapas da Apple: foto de perfil → <b>Mapas offline</b> → Transferir novo mapa','Os mapas funcionam sem gastar dados'],
+ ['yt','Vídeos, séries e música: <b>descarregar em casa</b> antes de ir, e ver só com wifi',''],
+ ['soc','Instagram, Facebook e TikTok: se os deixarem ligados, ativem a <b>Poupança de dados</b> nas definições de cada app','São das apps que mais gastam'],
+ ['rep','No primeiro dia em São Tomé: Definições → Dados móveis → no fim, <b>Repor estatísticas</b>','A partir daí veem quanto cada app gastou'],
+ ['sal','De vez em quando, ver o saldo: marcar <b>*#123*2#</b> e ligar, ou perguntar na loja','Se acabar antes do tempo: Problema → A internet do cartão parou']
+];
+var PDN=PD.filter(function(c){return c[0]!=='#'}).length,pdOpen=null;
+function renderPD(){
+  var st=getChecks('pd'),done=0,groups=[],g=null,h='';
+  PD.forEach(function(c){if(c[0]==='#'){g={t:c[1],items:[]};groups.push(g)}else g.items.push(c)});
+  if(pdOpen===null){pdOpen={};pdOpen[groups[0].t]=true}else document.querySelectorAll('#pd details').forEach(function(d){pdOpen[d.dataset.g]=d.open});
+  groups.forEach(function(x){
+    var n=x.items.filter(function(c){return st[c[0]]}).length;done+=n;var all=n===x.items.length;
+    h+='<details class="acc" data-g="'+x.t+'"'+(pdOpen[x.t]?' open':'')+'><summary><b>'+x.t+'</b><span class="pill '+(all?'g':'n')+'">'+(all?'Feito':n+'/'+x.items.length)+'</span></summary><div class="in">'+
+      x.items.map(function(c){var on=!!st[c[0]];return '<div class="check'+(on?' done':'')+'" role="checkbox" tabindex="0" aria-checked="'+on+'" data-pd="'+c[0]+'"><span class="box"></span><span class="txt">'+c[1]+(c[2]?'<small>'+c[2]+'</small>':'')+'</span></div>'}).join('')+'</div></details>'});
+  $('#pd').innerHTML=h;$('#pd-count').textContent=done+' de '+PDN+' feitos';
+}
+$('#pd').addEventListener('click',function(e){var c=e.target.closest('[data-pd]');if(!c)return;var st=getChecks('pd');st[c.dataset.pd]=!st[c.dataset.pd];setChecks('pd',st);renderPD();log('poupar dados',c.dataset.pd+(st[c.dataset.pd]?' feito':' desmarcado'))});
+renderPD();
 
 /* ---------- mapa ---------- */
 var HOME=[0.3189,6.7364];
