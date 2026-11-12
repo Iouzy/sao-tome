@@ -22,6 +22,7 @@
   }
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--ink);
   font:16px/1.5 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
@@ -33,12 +34,13 @@ header p{margin:4px 0 0;opacity:.85;font-size:15px}
 main{padding-bottom:calc(96px + env(safe-area-inset-bottom))}
 .view{display:none;padding-top:16px}
 .view.on{display:block}
-h2{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:26px 2px 10px;font-weight:650}
+h2{font-size:19px;letter-spacing:-.01em;color:var(--ink);margin:28px 2px 10px;font-weight:750;line-height:1.25}
+h2 small{display:block;font-size:14px;font-weight:400;color:var(--muted);letter-spacing:0;margin-top:2px}
 h3{margin:0 0 6px;font-size:18px}
 p{margin:8px 0}
 ul,ol{margin:8px 0;padding-left:22px} li{margin:5px 0}
 .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px;margin:10px 0;box-shadow:var(--shadow)}
-.muted{color:var(--muted)} .small{font-size:14px}
+.muted{color:var(--muted)} .small{font-size:14.5px}
 .phase{position:relative}
 .phase .big{font-size:22px;font-weight:700;line-height:1.25}
 .bar{height:8px;border-radius:99px;background:var(--line);overflow:hidden;margin:10px 0 4px}
@@ -121,7 +123,7 @@ input[type=number],input[type=date]{width:100%;font:inherit;font-size:20px;font-
 input:focus,button:focus-visible,.tile:focus-visible{outline:3px solid var(--brand-soft);outline-offset:1px}
 /* nav */
 nav{position:sticky;top:0;z-index:20;background:var(--card);border-bottom:1px solid var(--line);box-shadow:0 2px 10px rgba(0,0,0,.08)}
-nav .in{max-width:620px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr)}
+nav .in{max-width:620px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr)}
 nav button{border:0;background:none;padding:8px 4px 7px;border-bottom:3px solid transparent;display:flex;flex-direction:column;align-items:center;gap:3px;
   font-size:11.5px;font-weight:650;color:var(--muted);cursor:pointer}
 nav button svg{width:22px;height:22px}
@@ -172,6 +174,20 @@ nav button.sos{color:var(--red)}
 .pl .acts button,.pl .acts a{font-size:13px;padding:6px 11px;min-height:34px}
 .youare{border-radius:12px;padding:10px 12px;background:var(--blue-soft);margin-top:10px;font-size:15px}
 .youare b{display:block;font-size:17px}
+details.acc{background:var(--card);border:1px solid var(--line);border-radius:16px;margin:10px 0;box-shadow:var(--shadow);overflow:hidden}
+details.acc>summary{list-style:none;cursor:pointer;padding:14px 44px 14px 16px;position:relative;display:flex;justify-content:space-between;align-items:center;gap:10px;min-height:56px}
+details.acc>summary::-webkit-details-marker{display:none}
+details.acc>summary::after{content:"";position:absolute;right:18px;top:50%;width:9px;height:9px;border:solid var(--muted);border-width:0 2px 2px 0;transform:translateY(-70%) rotate(45deg);transition:transform .15s}
+details.acc[open]>summary::after{transform:translateY(-30%) rotate(-135deg)}
+details.acc[open]>summary{border-bottom:1px solid var(--line)}
+details.acc>summary b{font-size:16.5px}
+details.acc>summary .s{display:block;font-size:14px;color:var(--muted);font-weight:400}
+details.acc>.in{padding:6px 16px 12px}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:4px;background:var(--line);border-radius:12px;padding:4px;margin:4px 0 6px}
+.seg button{border:0;background:none;border-radius:9px;padding:10px;font-weight:700;cursor:pointer;color:var(--muted);min-height:42px}
+.seg button.on{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.lead{font-size:15px;color:var(--muted);margin:2px 2px 12px}
+.clocks.inl{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 </head>
@@ -183,6 +199,7 @@ nav button.sos{color:var(--red)}
 </div></header>
 <nav><div class="in">
   <button data-go="inicio" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Início</button>
+  <button data-go="viagem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14 3 11l1-2 8 1 5-5a2 2 0 0 1 3 3l-5 5 1 8-2 1-3-7-3 3v3l-2 1-1-4-4-1 1-2h3z"/></svg>Viagem</button>
   <button data-go="problema" class="sos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2 20h20L12 3z"/><path d="M12 10v4M12 17h.01"/></svg>Problema</button>
   <button data-go="seguro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/><path d="m9 12 2 2 4-4"/></svg>Seguro</button>
   <button data-go="stp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="10" r="3"/><path d="M12 21s7-6.2 7-11a7 7 0 0 0-14 0c0 4.8 7 11 7 11z"/></svg>São Tomé</button>
@@ -192,73 +209,70 @@ nav button.sos{color:var(--red)}
 
 <!-- INÍCIO -->
 <section class="view on" id="v-inicio">
-  <div class="card phase" id="phase"></div>
-
   <div class="card">
-    <div style="display:flex;justify-content:space-between;align-items:center"><b>Horas agora</b><span class="small muted" id="here"></span></div>
-    <div class="clocks" id="clocks"></div>
+    <div class="phase" id="phase"></div>
+    <div class="clocks inl" id="clocks"></div>
+    <span id="here" hidden></span>
   </div>
 
-  <div class="card" id="loc">
-    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
-      <div><b>A minha localização</b><br><span class="small muted" id="loc-sub">Para saberes onde estás e mandares-me onde estás</span></div>
-    </div>
-    <button class="btn p w" id="loc-btn" style="margin-top:10px">Usar a localização</button>
-    <div id="loc-res"></div>
-  </div>
-
-  <div class="row" style="margin-top:12px">
+  <h2>Emergência</h2>
+  <div class="row">
     <a class="call" href="tel:112">112<small>Emergência</small></a>
     <a class="call" href="tel:2222222">222 22 22<small>Polícia / ambulância</small></a>
   </div>
+  <button class="btn p w" data-go="problema" style="margin-top:10px">Aconteceu alguma coisa</button>
 
+  <h2>Seguro</h2>
   <div class="card">
     <div style="display:flex;justify-content:space-between;align-items:center">
-      <span class="pill g">Seguro ativo</span><span class="small muted">Heymondo · Tranquilidade</span>
+      <span class="pill g">Ativo</span><span class="small muted">Heymondo · Tranquilidade</span>
     </div>
     <div class="kv" style="margin-top:6px"><span>Apólice n.º</span><b class="pol">ver no PDF</b></div>
     <div class="kv"><span>Cobre</span><b>Os dois, 12 a 30 nov</b></div>
     <div class="kv"><span>Emergência 24h</span><b>App Heymondo ou n.º do PDF</b></div>
     <div class="row" style="margin-top:10px">
       <button class="btn" id="copypol">Copiar apólice</button>
-      <button class="btn p" data-go="problema">Aconteceu algo</button>
+      <button class="btn" data-go="seguro">O seguro paga?</button>
     </div>
   </div>
 
+  <h2>Falem comigo</h2>
   <div class="card">
     <div class="me"><div class="av">L</div>
-    <div><b>Falem comigo</b><br><span class="small muted">Seguro, reclamações à TAAG ou papéis: mandem fotos dos documentos e eu trato daqui.</span></div></div>
+    <div class="small muted">Seguro, reclamações à TAAG ou papéis: mandem fotos dos documentos e eu trato daqui.</div></div>
     <div class="row" style="margin-top:12px">
       <a class="btn wa" data-wa="Leonardo, preciso de ajuda com a viagem."><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2c0 1.3.9 2.5 1 2.7.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg>WhatsApp</a>
       <a class="btn" data-tel>Ligar</a>
     </div>
   </div>
+</section>
 
-  <h2>Antes de sair</h2>
+<!-- VIAGEM -->
+<section class="view" id="v-viagem">
+  <h2 style="margin-top:6px">Antes de sair <small id="cl-count"></small></h2>
+  <div class="bar" style="margin:0 2px 10px"><i id="cl-bar"></i></div>
+  <div id="checklist"></div>
+
+  <h2>Voos <small>Toca num voo para ver terminal, avião e estado em direto</small></h2>
+  <div id="flights"></div>
+
+  <h2>Escalas em Luanda</h2>
   <div class="card">
-    <div style="display:flex;justify-content:space-between"><b>Checklist</b><span class="small muted" id="cl-count"></span></div>
-    <div class="bar"><i id="cl-bar"></i></div>
-    <div id="checklist"></div>
-  </div>
-
-  <h2>Voos</h2>
-  <div class="card" id="flights"></div>
-  <div class="card small">
-    <b>Ida:</b> 10 horas em Luanda. Fiquem juntos no aeroporto, com passaporte de São Tomé pode não ser possível sair sem visto angolano.<br>
-    <b>Volta:</b> só 2h20 em Luanda. Se o voo de São Tomé atrasar mais de 1h30, há risco de perder o de Lisboa. Os 4 voos são da mesma reserva, por isso é a TAAG que tem de vos pôr no seguinte.
+    <p style="margin-top:0"><b>Ida:</b> espera longa. Fiquem juntos no aeroporto: com passaporte de São Tomé pode não ser possível sair sem visto angolano.</p>
+    <p style="margin-bottom:0"><b>Volta:</b> só 2h20. Se o voo de São Tomé atrasar mais de 1h30, há risco de perder o de Lisboa. Os 4 voos são da mesma reserva, por isso é a TAAG que tem de vos pôr no seguinte.</p>
   </div>
 </section>
 
 <!-- PROBLEMA -->
 <section class="view" id="v-problema">
-  <h2 style="margin-top:6px">O que aconteceu?</h2>
+  <h2 style="margin-top:6px">O que aconteceu? <small>Toca no problema para ver os passos</small></h2>
   <div class="tiles" id="tiles"></div>
   <p class="small muted" style="margin-top:14px">Cada cenário tem os passos para ir marcando, o que não fazer, o que guardar, se o seguro paga e uma mensagem pronta a enviar.</p>
 </section>
 
 <!-- SEGURO -->
 <section class="view" id="v-seguro">
-  <h2 style="margin-top:6px">O seguro paga?</h2>
+  <h2 style="margin-top:6px">O seguro paga? <small>Responde às perguntas e vê logo</small></h2>
   <div class="card" id="quiz"></div>
 
   <h2>O que cobre</h2>
@@ -297,33 +311,42 @@ nav button.sos{color:var(--red)}
 
 <!-- SÃO TOMÉ -->
 <section class="view" id="v-stp">
-  <h2 style="margin-top:6px">Mapa: o que visitar</h2>
-  <div class="card">
-    <div class="small muted">São Marçal é um bairro residencial a uns 2 km do centro. Para ver coisas vai-se à cidade ou de táxi pela ilha. A lista abaixo fica por ordem de distância de onde estás.</div>
-    <div class="row" style="margin-top:10px">
-      <button class="btn p" id="map-me">Onde estou</button>
-      <button class="btn" id="map-home">São Marçal</button>
-    </div>
-    <div id="youare"></div>
-    <div class="map" id="map"><div class="small muted" style="padding:16px">O mapa precisa de internet.</div></div>
-    <p class="small muted" style="margin:6px 0 0">Posições aproximadas. O botão "Ir" abre o caminho certo no Google Maps.</p>
-  </div>
-  <div class="card" id="places"></div>
-
-  <h2>Visto com passaporte português</h2>
-  <div class="card" id="visa"></div>
-
-  <h2>Euros ↔ dobras</h2>
-  <div class="card">
-    <div class="conv">
-      <label><span>Euros</span><input type="number" inputmode="decimal" id="eur" value="10"></label>
-      <label><span>Dobras (STN)</span><input type="number" inputmode="decimal" id="stn"></label>
-    </div>
-    <p class="small muted">Câmbio fixo: 1€ = 24,5 dobras. Notas em euros aceitam-se em quase todo o lado.</p>
+  <div class="seg" role="tablist">
+    <button class="on" data-seg="guia">Guia</button>
+    <button data-seg="mapa">Mapa e passeios</button>
   </div>
 
-  <h2>Saber antes</h2>
-  <div id="info"></div>
+  <div id="stp-guia">
+    <h2>Visto <small>Só para passaporte português</small></h2>
+    <div class="card" id="visa"></div>
+
+    <h2>Saber antes</h2>
+    <div id="info"></div>
+
+    <h2>Euros e dobras</h2>
+    <div class="card">
+      <div class="conv">
+        <label><span>Euros</span><input type="number" inputmode="decimal" id="eur" value="10"></label>
+        <label><span>Dobras (STN)</span><input type="number" inputmode="decimal" id="stn"></label>
+      </div>
+      <p class="small muted">Câmbio fixo: 1€ = 24,5 dobras.</p>
+    </div>
+  </div>
+
+  <div id="stp-mapa" hidden>
+    <p class="lead">São Marçal é um bairro residencial a 2 km do centro. Para passear vai-se à cidade ou de táxi pela ilha.</p>
+    <div class="card">
+      <div class="row">
+        <button class="btn p" id="map-me">Onde estou</button>
+        <button class="btn" id="map-home">São Marçal</button>
+      </div>
+      <div id="youare"></div>
+      <div class="map" id="map"><div class="small muted" style="padding:16px">O mapa precisa de internet.</div></div>
+      <p class="small muted" style="margin:8px 0 0">Posições aproximadas. O botão "Ir" abre o caminho certo no Google Maps.</p>
+    </div>
+    <h2 id="places-h">O que visitar</h2>
+    <div class="card" id="places"></div>
+  </div>
 </section>
 </main>
 
@@ -452,13 +475,18 @@ var S={
 };
 
 /* ---------- navegação ---------- */
-var views=['inicio','problema','seguro','stp'];
+var views=['inicio','viagem','problema','seguro','stp'];
 function go(v){
   views.forEach(function(x){$('#v-'+x).classList.toggle('on',x===v)});
   document.querySelectorAll('nav button').forEach(function(b){b.classList.toggle('on',b.dataset.go===v)});
   window.scrollTo(0,0);store.set('view',v);
-  if(v==='stp')setTimeout(initMap,50);
+  if(v==='stp'&&!$('#stp-mapa').hidden)setTimeout(initMap,50);
 }
+document.addEventListener('click',function(e){var b=e.target.closest('[data-seg]');if(!b)return;
+  var m=b.dataset.seg==='mapa';$('#stp-guia').hidden=m;$('#stp-mapa').hidden=!m;
+  document.querySelectorAll('[data-seg]').forEach(function(x){x.classList.toggle('on',x===b)});
+  if(m)setTimeout(function(){initMap();if(map)map.invalidateSize()},60);
+});
 document.addEventListener('click',function(e){
   var g=e.target.closest('[data-go]');if(g){go(g.dataset.go);return}
   var c=e.target.closest('[data-copy]');if(c){copy(c.dataset.copy);return}
@@ -538,26 +566,6 @@ var PL=[
 function km(a,b,c,e){var R=6371,r=Math.PI/180,x=(c-a)*r,y=(e-b)*r,q=Math.sin(x/2)*Math.sin(x/2)+Math.cos(a*r)*Math.cos(c*r)*Math.sin(y/2)*Math.sin(y/2);return 2*R*Math.asin(Math.sqrt(q))}
 function zoneOf(lat,lon){if(lat>-2&&lat<2.5&&lon>5.5&&lon<8)return 'stp';if(lat>-19&&lat<-4&&lon>11&&lon<24.5)return 'lad';if(lat>36&&lat<43&&lon>-10&&lon<-6)return 'lis';return null}
 function maps(q,lat,lon){return 'https://www.google.com/maps/dir/?api=1'+(lat!=null?'&origin='+lat+','+lon:'')+'&destination='+q}
-function showLoc(lat,lon,acc){
-  var z=zoneOf(lat,lon);hereZone=z;phase();
-  var names={lis:'Portugal',lad:'Angola',stp:'São Tomé e Príncipe'};
-  var h='<div class="small" style="margin:10px 0 4px">Estás em <b>'+(z?names[z]:'local fora da rota')+'</b> <span class="muted">(precisão ~'+Math.round(acc)+' m)</span></div>';
-  var list=PL.filter(function(p){return !z||p[3]===z});
-  h+=list.map(function(p){var dist=p[1]!=null?km(lat,lon,p[1],p[2]):null;
-    return '<div class="dist"><span>'+p[0]+(dist!=null?'<br><span class="small muted">a '+(dist<1?Math.round(dist*1000)+' m':dist.toFixed(1)+' km')+' em linha reta</span>':'')+'</span><a class="btn" target="_blank" rel="noopener" href="'+maps(p[4],lat,lon)+'">Ir</a></div>'}).join('');
-  var mapUrl='https://maps.google.com/?q='+lat.toFixed(5)+','+lon.toFixed(5);
-  h+='<a class="btn wa w" style="margin-top:10px" data-wa="'+esc('Leonardo, estou aqui: '+mapUrl)+'">'+document.querySelector('.fab').innerHTML+'Mandar-te onde estou</a>';
-  $('#loc-res').innerHTML=h;$('#loc-btn').textContent='Atualizar localização';
-}
-$('#loc-btn').addEventListener('click',function(){
-  if(!navigator.geolocation){$('#loc-res').innerHTML='<p class="small" style="color:var(--red)">Este browser não dá acesso à localização.</p>';return}
-  $('#loc-btn').textContent='A procurar...';
-  navigator.geolocation.getCurrentPosition(function(p){showLoc(p.coords.latitude,p.coords.longitude,p.coords.accuracy)},
-    function(err){$('#loc-btn').textContent='Tentar outra vez';
-      $('#loc-res').innerHTML='<p class="small" style="color:var(--red)">'+(err.code===1?'A localização foi bloqueada. Abre o ficheiro no Safari ou no Chrome (não dentro do WhatsApp) e aceita o pedido.':'Não deu para obter a localização. Liga o GPS e tenta outra vez.')+'</p>'},
-    {enableHighAccuracy:true,timeout:15000,maximumAge:60000});
-});
-
 /* ---------- checklist ---------- */
 var CL=[
  ['#','Documentos'],
@@ -593,13 +601,18 @@ var CL=[
  ['con','Contactos importantes guardados também em papel','Se o telemóvel morrer ou for roubado']
 ];
 var CLN=CL.filter(function(c){return c[0]!=='#'}).length;
+var clOpen=null;
 function renderCL(){
-  var st=getChecks('cl'),done=0,h='';
-  CL.forEach(function(c){
-    if(c[0]==='#'){h+='<div class="small" style="font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:14px 2px 2px">'+c[1]+'</div>';return}
-    var on=!!st[c[0]];if(on)done++;
-    h+='<div class="check'+(on?' done':'')+'" role="checkbox" tabindex="0" aria-checked="'+on+'" data-cl="'+c[0]+'"><span class="box"></span><span class="txt">'+c[1]+(c[2]?'<small>'+c[2]+'</small>':'')+'</span></div>'});
-  $('#checklist').innerHTML=h;$('#cl-count').textContent=done+' de '+CLN;$('#cl-bar').style.width=(done/CLN*100)+'%';
+  var st=getChecks('cl'),done=0,groups=[],g=null;
+  CL.forEach(function(c){if(c[0]==='#'){g={t:c[1],items:[]};groups.push(g)}else g.items.push(c)});
+  if(clOpen===null){clOpen={};var first=true;groups.forEach(function(x){var all=x.items.every(function(c){return st[c[0]]});if(!all&&first){clOpen[x.t]=true;first=false}})}
+  else{document.querySelectorAll('#checklist details').forEach(function(d){clOpen[d.dataset.g]=d.open})}
+  var h='';
+  groups.forEach(function(x){
+    var n=x.items.filter(function(c){return st[c[0]]}).length;done+=n;var all=n===x.items.length;
+    h+='<details class="acc" data-g="'+x.t+'"'+(clOpen[x.t]?' open':'')+'><summary><b>'+x.t+'</b><span class="pill '+(all?'g':'n')+'">'+(all?'Feito':n+' de '+x.items.length)+'</span></summary><div class="in">'+
+      x.items.map(function(c){var on=!!st[c[0]];return '<div class="check'+(on?' done':'')+'" role="checkbox" tabindex="0" aria-checked="'+on+'" data-cl="'+c[0]+'"><span class="box"></span><span class="txt">'+c[1]+(c[2]?'<small>'+c[2]+'</small>':'')+'</span></div>'}).join('')+'</div></details>'});
+  $('#checklist').innerHTML=h;$('#cl-count').textContent=done+' de '+CLN+' coisas tratadas';$('#cl-bar').style.width=(done/CLN*100)+'%';
 }
 $('#checklist').addEventListener('click',function(e){var c=e.target.closest('[data-cl]');if(!c)return;var st=getChecks('cl');st[c.dataset.cl]=!st[c.dataset.cl];setChecks('cl',st);renderCL()});
 
@@ -612,18 +625,22 @@ var FL=[
 ];
 function left(ms){var m=Math.round(ms/6e4),dd=Math.floor(m/1440),hh=Math.floor(m%1440/60),mm=m%60;
   return dd>0?dd+' d '+hh+' h':(hh>0?hh+' h '+mm+' min':mm+' min')}
+var flOpen=null;
 function renderFL(){
   var now=new Date(),nextSet=false,h='';
+  if(flOpen!==null)document.querySelectorAll('#flights details').forEach(function(d){flOpen[d.dataset.f]=d.open});
+  var first=flOpen===null;if(first)flOpen={};
   FL.forEach(function(f){
     var dep=d(f[4]),arr=d(f[5]),cls='',tag='';
-    if(now>arr){cls='past';tag='<span class="pill n">Já devia ter chegado</span>'}
-    else if(now>=dep){cls='next';nextSet=true;tag='<span class="pill g">No ar · chega em '+left(arr-now)+'</span>'}
-    else if(!nextSet){cls='next';nextSet=true;tag='<span class="pill a">Sai daqui a '+left(dep-now)+'</span>'}
-    h+='<div class="fl '+cls+'"><span class="dot"></span><div style="flex:1;min-width:0"><b>'+f[2]+'</b><span class="small muted">'+f[3]+' · '+f[0]+'</span>'+
-      (tag?'<div style="margin-top:6px">'+tag+'</div>':'')+
-      '<div class="small" style="margin-top:6px">'+f[6]+'</div>'+'<div class="opts" style="margin:8px 0 2px"><a class="opt" style="text-decoration:none;color:inherit;font-size:14px" href="https://www.flightradar24.com/data/flights/'+f[0].toLowerCase()+'" target="_blank" rel="noopener">Flightradar24</a>'+
-      '<a class="opt" style="text-decoration:none;color:inherit;font-size:14px" href="https://www.flightaware.com/live/flight/'+f[1]+'" target="_blank" rel="noopener">FlightAware</a></div></div></div>'});
-  $('#flights').innerHTML='<div class="verdict m" style="margin:0 0 10px"><b>Confirmem os horários na reserva TAAG</b>A TAAG muda horários com frequência. Os sites de voos mostram horários diferentes do bilhete (por exemplo Luanda–São Tomé às 10:30). Vejam em flytaag.com, em gerir reserva, antes de cada voo.</div>'+h+'<p class="small muted" style="margin:10px 0 0">A contagem usa os horários do bilhete e funciona sem internet. O estado real (atrasos, portas, onde está o avião) abre nos botões e precisa de internet. Horas locais: Lisboa e São Tomé iguais, Luanda mais 1 h.</p>';
+    if(now>arr){cls='past';tag='<span class="pill n">Feito</span>'}
+    else if(now>=dep){cls='next';nextSet=true;tag='<span class="pill g">No ar · '+left(arr-now)+'</span>'}
+    else if(!nextSet){cls='next';nextSet=true;tag='<span class="pill a">Daqui a '+left(dep-now)+'</span>'}
+    if(first&&cls==='next')flOpen[f[0]]=true;
+    h+='<details class="acc" data-f="'+f[0]+'"'+(flOpen[f[0]]?' open':'')+(cls==='past'?' style="opacity:.6"':'')+'><summary><span><b>'+f[2]+'</b><span class="s">'+f[3]+'</span></span>'+tag+'</summary><div class="in">'+
+      '<p style="margin:8px 0">'+f[6]+'</p><p class="small muted" style="margin:0 0 8px">Voo '+f[0]+' · estado em direto (precisa de internet):</p>'+
+      '<div class="row"><a class="btn" href="https://www.flightradar24.com/data/flights/'+f[0].toLowerCase()+'" target="_blank" rel="noopener">Flightradar24</a>'+
+      '<a class="btn" href="https://www.flightaware.com/live/flight/'+f[1]+'" target="_blank" rel="noopener">FlightAware</a></div></div></details>'});
+  $('#flights').innerHTML='<div class="verdict m" style="margin:0 0 10px"><b>Confirmem os horários na TAAG</b>A TAAG muda horários com frequência e há sites a mostrar o Luanda–São Tomé às 10:30. Vejam em flytaag.com, em gerir reserva, antes de cada voo.</div>'+h+'<p class="small muted" style="margin:10px 2px 0">Horas locais. Lisboa e São Tomé têm a mesma hora, Luanda tem mais 1 h.</p>';
 }
 
 /* ---------- tiles e sheet ---------- */
@@ -742,8 +759,8 @@ var INFO=[
  ['Malária e saúde','Todo o ano',['Repelente sempre, sobretudo ao fim da tarde e à noite','Calças e mangas compridas quando escurece','Rede mosquiteira se houver','Água engarrafada','Medicamentos são difíceis de encontrar, levem os vossos','<b>Febre = médico</b>, mesmo semanas depois de voltar']],
  ['Segurança','Para não serem apanhados de surpresa',['País calmo, mas evitem manifestações e ajuntamentos','Barcos em mar aberto desaconselhados (pirataria no Golfo da Guiné)','Novembro é época de chuvas: inundações e estradas cortadas','Cortes de luz frequentes','Língua: português, e na rua ouve-se muito o forro']]
 ];
-(function(){var h='';INFO.forEach(function(x,i){
-  h+='<details class="card" style="padding:0"'+(x[3]?' open':'')+'><summary style="list-style:none;cursor:pointer;padding:14px 16px;display:flex;justify-content:space-between;align-items:center"><span><b>'+x[0]+'</b><br><span class="small muted">'+x[1]+'</span></span><span class="muted" style="font-size:22px">+</span></summary><div style="padding:0 16px 12px">'+list(x[2])+'</div></details>'});
+(function(){var h='';INFO.forEach(function(x){
+  h+='<details class="acc"><summary><span><b>'+x[0]+'</b><span class="s">'+x[1]+'</span></span></summary><div class="in">'+list(x[2])+'</div></details>'});
   $('#info').innerHTML=h;})();
 
 /* ---------- mapa ---------- */
@@ -786,7 +803,8 @@ function initMap(){
 function origin(){return me||HOME}
 function renderPlaces(){
   var o=origin(),list=POI.map(function(p,i){return {p:p,i:i,d:km(o[0],o[1],p[1],p[2])}}).sort(function(a,b){return a.d-b.d});
-  $('#places').innerHTML='<b>'+(me?'Perto de ti':'A partir de São Marçal')+'</b>'+list.map(function(x){var p=x.p;
+  $('#places-h').innerHTML='O que visitar <small>'+(me?'Por ordem de distância de onde estás':'Por ordem de distância de São Marçal')+'</small>';
+  $('#places').innerHTML=list.map(function(x){var p=x.p;
     return '<div class="pl"><span class="n" style="background:'+CAT[p[3]]+';color:#fff">'+(x.i+1)+'</span><div class="b"><b>'+p[0]+'</b><span class="small muted">'+p[3]+' · '+(x.d<1?Math.round(x.d*1000)+' m':x.d.toFixed(1)+' km')+' em linha reta</span><span class="small">'+p[4]+'</span>'+
       '<div class="acts"><button class="btn" data-show="'+x.i+'">Ver no mapa</button><a class="btn" target="_blank" rel="noopener" href="'+maps(p[5],me?me[0]:null,me?me[1]:null)+'">Ir</a></div></div></div>'}).join('');
 }
@@ -799,7 +817,8 @@ function where(lat,lon,acc){
   var near=POI.map(function(p){return {p:p,d:km(lat,lon,p[1],p[2])}}).sort(function(a,b){return a.d-b.d})[0];
   var dh=km(lat,lon,HOME[0],HOME[1]);
   var txt=dh<0.6?'Estás em São Marçal':(near&&near.d<0.8?'Estás perto de '+near.p[0]:(hz==='stp'?'Estás em São Tomé':'Estás fora de São Tomé'));
-  $('#youare').innerHTML='<div class="youare"><b>'+txt+'</b><span id="addr" class="small muted">'+(hz==='stp'?'A '+(dh<1?Math.round(dh*1000)+' m':dh.toFixed(1)+' km')+' de São Marçal':'')+'</span><div class="small muted">Precisão ~'+Math.round(acc)+' m</div></div>';
+  $('#youare').innerHTML='<div class="youare"><b>'+txt+'</b><span id="addr" class="small muted">'+(hz==='stp'?'A '+(dh<1?Math.round(dh*1000)+' m':dh.toFixed(1)+' km')+' de São Marçal':'')+'</span><div class="small muted">Precisão ~'+Math.round(acc)+' m</div></div>'+
+    '<a class="btn wa w" style="margin-top:10px" data-wa="'+esc('Leonardo, estou aqui: https://maps.google.com/?q='+lat.toFixed(5)+','+lon.toFixed(5))+'">'+document.querySelector('.fab').innerHTML+'Mandar-te onde estou</a>';
   if(map){
     if(!meMarker){meMarker=L.circleMarker(me,{radius:8,color:'#fff',weight:3,fillColor:'#1d6fe0',fillOpacity:1}).addTo(map).bindPopup('Estás aqui');meCircle=L.circle(me,{radius:acc,color:'#1d6fe0',weight:1,fillOpacity:.12}).addTo(map);map.setView(me,15)}
     else{meMarker.setLatLng(me);meCircle.setLatLng(me).setRadius(acc)}
@@ -828,7 +847,7 @@ $('#copypol').addEventListener('click',function(){if(POL)copy(POL);else toast('O
 if(!ME){document.querySelectorAll('[data-tel]').forEach(function(b){b.style.display='none'})}
 phase();renderCL();renderFL();renderTiles();renderQuiz();renderVisa();
 var v=store.get('view');if(v&&views.indexOf(v)>-1)go(v);
-window.addEventListener('load',function(){if($('#v-stp').classList.contains('on'))initMap()});
+
 setInterval(phase,1000);setInterval(renderFL,60000);
 /* a bola esconde-se enquanto se faz scroll e volta quando se para */
 var fab=$('.fab'),ft;
