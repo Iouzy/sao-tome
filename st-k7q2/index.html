@@ -296,6 +296,13 @@ details.acc>.in{padding:6px 16px 12px}
   <div class="bar" style="margin:0 2px 10px"><i id="cl-bar"></i></div>
   <div id="checklist"></div>
 
+  <h2>Lembretes no telemóvel</h2>
+  <div class="card">
+    <p style="margin-top:0">Põe alarmes no Calendário para os momentos importantes: chegar ao aeroporto, ir para a porta, Transferências em Luanda, esperar pelas malas, e o repelente ao fim da tarde. Tocam mesmo sem internet e com o guia fechado.</p>
+    <a class="btn p w" href="lembretes.ics" id="ics-btn">Adicionar lembretes ao calendário</a>
+    <p class="small muted" style="margin:10px 0 0">No iPhone, abram no <b>Safari</b> e carreguem em <b>Adicionar tudo</b>. Façam isto só uma vez, senão os lembretes ficam repetidos. Se a TAAG mudar a hora de um voo, os lembretes não mudam sozinhos.</p>
+  </div>
+
   <h2>Passo a passo <small>O que fazer em cada voo, por ordem. Vão marcando</small></h2>
   <div id="pp"></div>
 
@@ -655,6 +662,7 @@ var CL=[
  ['#','Telemóvel'],
  ['roam','Dados móveis do cartão português desligados','Roaming fora da Europa é caríssimo. Usem wifi ou cartão local'],
  ['pw','Powerbank carregado, na mochila de mão','Proibido na mala de porão. E há cortes de luz'],
+ ['ics','Lembretes no calendário','Viagem, Lembretes no telemóvel: um toque e ficam os alarmes todos'],
  ['off','Abrir este guia uma vez com internet, já hoje','Fica guardado e depois abre sem rede: no avião, em Luanda e em São Tomé'],
  ['mapa','Mapa offline de São Tomé','Rede fraca fora da cidade'],
  ['con','Contactos importantes guardados também em papel','Se o telemóvel morrer ou for roubado']
@@ -702,6 +710,7 @@ function renderFL(){
   $('#flights').innerHTML='<div class="verdict m" style="margin:0 0 10px"><b>Confirmem os horários na TAAG</b>A TAAG muda horários com frequência e há sites a mostrar o Luanda–São Tomé às 10:30. Vejam em flytaag.com, em gerir reserva, antes de cada voo.</div>'+h+'<p class="small muted" style="margin:10px 2px 0">Horas locais. Lisboa e São Tomé têm a mesma hora, Luanda tem mais 1 h.</p>';
 }
 
+$('#ics-btn').addEventListener('click',function(){log('lembretes','adicionou ao calendário')});
 /* ---------- passo a passo ---------- */
 /* cada passo: [o que fazer, explicação que abre em "Explicar"] */
 var PP=[

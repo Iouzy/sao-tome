@@ -1,0 +1,182 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//guia-sao-tome//PT
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Viagem São Tomé
+BEGIN:VEVENT
+UID:lis-chegar@guia-sao-tome
+DTSTAMP:20261112T140000Z
+DTSTART:20261112T193000Z
+DTEND:20261112T200000Z
+SUMMARY:Chegar ao aeroporto de Lisboa\, Terminal 1
+DESCRIPTION:Balcão TAAG com passaportes\, febre amarela e visto. Etiqueta 
+ das malas tem de dizer TMS. Foto aos talões. Abram o guia no Passo a pass
+ o.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Chegar ao aeroporto de Lisboa\, Terminal 1
+TRIGGER:-PT2H
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Chegar ao aeroporto de Lisboa\, Terminal 1
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Chegar ao aeroporto de Lisboa\, Terminal 1
+TRIGGER:PT0M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:lis-porta@guia-sao-tome
+DTSTAMP:20261112T140000Z
+DTSTART:20261112T214500Z
+DTEND:20261112T221500Z
+SUMMARY:Estar na porta do DT653 para Luanda
+DESCRIPTION:Vejam a porta nos ecrãs: DT653 Luanda. O embarque fecha 20 min
+ utos antes.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Estar na porta do DT653 para Luanda
+TRIGGER:PT0M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:lad-chegada@guia-sao-tome
+DTSTAMP:20261112T140000Z
+DTSTART:20261113T050500Z
+DTEND:20261113T053500Z
+SUMMARY:Luanda: seguir Transferências
+DESCRIPTION:Não vão buscar as malas. Balcão de transferências da TAAG: 
+ confirmar malas para São Tomé e levantar o cartão do DT510. Fiquem junt
+ os.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Luanda: seguir Transferências
+TRIGGER:PT0M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:lad-ecra@guia-sao-tome
+DTSTAMP:20261112T140000Z
+DTSTART:20261113T121500Z
+DTEND:20261113T123000Z
+SUMMARY:Luanda: ver a porta do DT510 no ecrã
+DESCRIPTION:Procurem DT510 São Tomé nos ecrãs e vejam se a hora mudou.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Luanda: ver a porta do DT510 no ecrã
+TRIGGER:PT0M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:lad-porta@guia-sao-tome
+DTSTAMP:20261112T140000Z
+DTSTART:20261113T141500Z
+DTEND:20261113T144500Z
+SUMMARY:Luanda: estar na porta do DT510
+DESCRIPTION:O voo para São Tomé sai às 16:15\, hora de Luanda.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Luanda: estar na porta do DT510
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Luanda: estar na porta do DT510
+TRIGGER:PT0M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:stp-chegada@guia-sao-tome
+DTSTAMP:20261112T140000Z
+DTSTART:20261113T173000Z
+DTEND:20261113T180000Z
+SUMMARY:São Tomé: esperar por todas as malas
+DESCRIPTION:Imigração: passaporte\, febre amarela e visto (paga-se aqui e
+ m euros). Contem as malas. Se faltar alguma\, não saiam sem o PIR. Avisem
+  o Leonardo.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:São Tomé: esperar por todas as malas
+TRIGGER:PT0M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:stp-repelente@guia-sao-tome
+DTSTAMP:20261112T140000Z
+DTSTART:20261113T173000Z
+DTEND:20261113T174500Z
+SUMMARY:Repelente e mangas compridas
+DESCRIPTION:Ao fim da tarde e à noite há mais mosquitos. Febre = médico.
+RRULE:FREQ=DAILY;UNTIL=20261128T235959Z
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Repelente e mangas compridas
+TRIGGER:PT0M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:stp-confirmar@guia-sao-tome
+DTSTAMP:20261112T140000Z
+DTSTART:20261129T090000Z
+DTEND:20261129T091500Z
+SUMMARY:Confirmar hora do voo de regresso
+DESCRIPTION:flytaag.com\, Gerir reserva. Gastem ou troquem as dobras antes 
+ de ir para o aeroporto.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Confirmar hora do voo de regresso
+TRIGGER:PT0M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:stp-aeroporto@guia-sao-tome
+DTSTAMP:20261112T140000Z
+DTSTART:20261129T152000Z
+DTEND:20261129T155000Z
+SUMMARY:Chegar ao aeroporto de São Tomé
+DESCRIPTION:Etiqueta das malas tem de dizer LIS. Pedir os dois cartões de 
+ embarque. Foto aos talões.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Chegar ao aeroporto de São Tomé
+TRIGGER:-PT1H30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Chegar ao aeroporto de São Tomé
+TRIGGER:PT0M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:lad2-transf@guia-sao-tome
+DTSTAMP:20261112T140000Z
+DTSTART:20261129T203500Z
+DTEND:20261129T210500Z
+SUMMARY:Luanda: ir logo para Transferências
+DESCRIPTION:Só 2h20. Malas seguem para Lisboa. Procurem DT650 Lisboa nos e
+ crãs e vão direto à porta.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Luanda: ir logo para Transferências
+TRIGGER:PT0M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:lis-malas@guia-sao-tome
+DTSTAMP:20261112T140000Z
+DTSTART:20261130T071000Z
+DTEND:20261130T074000Z
+SUMMARY:Lisboa: esperar por todas as malas
+DESCRIPTION:Controlo de passaportes e depois o tapete do DT650. Se faltar a
+ lguma\, não saiam sem o PIR.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Lisboa: esperar por todas as malas
+TRIGGER:PT0M
+END:VALARM
+END:VEVENT
+END:VCALENDAR
