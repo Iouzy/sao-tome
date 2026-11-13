@@ -1029,7 +1029,8 @@ stn.value=fmtN(10*R);
 /* ---------- info ---------- */
 
 /* ---------- operadora de cada telemóvel ---------- */
-var OP='cst';try{OP=localStorage.getItem('stp_op')==='unitel'?'unitel':'cst'}catch(e){}
+function opByName(n){var x=(n||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().trim();if(/^celmira/.test(x))return 'unitel';if(/^joao/.test(x))return 'cst';return null}
+var OP='cst';try{OP=localStorage.getItem('stp_op')==='unitel'?'unitel':'cst';var _o=opByName(localStorage.getItem('stp_n'));if(_o)OP=_o}catch(e){}
 var OPS={
  cst:{n:'CST',sub:'CST, pacote de 6 GB por 30 dias · passo a passo',saldo:'marquem <b>*#123*2#</b> e carreguem em ligar',pacote:'Netfone',
   poupar:'<b>Poupar dados (importante):</b> há queixas recentes de pacotes da CST que acabam muito antes do fim. Façam isto logo no primeiro dia:',
@@ -1283,7 +1284,7 @@ function regLoc(manual){
   },{enableHighAccuracy:true,timeout:20000,maximumAge:30000});
 }
 function hello(){var h=$('#hello');if(h)h.textContent=NAME?'Olá, '+NAME+' · ':''}
-function saveName(v){v=(v||'').trim().slice(0,30);if(!v)return false;NAME=v;try{localStorage.setItem('stp_n',v)}catch(e){}log('nome',v);hello();who();return true}
+function saveName(v){v=(v||'').trim().slice(0,30);if(!v)return false;NAME=v;try{localStorage.setItem('stp_n',v)}catch(e){}var o=opByName(v);if(o&&o!==OP){OP=o;try{localStorage.setItem('stp_op',o)}catch(e){}applyOp()}log('nome',v);hello();who();return true}
 $('#name-ok').addEventListener('click',function(){if(saveName($('#name-in').value))$('#name-ov').hidden=true;else $('#name-in').focus()});
 $('#name-in').addEventListener('keydown',function(e){if(e.key==='Enter')$('#name-ok').click()});
 function who(){
