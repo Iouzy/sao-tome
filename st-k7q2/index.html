@@ -223,6 +223,7 @@ details.acc>.in{padding:6px 16px 12px}
 .hist{margin-top:10px;border-top:1px solid var(--line);padding-top:8px}
 .hist div{display:flex;justify-content:space-between;gap:10px;font-size:14px;padding:4px 0;color:var(--muted)}
 .hist a{color:var(--blue)}
+.lv{padding:8px 0;border-bottom:1px solid var(--line);font-size:14px}.lv:last-child{border-bottom:0}.lv b{font-size:15px}.lv .d{color:var(--muted);font-size:13px;margin-top:2px}
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 </head>
@@ -260,6 +261,10 @@ details.acc>.in{padding:6px 16px 12px}
   <button class="btn p w" data-go="problema" style="margin-top:10px">Aconteceu alguma coisa</button>
 
   <div id="safe" hidden>
+  <div id="live" hidden class="card" style="margin-top:14px">
+    <div style="display:flex;justify-content:space-between;align-items:center"><b>Ao vivo</b><span class="small muted" id="live-st">a carregar…</span></div>
+    <div id="live-list" style="margin-top:6px"></div>
+  </div>
   <h2>Segurança <small>Regista onde estás sempre que quiseres</small></h2>
   <div class="card">
     <div id="who"></div>
@@ -450,7 +455,7 @@ details.acc>.in{padding:6px 16px 12px}
 var ME='',POL='',LOG='';
 (function(){
   var q={};try{location.hash.replace(/^#/,'').split('&').forEach(function(p){var kv=p.split('=');if(kv[1])q[kv[0]]=decodeURIComponent(kv[1])})}catch(e){}
-  try{if(q.t)localStorage.setItem('stp_t',q.t);if(q.a)localStorage.setItem('stp_a',q.a);if(q.l)localStorage.setItem('stp_l',q.l);if(q.n)localStorage.setItem('stp_n',q.n.slice(0,30));if(q.op)localStorage.setItem('stp_op',q.op==='unitel'?'unitel':'cst')}catch(e){}
+  try{if(q.t)localStorage.setItem('stp_t',q.t);if(q.a)localStorage.setItem('stp_a',q.a);if(q.l)localStorage.setItem('stp_l',q.l);if(q.n)localStorage.setItem('stp_n',q.n.slice(0,30));if(q.op)localStorage.setItem('stp_op',q.op==='unitel'?'unitel':'cst');if(q.adm)localStorage.setItem('stp_adm',q.adm)}catch(e){}
   try{LOG=q.l||localStorage.getItem('stp_l')||''}catch(e){LOG=q.l||''}
   LOG=LOG.replace(/[^0-9A-Za-z_-]/g,'');
   try{ME=q.t||localStorage.getItem('stp_t')||'';POL=q.a||localStorage.getItem('stp_a')||''}catch(e){ME=q.t||'';POL=q.a||''}
@@ -1294,8 +1299,31 @@ function who(){
   var ch=$('#who-ch');if(ch)ch.onclick=function(e){e.preventDefault();$('#name-in').value=NAME;$('#name-ov').hidden=false;setTimeout(function(){$('#name-in').focus()},100)};
 }
 function autoUI(){var on=!!store.get('auto');$('#auto-row').classList.toggle('done',on);$('#auto-row').querySelector('.txt').style.textDecoration='none'}
+function normN(x){return (x||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim()}
+function getAdm(){try{return localStorage.getItem('stp_adm')||''}catch(e){return ''}}
+function isAdmin(){return /^leo/.test(normN(NAME))&&!!getAdm()}
+function liveLoad(){
+  var a=getAdm();if(!LOG||!a)return;
+  var cb='lv'+Date.now()+Math.floor(Math.random()*1000);var sc=document.createElement('script');
+  window[cb]=function(d){delete window[cb];sc.remove();renderLive(d)};
+  sc.onerror=function(){delete window[cb];sc.remove();$('#live-st').textContent='Sem resposta: verifica a rede'};
+  sc.src='https://script.google.com/macros/s/'+LOG+'/exec?k='+encodeURIComponent(a)+'&cb='+cb;
+  document.body.appendChild(sc);
+}
+function renderLive(d){
+  if(!d||d.error){$('#live-st').textContent='Código de acesso errado';return}
+  $('#live-st').textContent='Atualizado às '+new Date().toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  var rows=(d.rows||[]).slice(-30).reverse();
+  $('#live-list').innerHTML=rows.length?rows.map(function(r){
+    var t=new Date(r[0]).toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit'});
+    return '<div class="lv"><b>'+esc(r[1]||('telemóvel '+r[2]))+'</b> · '+esc(r[3])+' <span class="muted">'+t+'</span>'+
+      (r[4]?'<div class="d">'+esc(String(r[4]).slice(0,160))+'</div>':'')+
+      (r[5]?'<div class="d"><a href="https://maps.google.com/?q='+esc(r[5])+','+esc(r[6])+'" target="_blank" rel="noopener" style="color:var(--blue)">ver no mapa</a></div>':'')+'</div>'
+  }).join(''):'<p class="small muted">Ainda sem registos.</p>';
+}
 if(LOG){
   $('#safe').hidden=false;who();hist();autoUI();
+  if(isAdmin()){$('#live').hidden=false;liveLoad();setInterval(liveLoad,15000)}
   hello();
   if(!NAME){$('#name-ov').hidden=false;setTimeout(function(){$('#name-in').focus()},100)}
   $('#reg-btn').addEventListener('click',function(){regLoc(true)});
